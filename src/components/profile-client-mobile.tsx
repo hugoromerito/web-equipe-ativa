@@ -1,0 +1,107 @@
+import { Building2, ChevronDown, Eye, FileText, LogOut, Users } from 'lucide-react'
+import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from './ui/dropdown-menu'
+// import { useTheme } from 'next-themes'
+import Link from 'next/link'
+import { getCurrentOrg, getCurrentUnit } from '@/lib/auth'
+
+function getInitials(name: string): string {
+  return name
+    .split(' ')
+    .map((word) => word.charAt(0).toUpperCase())
+    .slice(0, 2)
+    .join('')
+}
+
+interface ProfileClientProps {
+  user: {
+    name: string
+    email: string
+    avatarUrl?: string
+  }
+}
+
+export async function ProfileClientMobile({ user }: ProfileClientProps) {
+  // const { setTheme } = useTheme()
+    const currentOrg = await getCurrentOrg()
+    const currentUnit = await getCurrentUnit()
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger className="flex cursor-pointer items-center gap-3 outline-none">
+        <div className="flex flex-col items-end">
+          <span className="text-sm font-medium">{user.name}</span>
+          <span className="text-muted-foreground text-xs">{user.email}</span>
+        </div>
+        <Avatar className="size-10">
+          {user.avatarUrl && <AvatarImage src={user.avatarUrl} />}
+          {user.name && (
+            <AvatarFallback>{getInitials(user.name)}</AvatarFallback>
+          )}
+        </Avatar>
+        <ChevronDown className="text-muted-foreground size-4" />
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end" className="w-56">
+                    <DropdownMenuItem asChild>
+                <Link href={`/org/${currentOrg}`} className="flex items-center gap-2">
+                  <Building2 className="size-4" />
+                  Unidades
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link href={`/org/${currentOrg}/unit/${currentUnit}/applicant`} className="flex items-center gap-2">
+                  <FileText className="size-4" />
+                  Registrar Demandas
+                </Link>
+              </DropdownMenuItem>
+              
+              <DropdownMenuItem asChild>
+                <Link href={`/org/${currentOrg}/unit/${currentUnit}/demands`} className="flex items-center gap-2">
+                  <Eye className="size-4" />
+                  Visualizar Demandas
+                </Link>
+              </DropdownMenuItem>
+              
+              <DropdownMenuItem asChild>
+                <Link href={`/org/${currentOrg}/unit/${currentUnit}/members`} className="flex items-center gap-2">
+                  <Users className="size-4" />
+                  Visualizar Membros
+                </Link>
+              </DropdownMenuItem>
+      
+              {/* <DropdownMenuSeparator />
+      
+              <DropdownMenuItem onClick={() => setTheme('light')} className="flex items-center gap-2">
+                <Sun className="size-4" />
+                Tema Claro
+              </DropdownMenuItem>
+              
+              <DropdownMenuItem onClick={() => setTheme('dark')} className="flex items-center gap-2">
+                <Moon className="size-4" />
+                Tema Escuro
+              </DropdownMenuItem>
+              
+              <DropdownMenuItem onClick={() => setTheme('system')} className="flex items-center gap-2">
+                <MonitorCog className="size-4" />
+                Sistema
+              </DropdownMenuItem> */}
+
+                            <DropdownMenuSeparator />
+
+        <DropdownMenuItem className="cursor-pointer" asChild>
+          <a href="/api/auth/sign-out">
+            <LogOut className="mr-2 size-4" />
+            Sair
+          </a>
+        </DropdownMenuItem>
+            </DropdownMenuContent>
+    
+    </DropdownMenu>
+  )
+}

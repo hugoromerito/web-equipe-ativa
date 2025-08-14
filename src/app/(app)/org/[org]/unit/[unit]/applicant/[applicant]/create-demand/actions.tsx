@@ -1,0 +1,138 @@
+'use server'
+
+import { HTTPError } from 'ky'
+import { revalidateTag } from 'next/cache'
+import { z } from 'zod'
+
+import { createDemand } from '@/http/create-demand'
+import {
+  getCurrentApplicantId,
+  getCurrentOrg,
+  getCurrentUnit,
+} from '@/lib/auth'
+import { getApplicant } from '@/http/get-applicant'
+import { applicantSchema } from '@/lib/auth/models/applicant'
+
+const demandSchema = z.object({
+  title: z
+    .string()
+    .min(4, { message: 'Por favor, inclua o título da demanda.' }),
+  description: z
+    .string()
+    .min(10, { message: 'Por favor, detalhe a solicitação.' }),
+  street: z.string().nullable(),
+  complement: z.string().nullable(),
+  number: z.string().nullable(),
+  neighborhood: z.string().nullable(),
+  zip_code: z.string().nullable(),
+  state: z.string().nullable(),
+  city: z.string().nullable(),
+})
+
+export type DemandSchema = z.infer<typeof demandSchema>
+
+export async function createDemandAction(data: FormData) {
+  const currentOrg = await getCurrentOrg()
+  const currentUnit = await getCurrentUnit()
+  const currentApplicant = await getCurrentApplicantId()
+  const result = demandSchema.safeParse(Object.fromEntries(data))
+
+  if (!result.success) {
+    const errors = result.error.flatten().fieldErrors
+
+    return { success: false, message: null, errors }
+  }
+
+  const {
+    title,
+    description,
+    street,
+    complement,
+    number,
+    neighborhood,
+    zip_code,
+    state,
+    city,
+  } = result.data
+
+  try {
+    await createDemand({
+      organizationSlug: currentOrg!,
+      unitSlug: currentUnit!,
+      applicantSlug: currentApplicant!,
+      title,
+      description,
+      street,
+      complement,
+      number,
+      neighborhood,
+      zip_code,
+      state,
+      city,
+    })
+
+    revalidateTag('demands')
+  } catch (err) {
+    if (err instanceof HTTPError) {
+      const { message } = await err.response.json()
+
+      return { success: false, message, errors: null }
+    }
+
+    console.error(err)
+
+    return {
+      success: false,
+      message: 'Erro inesperado, tente novamente em alguns minutos.',
+      errors: null,
+    }
+  }
+
+  return {
+    success: true,
+    message: 'A demanda foi registrada com sucesso.',
+    errors: null,
+  }
+}
+
+export async function getApplicantAction(data: FormData) {
+  const currentOrg = await getCurrentOrg()
+  const currentApplicant = await getCurrentApplicantId()
+  const result = applicantSchema.safeParse(Object.fromEntries(data))
+
+  if (!result.success) {
+    const errors = result.error.flatten().fieldErrors
+    return { success: false, message: null, errors }
+  }
+
+  const {} = result.data // Extrair CPF do schema
+  try {
+    const applicant = await getApplicant({
+      organizationSlug: currentOrg!,
+      applicantSlug: currentApplicant!,
+    })
+
+    // Retorna somente name e birthdate, como você deseja
+    return {
+      success: true,
+      applicant: {
+        name: applicant.name,
+        birthdate: applicant.birthdate,
+      },
+      message: null,
+      errors: null,
+    }
+  } catch (err) {
+    if (err instanceof HTTPError) {
+      const { message } = await err.response.json()
+      return { success: false, message, errors: null }
+    }
+
+    console.error(err)
+    return {
+      success: false,
+      message: 'Erro inesperado, tente novamente em alguns minutos.',
+      errors: null,
+    }
+  }
+}
