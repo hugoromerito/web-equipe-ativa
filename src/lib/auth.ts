@@ -92,10 +92,15 @@ export async function ability() {
     return null
   }
 
+  // Verificar se organization_role existe antes de criar ability
+  if (!membership.organization_role) {
+    return null
+  }
+
   const ability = defineAbilityFor({
     id: membership.userId,
-    orgRole: membership.orgRole,
-    unitRole: membership.unitRole,
+    orgRole: membership.organization_role, // Mapear organization_role para orgRole
+    unitRole: membership.unit_role, // Mapear unit_role para unitRole
   })
 
   return ability

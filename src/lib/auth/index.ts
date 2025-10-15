@@ -44,7 +44,8 @@ export const createAppAbility = createMongoAbility as CreateAbility<AppAbility>
 export function defineAbilityFor(user: User) {
   const builder = new AbilityBuilder(createAppAbility)
 
-  if (typeof permissions[user.orgRole] !== 'function') {
+  // Verificar se orgRole existe e é uma função válida
+  if (!user.orgRole || typeof permissions[user.orgRole] !== 'function') {
     throw new Error(`Permissions for role ${user.orgRole} not found.`)
   }
 
