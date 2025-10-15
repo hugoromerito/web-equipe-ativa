@@ -1,7 +1,11 @@
 import { api } from './api-client'
 
 interface GetCheckApplicantResponse {
-  id: string
+  exists: boolean
+  applicant?: {
+    id: string
+    name: string
+  }
 }
 
 interface GetCheckApplicantRequest {
@@ -14,8 +18,8 @@ export async function getCheckApplicant({
   cpf,
 }: GetCheckApplicantRequest) {
   const result = await api
-    .post(`organizations/${organizationSlug}/applicant`, {
-      json: { cpf },
+    .get(`organizations/${organizationSlug}/applicant`, {
+      searchParams: { cpf },
     })
     .json<GetCheckApplicantResponse>()
 
