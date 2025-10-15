@@ -6,7 +6,7 @@ import { Label } from '@/components/ui/label'
 import { Separator } from '@/components/ui/separator'
 import Link from 'next/link'
 import { AlertTriangle, Loader2, Eye, EyeOff, Mail, Lock } from 'lucide-react'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 import googleIcon from '@/assets/google-icon.svg'
 import eaLogo from '@/assets/eabeta-logo.svg'
@@ -14,18 +14,38 @@ import Image from 'next/image'
 import { signInWithEmailAndPassword } from './actions'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { useFormState } from '@/hooks/use-form-state'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { signInWithGoogle } from '../actions'
 
 export default function SignInForm() {
   const router = useRouter()
+  const searchParams = useSearchParams()
   const [showPassword, setShowPassword] = useState(false)
+  const [oauthError, setOauthError] = useState<string | null>(null)
   const [{ success, message, errors }, handleSubmit, isPending] = useFormState(
     signInWithEmailAndPassword,
     () => {
       router.push('/')
     },
   )
+
+  // Verificar erros de OAuth na URL
+  useEffect(() => {
+    const error = searchParams.get('error')
+    if (error) {
+      const errorMessages: Record<string, string> = {
+        'access_denied': 'Você cancelou o login com Google.',
+        'auth_failed': 'Falha na autenticação com Google. Tente novamente.',
+        'invalid_request': 'Requisição inválida. Verifique a configuração do OAuth.',
+      }
+      setOauthError(errorMessages[error] || 'Erro desconhecido ao fazer login com Google.')
+      
+      // Limpar o erro da URL
+      const url = new URL(window.location.href)
+      url.searchParams.delete('error')
+      window.history.replaceState({}, '', url.toString())
+    }
+  }, [searchParams])
 
   return (
     <div className="w-full max-w-md mx-auto">
@@ -73,6 +93,16 @@ export default function SignInForm() {
 
         {/* Formulário de e-mail */}
         <form onSubmit={handleSubmit} className="space-y-4">
+          {oauthError && (
+            <Alert variant="destructive" className="animate-in slide-in-from-top-2 duration-300">
+              <AlertTriangle className="size-4" />
+              <AlertTitle>Erro no login com Google</AlertTitle>
+              <AlertDescription>
+                <p>{oauthError}</p>
+              </AlertDescription>
+            </Alert>
+          )}
+
           {success === false && message && (
             <Alert variant="destructive" className="animate-in slide-in-from-top-2 duration-300">
               <AlertTriangle className="size-4" />
