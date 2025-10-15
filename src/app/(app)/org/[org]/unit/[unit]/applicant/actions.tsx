@@ -81,6 +81,41 @@ const applicantSchema = z.object({
   father: nullableNameSchema,
   ticket: nullableTicketSchema,
   observation: z.string().nullable(),
+  sus_card: z.string().nullable().optional(),
+  zip_code: z
+    .string()
+    .min(1, { message: 'CEP é obrigatório.' })
+    .transform((val) => val.replace(/\D/g, '')) // Remove tudo que não é dígito
+    .refine((val) => val.length === 8, {
+      message: 'CEP deve ter exatamente 8 dígitos.',
+    }),
+  state: z.string().nullable().optional(),
+  city: z.string().nullable().optional(),
+  street: z.string().nullable().optional(),
+  neighborhood: z.string().nullable().optional(),
+  complement: z.string().nullable().optional(),
+  number: z.string().nullable().optional(),
+  numberNull: z.string().optional(), // Campo hidden para indicar se não tem número
+}).superRefine((data, ctx) => {
+  // Se zip_code foi preenchido, validar número/complemento
+  if (data.zip_code && data.zip_code.length > 0) {
+    // Se numberNull não for 'true', número é obrigatório
+    if (data.numberNull !== 'true' && (!data.number || data.number.trim() === '')) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: 'O número é obrigatório quando há endereço. Marque "Sem número" se não houver.',
+        path: ['number'],
+      })
+    }
+    // Se numberNull for 'true', complemento é obrigatório
+    if (data.numberNull === 'true' && (!data.complement || data.complement.trim() === '')) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: 'O complemento é obrigatório quando não há número do endereço.',
+        path: ['complement'],
+      })
+    }
+  }
 })
 
 type CreateApplicantState = {
@@ -95,7 +130,16 @@ export type ApplicantSchema = z.infer<typeof applicantSchema>
 export async function createApplicantAction(
   data: FormData,
 ): Promise<CreateApplicantState> {
-  const currentOrg = await getCurrentOrg()
+  const organizationSlug = data.get('organizationSlug') as string
+  
+  if (!organizationSlug) {
+    return { 
+      success: false, 
+      message: 'Organização não identificada.', 
+      errors: null 
+    }
+  }
+  
   const result = applicantSchema.safeParse(Object.fromEntries(data))
 
   if (!result.success) {
@@ -104,12 +148,28 @@ export async function createApplicantAction(
     return { success: false, message: null, errors }
   }
 
-  const { name, birthdate, cpf, father, mother, observation, phone, ticket } =
-    result.data
+  const {
+    name,
+    birthdate,
+    cpf,
+    father,
+    mother,
+    observation,
+    phone,
+    ticket,
+    sus_card,
+    zip_code,
+    state,
+    city,
+    street,
+    neighborhood,
+    complement,
+    number,
+  } = result.data
 
   try {
     const response = await createApplicant({
-      organizationSlug: currentOrg!,
+      organizationSlug,
       name,
       birthdate,
       cpf,
@@ -118,6 +178,14 @@ export async function createApplicantAction(
       observation,
       phone,
       ticket,
+      sus_card: sus_card || null,
+      zip_code: zip_code || null,
+      state: state || null,
+      city: city || null,
+      street: street || null,
+      neighborhood: neighborhood || null,
+      complement: complement || null,
+      number: number || null,
     })
 
     revalidateTag('applicants')
@@ -150,7 +218,16 @@ export async function getCheckApplicantAction(data: FormData) {
     cpf: z.string().min(11, { message: 'CPF inválido.' }),
   })
 
-  const currentOrg = await getCurrentOrg()
+  const organizationSlug = data.get('organizationSlug') as string
+  
+  if (!organizationSlug) {
+    return { 
+      success: false, 
+      message: 'Organização não identificada.', 
+      errors: null 
+    }
+  }
+  
   const result = cpfSchema.safeParse(Object.fromEntries(data))
 
   if (!result.success) {
@@ -161,15 +238,25 @@ export async function getCheckApplicantAction(data: FormData) {
   const { cpf } = result.data
 
   try {
-    const applicant = await getCheckApplicant({
-      organizationSlug: currentOrg!,
+    const response = await getCheckApplicant({
+      organizationSlug,
       cpf,
     })
 
+    // Se o applicant existe, retornar os dados
+    if (response.exists && response.applicant) {
+      return {
+        success: true,
+        applicant: response.applicant,
+        message: null,
+        errors: null,
+      }
+    }
+
+    // Se não existe, retornar erro indicando que deve preencher o formulário
     return {
-      success: true,
-      applicant,
-      message: null,
+      success: false,
+      message: 'CPF não encontrado. Preencha os dados do solicitante.',
       errors: null,
     }
   } catch (err) {

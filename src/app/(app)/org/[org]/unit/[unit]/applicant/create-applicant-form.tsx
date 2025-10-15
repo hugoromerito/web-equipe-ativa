@@ -1,9 +1,10 @@
 'use client'
 
-import { AlertTriangle, Loader2, Search, User, Calendar, Phone, Users, CreditCard, FileText, CheckCircle2, XCircle } from 'lucide-react'
-import { useState, useTransition } from 'react'
+import { AlertTriangle, Loader2, Search, User, Calendar, Phone, Users, CreditCard, FileText, CheckCircle2, XCircle, MapPin } from 'lucide-react'
+import { useState, useTransition, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { isCPF } from 'validation-br'
+import cepPromise from 'cep-promise'
 
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
@@ -47,6 +48,21 @@ export function ApplicantForm({
   const [birthdateInput, setBirthdateInput] = useState('')
   const [phoneInput, setPhoneInput] = useState('')
   const [cpfInput, setCpfInput] = useState('')
+  
+  // Estados para campos de endereço
+  const [susCard, setSusCard] = useState('')
+  const [zipCode, setZipCode] = useState('')
+  const [state, setState] = useState('')
+  const [city, setCity] = useState('')
+  const [street, setStreet] = useState('')
+  const [neighborhood, setNeighborhood] = useState('')
+  const [complement, setComplement] = useState('')
+  const [number, setNumber] = useState('')
+  const [numberNull, setNumberNull] = useState(false)
+  
+  // Estados para controle de busca de CEP
+  const [isLoadingZipCode, setIsLoadingZipCode] = useState(false)
+  const [zipCodeError, setZipCodeError] = useState('')
 
   const formAction = createApplicantAction
   const [{ errors, message, success, applicantId }, handleSubmit] =
@@ -102,6 +118,11 @@ export function ApplicantForm({
       .replace(/(\d{4})(\d)/, '$1 $2')
   }
 
+  function formatCEP(value: string) {
+    const digits = strip(value).slice(0, 8)
+    return digits.replace(/(\d{5})(\d)/, '$1-$2')
+  }
+
   function formatName(value: string): string {
     return value
       .replace(/[^a-zA-ZÀ-ÿ\s]/g, '')
@@ -112,6 +133,40 @@ export function ApplicantForm({
       .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
       .join(' ')
   }
+
+  // useEffect que dispara a busca pelo CEP quando ele tiver 8 dígitos
+  useEffect(() => {
+    if (zipCode.length === 8) {
+      setIsLoadingZipCode(true)
+      setZipCodeError('')
+      
+      cepPromise(zipCode)
+        .then((result) => {
+          setState(result.state || '')
+          setCity(result.city || '')
+          setNeighborhood(result.neighborhood || '')
+          setStreet(result.street || '')
+          setIsLoadingZipCode(false)
+        })
+        .catch((err) => {
+          console.error('Erro ao buscar CEP:', err)
+          setZipCodeError('CEP não encontrado')
+          setState('')
+          setCity('')
+          setStreet('')
+          setNeighborhood('')
+          setIsLoadingZipCode(false)
+        })
+    } else {
+      setZipCodeError('')
+      if (zipCode.length === 0) {
+        setState('')
+        setCity('')
+        setStreet('')
+        setNeighborhood('')
+      }
+    }
+  }, [zipCode])
 
   const handleCpfSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -125,6 +180,7 @@ export function ApplicantForm({
     startTransition(async () => {
       const formData = new FormData()
       formData.append('cpf', strip(cpfInput))
+      formData.append('organizationSlug', organizationSlug || '')
 
       const result = await getCheckApplicantAction(formData)
 
@@ -219,6 +275,9 @@ export function ApplicantForm({
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-6">
+              {/* Campo hidden para organizationSlug */}
+              <input type="hidden" name="organizationSlug" value={organizationSlug || ''} />
+              
               {/* Alerts de feedback */}
               {success === false && message && (
                 <Alert variant="destructive">
@@ -426,11 +485,197 @@ export function ApplicantForm({
 
               <Separator />
 
+              {/* Endereço */}
+              <div className="space-y-4">
+                <div className="flex items-center gap-2 mb-4">
+                  <MapPin className="w-4 h-4 text-muted-foreground" />
+                  <h3 className="font-medium text-sm text-muted-foreground uppercase tracking-wide">Endereço</h3>
+                </div>
+
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <div className="space-y-2">
+                    <Label htmlFor="zipCode">CEP <span className="text-red-500">*</span></Label>
+                    <div className="relative">
+                      <Input
+                        id="zipCode"
+                        name="zip_code"
+                        value={formatCEP(zipCode)}
+                        onChange={(e) => {
+                          const value = strip(e.target.value).slice(0, 8)
+                          setZipCode(value)
+                        }}
+                        placeholder="00000-000"
+                        className={zipCodeError || errors?.zip_code ? 'border-red-500' : ''}
+                      />
+                      {isLoadingZipCode && (
+                        <div className="absolute right-3 top-3">
+                          <Loader2 className="w-4 h-4 animate-spin text-muted-foreground" />
+                        </div>
+                      )}
+                    </div>
+                    {zipCodeError && (
+                      <p className="text-xs text-red-500 flex items-center gap-1">
+                        <XCircle className="w-3 h-3" />
+                        {zipCodeError}
+                      </p>
+                    )}
+                    {errors?.zip_code && (
+                      <p className="text-xs text-red-500 flex items-center gap-1">
+                        <XCircle className="w-3 h-3" />
+                        {errors.zip_code[0]}
+                      </p>
+                    )}
+                    {!zipCodeError && !errors?.zip_code && zipCode.length === 8 && !isLoadingZipCode && (
+                      <p className="text-xs text-green-600 flex items-center gap-1">
+                        <CheckCircle2 className="w-3 h-3" />
+                        CEP encontrado
+                      </p>
+                    )}
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="state">Estado</Label>
+                    <Input
+                      id="state"
+                      name="state"
+                      value={state}
+                      onChange={(e) => setState(e.target.value.toUpperCase().slice(0, 2))}
+                      placeholder="SP"
+                      maxLength={2}
+                      disabled={isLoadingZipCode}
+                      className={isLoadingZipCode ? 'bg-muted' : ''}
+                    />
+                  </div>
+
+                  <div className="sm:col-span-2 space-y-2">
+                    <Label htmlFor="city">Cidade</Label>
+                    <Input
+                      id="city"
+                      name="city"
+                      value={city}
+                      onChange={(e) => setCity(e.target.value)}
+                      placeholder="São Paulo"
+                      disabled={isLoadingZipCode}
+                      className={isLoadingZipCode ? 'bg-muted' : ''}
+                    />
+                  </div>
+
+                  <div className="sm:col-span-2 space-y-2">
+                    <Label htmlFor="street">Rua/Avenida</Label>
+                    <Input
+                      id="street"
+                      name="street"
+                      value={street}
+                      onChange={(e) => setStreet(e.target.value)}
+                      placeholder="Rua das Flores"
+                      disabled={isLoadingZipCode}
+                      className={isLoadingZipCode ? 'bg-muted' : ''}
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="neighborhood">Bairro</Label>
+                    <Input
+                      id="neighborhood"
+                      name="neighborhood"
+                      value={neighborhood}
+                      onChange={(e) => setNeighborhood(e.target.value)}
+                      placeholder="Centro"
+                      disabled={isLoadingZipCode}
+                      className={isLoadingZipCode ? 'bg-muted' : ''}
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="number">
+                      Número {zipCode.length > 0 && !numberNull && <span className="text-red-500">*</span>}
+                    </Label>
+                    <div className="space-y-3">
+                      <Input
+                        id="number"
+                        name="number"
+                        value={numberNull ? '' : number}
+                        onChange={(e) => setNumber(e.target.value)}
+                        placeholder="123"
+                        disabled={numberNull}
+                        className={numberNull ? 'bg-muted' : (errors?.number ? 'border-red-500' : '')}
+                      />
+                      <input
+                        type="hidden"
+                        name="numberNull"
+                        value={numberNull ? 'true' : 'false'}
+                      />
+                      <div className="flex items-center space-x-2">
+                        <Checkbox
+                          id="numberNull"
+                          checked={numberNull}
+                          onCheckedChange={(checked) => {
+                            setNumberNull(!!checked)
+                            if (checked) setNumber('')
+                          }}
+                        />
+                        <Label htmlFor="numberNull" className="text-sm text-muted-foreground cursor-pointer">
+                          Sem número
+                        </Label>
+                      </div>
+                    </div>
+                    {errors?.number && (
+                      <p className="text-xs text-red-500 flex items-center gap-1">
+                        <XCircle className="w-3 h-3" />
+                        {errors.number[0]}
+                      </p>
+                    )}
+                  </div>
+
+                  <div className="sm:col-span-2 space-y-2">
+                    <Label htmlFor="complement">
+                      Complemento {zipCode.length > 0 && numberNull && <span className="text-red-500">*</span>}
+                    </Label>
+                    <Input
+                      id="complement"
+                      name="complement"
+                      value={complement}
+                      onChange={(e) => setComplement(e.target.value)}
+                      placeholder="Apto 101, Bloco B"
+                      className={errors?.complement ? 'border-red-500' : ''}
+                    />
+                    {numberNull && zipCode.length > 0 && (
+                      <p className="text-xs text-muted-foreground">
+                        Obrigatório quando não há número
+                      </p>
+                    )}
+                    {errors?.complement && (
+                      <p className="text-xs text-red-500 flex items-center gap-1">
+                        <XCircle className="w-3 h-3" />
+                        {errors.complement[0]}
+                      </p>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              <Separator />
+
               {/* Documentos */}
               <div className="space-y-4">
                 <div className="flex items-center gap-2 mb-4">
                   <FileText className="w-4 h-4 text-muted-foreground" />
                   <h3 className="font-medium text-sm text-muted-foreground uppercase tracking-wide">Documentos</h3>
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="susCard">Cartão SUS</Label>
+                  <Input
+                    id="susCard"
+                    name="sus_card"
+                    value={susCard}
+                    onChange={(e) => {
+                      const value = strip(e.target.value).slice(0, 15)
+                      setSusCard(value)
+                    }}
+                    placeholder="000 0000 0000 0000"
+                    maxLength={15}
+                  />
                 </div>
 
                 <div className="space-y-2">
