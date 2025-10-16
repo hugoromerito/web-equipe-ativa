@@ -59,27 +59,26 @@ export function DataTable<T>({
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
       {onSearch && (
-        <div className="flex items-center gap-2">
-          <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-            <Input
-              placeholder={searchPlaceholder}
-              value={search}
-              onChange={(e) => handleSearch(e.target.value)}
-              className="pl-9"
-            />
-          </div>
+        <div className="medical-search">
+          <Search className="search-icon" size={20} />
+          <input
+            type="text"
+            placeholder={searchPlaceholder}
+            value={search}
+            onChange={(e) => handleSearch(e.target.value)}
+            className="medical-input"
+          />
         </div>
       )}
 
-      <div className="rounded-md border">
+      <div className="medical-table">
         <Table>
           <TableHeader>
-            <TableRow>
+            <TableRow className="border-b-2 border-slate-100">
               {columns.map((column, index) => (
-                <TableHead key={index} className={column.className}>
+                <TableHead key={index} className={`${column.className} bg-slate-50 font-semibold text-slate-700 py-4`}>
                   {column.header}
                 </TableHead>
               ))}
@@ -90,25 +89,33 @@ export function DataTable<T>({
               <TableRow>
                 <TableCell
                   colSpan={columns.length}
-                  className="h-24 text-center"
+                  className="h-32 text-center"
                 >
-                  Carregando...
+                  <div className="flex items-center justify-center gap-3">
+                    <div className="medical-skeleton w-8 h-8 rounded-full"></div>
+                    <span className="text-slate-500">Carregando dados médicos...</span>
+                  </div>
                 </TableCell>
               </TableRow>
             ) : data.length === 0 ? (
               <TableRow>
                 <TableCell
                   colSpan={columns.length}
-                  className="h-24 text-center"
+                  className="h-32 text-center"
                 >
-                  {emptyMessage}
+                  <div className="flex flex-col items-center gap-3">
+                    <div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center">
+                      <Search className="w-6 h-6 text-slate-400" />
+                    </div>
+                    <span className="text-slate-500 font-medium">{emptyMessage}</span>
+                  </div>
                 </TableCell>
               </TableRow>
             ) : (
               data.map((item, index) => (
-                <TableRow key={index}>
+                <TableRow key={index} className="hover:bg-slate-50/50 transition-colors border-b border-slate-100">
                   {columns.map((column, colIndex) => (
-                    <TableCell key={colIndex} className={column.className}>
+                    <TableCell key={colIndex} className={`${column.className} py-4 text-slate-700`}>
                       {column.accessor(item)}
                     </TableCell>
                   ))}
@@ -120,44 +127,40 @@ export function DataTable<T>({
       </div>
 
       {pagination && pagination.total_pages > 1 && (
-        <div className="flex items-center justify-between px-2">
-          <div className="text-sm text-muted-foreground">
+        <div className="flex items-center justify-between">
+          <div className="text-sm text-slate-600 font-medium">
             Página {pagination.page} de {pagination.total_pages} • Total:{' '}
-            {pagination.total} itens
+            {pagination.total} registros
           </div>
           <div className="flex items-center gap-2">
-            <Button
-              variant="outline"
-              size="sm"
+            <button
               onClick={() => onPageChange?.(1)}
               disabled={!pagination.has_prev}
+              className="btn-medical-secondary p-2 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              <ChevronsLeft className="h-4 w-4" />
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
+              <ChevronsLeft size={16} />
+            </button>
+            <button
               onClick={() => onPageChange?.(pagination.page - 1)}
               disabled={!pagination.has_prev}
+              className="btn-medical-secondary p-2 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              <ChevronLeft className="h-4 w-4" />
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
+              <ChevronLeft size={16} />
+            </button>
+            <button
               onClick={() => onPageChange?.(pagination.page + 1)}
               disabled={!pagination.has_next}
+              className="btn-medical-secondary p-2 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              <ChevronRight className="h-4 w-4" />
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
+              <ChevronRight size={16} />
+            </button>
+            <button
               onClick={() => onPageChange?.(pagination.total_pages)}
               disabled={!pagination.has_next}
+              className="btn-medical-secondary p-2 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              <ChevronsRight className="h-4 w-4" />
-            </Button>
+              <ChevronsRight size={16} />
+            </button>
           </div>
         </div>
       )}

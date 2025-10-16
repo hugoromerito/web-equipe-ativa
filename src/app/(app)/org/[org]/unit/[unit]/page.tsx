@@ -18,38 +18,31 @@ function ActionCard({ href, icon, title, description, canAccess, gradient, iconB
   if (!canAccess) return null
 
   return (
-    <div className="group relative w-full overflow-hidden rounded-3xl border-0 bg-white shadow-lg transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl dark:bg-slate-800/50">
+    <div className="group medical-card p-6 hover:shadow-xl transition-all duration-300 medical-fade-in">
       <Link href={href} className="block h-full">
-        {/* Background Gradient */}
-        <div className={`absolute inset-0 bg-gradient-to-br ${gradient} opacity-0 transition-opacity duration-500 group-hover:opacity-100`} />
-        
         {/* Content Container */}
-        <div className="relative z-10 flex min-h-[320px] flex-col justify-between p-6 sm:p-8">
-          {/* Header with Icon and Arrow */}
-          <div className="flex items-start justify-between">
-            <div className={`rounded-2xl ${iconBg} p-4 shadow-sm transition-all duration-500 group-hover:scale-110 group-hover:shadow-lg`}>
+        <div className="flex flex-col justify-between min-h-[280px]">
+          {/* Header with Icon */}
+          <div className="flex items-start justify-between mb-6">
+            <div className={`rounded-xl ${iconBg} p-4 group-hover:scale-105 transition-transform duration-300`}>
               {icon}
             </div>
-            <ArrowUpRight className="size-5 flex-shrink-0 text-slate-400 transition-all duration-500 group-hover:-translate-y-1 group-hover:translate-x-1 group-hover:text-white" />
+            <ArrowUpRight className="w-5 h-5 text-slate-400 group-hover:text-blue-500 group-hover:-translate-y-1 group-hover:translate-x-1 transition-all duration-300" />
           </div>
 
           {/* Text Content */}
-          <div className="my-6 flex-1">
-            <h3 className="mb-3 text-lg font-bold leading-tight text-slate-800 transition-colors duration-500 group-hover:text-white dark:text-slate-100 sm:text-xl">
+          <div className="flex-1 mb-6">
+            <h3 className="text-lg font-semibold text-slate-800 group-hover:text-blue-600 transition-colors duration-300 mb-3">
               {title}
             </h3>
-            <p className="text-sm leading-relaxed text-slate-600 transition-colors duration-500 group-hover:text-white/90 dark:text-slate-300 sm:text-base">
+            <p className="text-sm text-slate-600 leading-relaxed">
               {description}
             </p>
           </div>
 
           {/* Bottom Accent Line */}
-          <div className="h-1 w-12 rounded-full bg-slate-200 transition-all duration-500 group-hover:w-full group-hover:bg-white/50 dark:bg-slate-600" />
+          <div className="h-1 w-12 rounded-full bg-slate-200 group-hover:w-full group-hover:bg-blue-500 transition-all duration-300" />
         </div>
-
-        {/* Floating Elements */}
-        <div className="absolute -right-6 -top-6 size-20 rounded-full bg-white/10 opacity-0 transition-all duration-700 group-hover:opacity-100 group-hover:scale-150" />
-        <div className="absolute -bottom-4 -left-4 size-16 rounded-full bg-white/5 opacity-0 transition-all duration-700 delay-100 group-hover:opacity-100 group-hover:scale-125" />
       </Link>
     </div>
   )
@@ -57,66 +50,39 @@ function ActionCard({ href, icon, title, description, canAccess, gradient, iconB
 
 function WelcomeSection() {
   return (
-    <div className="relative mb-16 overflow-hidden rounded-3xl bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 p-8 text-white shadow-xl sm:p-12">
-      {/* Background Pattern */}
-      <div className="absolute inset-0 opacity-30">
-        <div className="h-full w-full bg-white/10" style={{
-          backgroundImage: `radial-gradient(circle at 30px 30px, rgba(255,255,255,0.1) 2px, transparent 2px)`,
-          backgroundSize: '60px 60px'
-        }} />
-      </div>
-      
+    <div className="medical-card p-8 sm:p-12 mb-12 bg-gradient-to-r from-blue-50 to-blue-100 border-l-4 border-l-blue-500">
       {/* Content */}
-      <div className="relative z-10 text-center">
-        <div className="mb-4 flex justify-center">
-          <div className="rounded-full bg-white/20 p-3 backdrop-blur-sm">
-            <Sparkles className="size-8 text-white" />
+      <div className="text-center">
+        <div className="mb-6 flex justify-center">
+          <div className="w-16 h-16 bg-blue-500 rounded-full flex items-center justify-center">
+            <Sparkles className="w-8 h-8 text-white" />
           </div>
         </div>
-        <h1 className="mb-4 text-3xl font-black sm:text-4xl lg:text-5xl">
-          Bem-vindo ao seu
-          <span className="block bg-gradient-to-r from-yellow-300 to-orange-300 bg-clip-text text-transparent">
-            Dashboard
-          </span>
+        <h1 className="text-3xl sm:text-4xl font-bold text-slate-800 mb-4">
+          Dashboard Médico
         </h1>
-        <p className="mx-auto max-w-2xl text-lg text-white/90 sm:text-xl">
-          Gerencie suas consultas e equipe com facilidade. Selecione uma das opções abaixo para começar.
+        <p className="text-lg text-slate-600 max-w-2xl mx-auto">
+          Gerencie suas demandas médicas e equipe com eficiência. Selecione uma das opções abaixo para começar.
         </p>
       </div>
-
-      {/* Floating Orbs */}
-      <div className="absolute -right-20 -top-20 size-40 rounded-full bg-white/10 blur-3xl" />
-      <div className="absolute -bottom-20 -left-20 size-32 rounded-full bg-white/10 blur-3xl" />
     </div>
   )
 }
 
 function EmptyState() {
   return (
-    <div className="flex min-h-[50vh] flex-col items-center justify-center space-y-8 px-4 text-center">
-      {/* Animated Icon */}
-      <div className="relative">
-        <div className="absolute inset-0 animate-ping rounded-full bg-slate-400/20" />
-        <div className="relative rounded-full bg-gradient-to-br from-slate-100 to-slate-200 p-8 shadow-lg ">
-          <UserSearch className="size-16 text-slate-500 dark:text-slate-400" />
-        </div>
+    <div className="medical-card p-12 text-center max-w-md mx-auto">
+      <div className="w-20 h-20 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-6">
+        <UserSearch className="w-10 h-10 text-slate-400" />
       </div>
 
-      {/* Content */}
-      <div className="space-y-4">
-        <h3 className="text-2xl font-bold text-slate-800 dark:text-slate-100">
-          Acesso Restrito
-        </h3>
-        <p className="max-w-md text-slate-600 dark:text-slate-300">
-          Parece que você não possui permissões para acessar as funcionalidades. 
-          Entre em contato com o administrador para obter acesso.
-        </p>
-      </div>
-
-      {/* Decorative Elements */}
-      <div className="absolute left-1/4 top-1/4 size-2 rounded-full bg-indigo-400 opacity-60" />
-      <div className="absolute right-1/3 top-1/3 size-1 rounded-full bg-pink-400 opacity-40" />
-      <div className="absolute bottom-1/4 left-1/3 size-3 rounded-full bg-purple-400 opacity-30" />
+      <h3 className="text-xl font-semibold text-slate-800 mb-3">
+        Acesso Restrito
+      </h3>
+      <p className="text-slate-600">
+        Você não possui permissões para acessar as funcionalidades. 
+        Entre em contato com o administrador para obter acesso.
+      </p>
     </div>
   )
 }
@@ -130,48 +96,47 @@ export default async function Projects() {
   const actions = [
     {
       href: `${baseUrl}/applicant`,
-      icon: <NotebookPen strokeWidth={2} className="size-7 text-indigo-600" />,
-      title: 'Registrar Consulta',
-      description: 'Crie novas solicitações e gerencie consultas de forma intuitiva e eficiente.',
+      icon: <NotebookPen strokeWidth={2} className="w-7 h-7 text-blue-600" />,
+      title: 'Registrar Demanda',
+      description: 'Crie novas demandas médicas e gerencie solicitações de forma intuitiva e eficiente.',
       canAccess: permissions?.can('create', 'Demand') ?? false,
-      gradient: 'from-indigo-500 to-purple-600',
-      iconBg: 'bg-indigo-50 dark:bg-indigo-900/30'
+      gradient: 'from-blue-500 to-blue-600',
+      iconBg: 'bg-blue-50'
     },
     {
       href: `${baseUrl}/demands`,
-      icon: <FileSearch strokeWidth={2} className="size-7 text-emerald-600" />,
-      title: 'Visualizar Consultas',
-      description: 'Consulte, acompanhe e monitore todas as consultas em andamento no sistema.',
+      icon: <FileSearch strokeWidth={2} className="w-7 h-7 text-emerald-600" />,
+      title: 'Visualizar Demandas',
+      description: 'Consulte, acompanhe e monitore todas as demandas médicas em andamento no sistema.',
       canAccess: permissions?.can('get', 'Demand') ?? false,
-      gradient: 'from-emerald-500 to-teal-600',
-      iconBg: 'bg-emerald-50 dark:bg-emerald-900/30'
+      gradient: 'from-emerald-500 to-emerald-600',
+      iconBg: 'bg-emerald-50'
     },
     {
       href: `${baseUrl}/members`,
-      icon: <UserSearch strokeWidth={2} className="size-7 text-orange-600" />,
-      title: 'Visualizar Membros',
-      description: 'Gerencie sua equipe, visualize perfis e administre permissões de usuários.',
+      icon: <UserSearch strokeWidth={2} className="w-7 h-7 text-amber-600" />,
+      title: 'Equipe Médica',
+      description: 'Gerencie sua equipe médica, visualize perfis e administre permissões de usuários.',
       canAccess: permissions?.can('get', 'Applicant') ?? false,
-      gradient: 'from-orange-500 to-red-600',
-      iconBg: 'bg-orange-50 dark:bg-orange-900/30'
+      gradient: 'from-amber-500 to-amber-600',
+      iconBg: 'bg-amber-50'
     },
   ]
 
   const visibleActions = actions.filter(action => action.canAccess)
 
   return (
-    <div className="min-h-screen">
+    <div className="medical-layout min-h-screen">
       <Header />
       
-      <main className="container mx-auto px-4 py-8 sm:px-6 lg:px-8">
+      <main className="container mx-auto px-6 py-8 max-w-6xl">
         <WelcomeSection />
 
         {visibleActions.length > 0 ? (
-          <div className="mx-auto max-w-6xl">
-            <div className="grid gap-8 md:grid-cols-2 xl:grid-cols-3">
-              {actions.map((action) => (
+          <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+            {actions.map((action, index) => (
+              <div key={action.href} style={{ animationDelay: `${index * 100}ms` }}>
                 <ActionCard
-                  key={action.href}
                   href={action.href}
                   icon={action.icon}
                   title={action.title}
@@ -180,8 +145,8 @@ export default async function Projects() {
                   gradient={action.gradient}
                   iconBg={action.iconBg}
                 />
-              ))}
-            </div>
+              </div>
+            ))}
           </div>
         ) : (
           <EmptyState />

@@ -156,14 +156,14 @@ export function DemandList({
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100">
+      <div className="min-h-screen bg-slate-50">
         <div className="container mx-auto px-4 py-8">
           <div className="animate-pulse space-y-6">
-            <div className="h-12 bg-gray-200 rounded-2xl w-1/3" />
-            <div className="h-32 bg-gray-200 rounded-2xl" />
-            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+            <div className="h-10 bg-gray-200 rounded-lg w-1/4" />
+            <div className="h-24 bg-gray-200 rounded-lg" />
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
               {[1, 2, 3, 4, 5, 6].map((i) => (
-                <div key={i} className="h-64 bg-gray-200 rounded-2xl" />
+                <div key={i} className="h-56 bg-gray-200 rounded-lg" />
               ))}
             </div>
           </div>
@@ -173,77 +173,70 @@ export function DemandList({
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100">
-      {/* Animated Background Elements */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-purple-400 to-pink-400 rounded-full opacity-10 animate-pulse" />
-        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-br from-blue-400 to-cyan-400 rounded-full opacity-10 animate-pulse delay-1000" />
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-gradient-to-br from-green-400 to-blue-400 rounded-full opacity-5 animate-spin" style={{ animationDuration: '20s' }} />
-      </div>
-
-      <div className="relative z-10 container mx-auto px-4 py-8">
-        {/* Hero Header */}
-        <div className="text-center mb-12">
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-full text-sm font-medium mb-6">
-            <Sparkles className="w-4 h-4" />
-            <span>Sistema de Consultas Públicas</span>
-          </div>
-          
-          <h1 className="text-4xl md:text-6xl font-bold bg-gradient-to-r from-gray-900 via-blue-800 to-purple-800 bg-clip-text text-transparent mb-4">
-            Consultas da Comunidade
+    <div className="medical-layout min-h-screen">
+      <div className="container mx-auto px-6 py-8 max-w-7xl">
+        {/* Header Médico Clean */}
+        <div className="medical-section">
+          <h1 className="medical-section-title">
+            Central de Demandas
           </h1>
           
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
-            Acompanhe, gerencie e participe das consultas que transformam nossa cidade. 
-            Sua voz importa para construir um futuro melhor.
+          <p className="medical-section-subtitle">
+            Gerencie e acompanhe todas as demandas médicas da unidade
           </p>
 
-          {/* Stats */}
-          <div className="flex flex-wrap justify-center gap-6 mt-8">
-            <div className="bg-white/70 backdrop-blur-sm rounded-2xl px-6 py-4 shadow-lg border border-white/20">
-              <div className="text-2xl font-bold text-gray-900">{pagination.total}</div>
-              <div className="text-sm text-gray-600">Total de Consultas</div>
+          {/* Stats Cards Médicos */}
+          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-6">
+            <div className="medical-card medical-stat">
+              <div className="text-xs text-slate-500 mb-1">Total de Demandas</div>
+              <div className="medical-stat-value text-blue-600">{pagination.total}</div>
             </div>
-            <div className="bg-white/70 backdrop-blur-sm rounded-2xl px-6 py-4 shadow-lg border border-white/20">
-              <div className="text-2xl font-bold text-green-600">
+            <div className="medical-card medical-stat">
+              <div className="text-xs text-slate-500 mb-1">Resolvidas</div>
+              <div className="medical-stat-value text-emerald-600">
                 {demands.filter(d => d.status === 'RESOLVED').length}
               </div>
-              <div className="text-sm text-gray-600">Resolvidas</div>
             </div>
-            <div className="bg-white/70 backdrop-blur-sm rounded-2xl px-6 py-4 shadow-lg border border-white/20">
-              <div className="text-2xl font-bold text-blue-600">
+            <div className="medical-card medical-stat">
+              <div className="text-xs text-slate-500 mb-1">Em Andamento</div>
+              <div className="medical-stat-value text-blue-600">
                 {demands.filter(d => d.status === 'IN_PROGRESS').length}
               </div>
-              <div className="text-sm text-gray-600">Em Andamento</div>
+            </div>
+            <div className="medical-card medical-stat">
+              <div className="text-xs text-slate-500 mb-1">Pendentes</div>
+              <div className="medical-stat-value text-amber-600">
+                {demands.filter(d => d.status === 'PENDING').length}
+              </div>
             </div>
           </div>
         </div>
 
-        {/* Search and Filters */}
-        <div className="bg-white/80 backdrop-blur-xl rounded-3xl shadow-xl border border-white/20 p-8 mb-8">
+        {/* Search and Filters - Design Médico */}
+        <div className="medical-card p-6 mb-8">
           <div className="flex flex-col lg:flex-row gap-6">
-            {/* Search */}
-            <div className="flex-1 relative group">
-              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 group-hover:text-blue-500 transition-colors" size={20} />
+            {/* Search Medical */}
+            <div className="flex-1 medical-search">
+              <Search className="search-icon" size={20} />
               <input
                 type="text"
-                placeholder="Buscar consultas por título ou descrição..."
+                placeholder="Buscar demandas por título, descrição ou paciente..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-12 pr-4 py-4 border-2 border-gray-200 rounded-2xl focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-300 bg-white/50 backdrop-blur-sm hover:bg-white/80"
+                className="medical-input"
               />
             </div>
 
-            {/* Controls */}
-            <div className="flex flex-wrap gap-4">
-              {/* Sort */}
+            {/* Controls Médicos */}
+            <div className="flex flex-wrap gap-3">
+              {/* Sort Médico */}
               <select
                 value={`${sortBy}-${sortOrder}`}
                 onChange={(e) => {
                   const [sort_by, sort_order] = e.target.value.split('-')
                   handleSortChange(sort_by, sort_order)
                 }}
-                className="px-4 py-4 border-2 border-gray-200 rounded-2xl focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 bg-white/50 backdrop-blur-sm hover:bg-white/80 transition-all min-w-[140px]"
+                className="medical-input min-w-[160px]"
               >
                 <option value="created_at-desc">Mais Recentes</option>
                 <option value="created_at-asc">Mais Antigas</option>
@@ -253,37 +246,37 @@ export function DemandList({
                 <option value="updated_at-desc">Recém Atualizadas</option>
               </select>
 
-              {/* View Mode */}
-              <div className="flex rounded-2xl border-2 border-gray-200 overflow-hidden bg-white/50 backdrop-blur-sm">
+              {/* View Mode Médico */}
+              <div className="flex rounded-xl border border-slate-200 overflow-hidden bg-white">
                 <button
                   onClick={() => setViewMode('grid')}
-                  className={`p-3 transition-all duration-300 ${
+                  className={`p-3 transition-all duration-200 ${
                     viewMode === 'grid' 
-                      ? 'bg-blue-500 text-white shadow-lg' 
-                      : 'text-gray-600 hover:bg-gray-100'
+                      ? 'bg-blue-500 text-white' 
+                      : 'text-slate-600 hover:bg-slate-50'
                   }`}
                 >
                   <Grid size={20} />
                 </button>
                 <button
                   onClick={() => setViewMode('list')}
-                  className={`p-3 transition-all duration-300 ${
+                  className={`p-3 transition-all duration-200 ${
                     viewMode === 'list' 
-                      ? 'bg-blue-500 text-white shadow-lg' 
-                      : 'text-gray-600 hover:bg-gray-100'
+                      ? 'bg-blue-500 text-white' 
+                      : 'text-slate-600 hover:bg-slate-50'
                   }`}
                 >
                   <List size={20} />
                 </button>
               </div>
 
-              {/* Filter Toggle */}
+              {/* Filter Toggle Médico */}
               <button
                 onClick={() => setShowFilters(!showFilters)}
-                className={`flex items-center gap-2 px-6 py-3 rounded-2xl border-2 transition-all duration-300 ${
+                className={`flex items-center gap-2 px-4 py-3 rounded-xl border transition-all duration-200 ${
                   showFilters 
-                    ? 'bg-blue-500 text-white border-blue-500 shadow-lg' 
-                    : 'border-gray-200 text-gray-600 hover:bg-gray-100 bg-white/50 backdrop-blur-sm'
+                    ? 'bg-blue-500 text-white border-blue-500' 
+                    : 'border-slate-200 text-slate-600 hover:bg-slate-50 bg-white'
                 }`}
               >
                 <Filter size={20} />
@@ -292,15 +285,15 @@ export function DemandList({
             </div>
           </div>
 
-          {/* Extended Filters */}
+          {/* Extended Filters Médicos */}
           {showFilters && (
-            <div className="mt-6 pt-6 border-t border-gray-200 flex flex-wrap gap-4 animate-in slide-in-from-top duration-300">
+            <div className="mt-6 pt-6 border-t border-slate-200 flex flex-wrap gap-4 medical-fade-in">
               <select
                 value={filterCategory}
                 onChange={(e) => handleCategoryChange(e.target.value)}
-                className="px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 bg-white/50 backdrop-blur-sm hover:bg-white/80 transition-all min-w-[200px]"
+                className="medical-input min-w-[200px]"
               >
-                <option value="">Todas as categorias</option>
+                <option value="">Todas as especialidades</option>
                 {CATEGORY_OPTIONS.map(option => (
                   <option key={option.value} value={option.value}>
                     {option.icon} {option.label}
@@ -311,7 +304,7 @@ export function DemandList({
               <select
                 value={filterStatus}
                 onChange={(e) => handleStatusChange(e.target.value)}
-                className="px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 bg-white/50 backdrop-blur-sm hover:bg-white/80 transition-all min-w-[180px]"
+                className="medical-input min-w-[180px]"
               >
                 <option value="">Todos os status</option>
                 {STATUS_OPTIONS.map(option => (
@@ -324,7 +317,7 @@ export function DemandList({
               <select
                 value={filterPriority}
                 onChange={(e) => handlePriorityChange(e.target.value)}
-                className="px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 bg-white/50 backdrop-blur-sm hover:bg-white/80 transition-all min-w-[180px]"
+                className="medical-input min-w-[180px]"
               >
                 <option value="">Todas as prioridades</option>
                 <option value="URGENT">🔴 Urgente</option>
@@ -336,45 +329,46 @@ export function DemandList({
           )}
         </div>
 
-        {/* Results Header */}
+        {/* Results Header Médico */}
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-4">
-            <h2 className="text-2xl font-bold text-gray-900">
-              {demands.length} consulta{demands.length !== 1 ? 's' : ''} 
+            <h2 className="text-xl font-semibold text-slate-800">
+              {demands.length} demanda{demands.length !== 1 ? 's' : ''} 
               {pagination.total > demands.length && (
-                <span className="text-gray-500 text-lg"> de {pagination.total}</span>
+                <span className="text-slate-500 text-base"> de {pagination.total}</span>
               )}
             </h2>
             {demands.length > 0 && (
-              <div className="flex items-center gap-2 px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm font-medium">
-                <TrendingUp className="w-4 h-4" />
+              <div className="status-indicator status-progress">
                 <span>Página {pagination.page}</span>
               </div>
             )}
           </div>
         </div>
 
-        {/* Demands Grid/List */}
+        {/* Demands Grid/List - Design Médico */}
         {demands.length === 0 ? (
-          <div className="text-center py-20">
-            <div className="w-32 h-32 mx-auto mb-8 bg-gradient-to-br from-gray-100 to-gray-200 rounded-full flex items-center justify-center">
-              <Search className="w-12 h-12 text-gray-400" />
+          <div className="text-center py-16">
+            <div className="medical-card p-12 max-w-md mx-auto">
+              <div className="w-24 h-24 mx-auto mb-6 bg-slate-100 rounded-full flex items-center justify-center">
+                <Search className="w-10 h-10 text-slate-400" />
+              </div>
+              <h3 className="text-xl font-semibold text-slate-800 mb-3">
+                Nenhuma demanda encontrada
+              </h3>
+              <p className="text-slate-600 mb-6">
+                Tente ajustar os filtros ou criar uma nova demanda médica.
+              </p>
+              <Link href={`/org/${currentOrg}/unit/${currentUnit}/applicant`}>
+                <button className="btn-medical">
+                  Criar Nova Demanda
+                </button>
+              </Link>
             </div>
-            <h3 className="text-2xl font-bold text-gray-900 mb-4">
-              Nenhuma consulta encontrada
-            </h3>
-            <p className="text-gray-600 text-lg mb-8 max-w-md mx-auto">
-              Tente ajustar os filtros de busca ou criar uma nova consulta para a comunidade.
-            </p>
-            <Link href={`/org/${currentOrg}/unit/${currentUnit}/applicant`}>
-              <button className="px-8 py-4 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-2xl hover:from-blue-600 hover:to-purple-700 transition-all duration-300 transform hover:scale-105 shadow-lg font-medium">
-                Criar Nova Consulta
-              </button>
-            </Link>
           </div>
         ) : (
           <>
-            <div className={`grid gap-8 ${viewMode === 'grid' 
+            <div className={`grid gap-6 ${viewMode === 'grid' 
               ? 'grid-cols-1 md:grid-cols-2 xl:grid-cols-3' 
               : 'grid-cols-1'
             }`}>
@@ -386,121 +380,106 @@ export function DemandList({
                 return (
                   <div
                     key={demand.id}
-                    className="group relative bg-white/80 backdrop-blur-xl rounded-3xl shadow-xl border border-white/20 hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 cursor-pointer overflow-hidden"
-                    style={{ animationDelay: `${index * 100}ms` }}
+                    className="medical-card group p-6 hover:shadow-lg transition-all duration-300 medical-fade-in border-l-4 border-l-blue-500"
+                    style={{ animationDelay: `${index * 50}ms` }}
                   >
                     <Link href={`/org/${currentOrg}/unit/${currentUnit}/demands/${demand.id}`}>
                     
-                    {/* Urgency Indicator */}
-                    <div className="absolute top-4 right-4 z-20">
-                      <div className={`w-3 h-3 rounded-full ${getUrgencyColor(demand.urgency).replace('text-', 'bg-')} animate-pulse`} />
-                    </div>
-
-                    {/* Category Banner */}
-                    <div className={`h-2 bg-gradient-to-r ${category.color}`} />
-
-                    {/* Card Content */}
-                    <div className="p-8">
-                      {/* Header */}
-                      <div className="flex items-start justify-between mb-6">
-                        <div className="flex-1">
-                          <div className="flex items-center gap-3 mb-3">
-                            <div className={`w-12 h-12 rounded-2xl bg-gradient-to-br ${category.color} flex items-center justify-center text-white text-xl shadow-lg`}>
-                              {category.icon}
-                            </div>
-                            <div>
-                              <h3 className="text-xl font-bold text-gray-900 group-hover:text-blue-600 transition-colors duration-300 leading-tight">
-                                {demand.title}
-                              </h3>
-                              <p className="text-sm text-gray-500 font-medium">
-                                {category.label}
-                              </p>
-                            </div>
+                    {/* Header Médico */}
+                    <div className="flex items-start justify-between mb-4">
+                      <div className="flex-1">
+                        <div className="flex items-center gap-3 mb-2">
+                          <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${category.color} flex items-center justify-center text-white text-lg`}>
+                            {category.icon}
                           </div>
-                          
-                          <p className="text-gray-600 leading-relaxed line-clamp-3 mb-6">
-                            {demand.description}
-                          </p>
-                        </div>
-                        
-                        <ChevronRight className="text-gray-400 group-hover:text-blue-500 group-hover:translate-x-1 transition-all duration-300 ml-4 flex-shrink-0" size={24} />
-                      </div>
-
-                      {/* Status Badges */}
-                      <div className="flex flex-wrap gap-3 mb-6">
-                        <BadgeDemand status={demand.status} size="md" animated>
-                          <div className="flex items-center gap-1">
-                            {status.label}
-                          </div>
-                        </BadgeDemand>
-                        
-                        <BadgeDemand priority={demand.priority} size="md" animated>
-                          <div className="flex items-center gap-1">
-                            {priority.label}
-                          </div>
-                        </BadgeDemand>
-                        
-                        {demand.urgency >= 80 && (
-                          <BadgeDemand variant="outline" size="md" className="border-red-300 text-red-600 animate-pulse">
-                            <div className="flex items-center gap-1">
-                              Crítico
-                            </div>
-                          </BadgeDemand>
-                        )}
-                      </div>
-
-                      {/* Location */}
-                      <div className="flex items-center gap-2 text-gray-500 mb-6 p-3 bg-gray-50 rounded-xl">
-                        <MapPin size={18} className="flex-shrink-0 text-blue-500" />
-                        <span className="text-sm font-medium truncate">{demand.location}</span>
-                      </div>
-
-                      {/* Footer Stats */}
-                      <div className="flex items-center justify-between pt-6 border-t border-gray-100">
-                        <div className="flex items-center gap-6 text-sm text-gray-500">
-                          <div className="flex items-center gap-1.5 hover:text-blue-600 transition-colors">
-                            <User size={16} />
-                            <span className="font-medium">{demand.author}</span>
-                          </div>
-                          
-                          <div className="flex items-center gap-1.5">
-                            <Calendar size={16} />
-                            <span>{formatDate(demand.createdAt)}</span>
+                          <div>
+                            <h3 className="text-lg font-semibold text-slate-800 group-hover:text-blue-600 transition-colors leading-tight">
+                              {demand.title}
+                            </h3>
+                            <p className="text-xs text-slate-500 font-medium">
+                              {category.label}
+                            </p>
                           </div>
                         </div>
                       </div>
+                      
+                      {/* Urgency Indicator */}
+                      <div className="flex items-center gap-2">
+                        <div className={`w-2 h-2 rounded-full ${getUrgencyColor(demand.urgency).replace('text-', 'bg-')}`} />
+                        <ChevronRight className="text-slate-400 group-hover:text-blue-500 transition-colors" size={20} />
+                      </div>
                     </div>
 
-                    {/* Hover Effect Overlay */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-blue-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
-                    
-                    {/* Shine Effect */}
-                    <div className="absolute inset-0 -skew-x-12 translate-x-full opacity-0 bg-gradient-to-r from-transparent via-white/20 to-transparent group-hover:animate-shine group-hover:opacity-100 transition-opacity duration-700" />
+                    {/* Description */}
+                    <p className="text-slate-600 text-sm leading-relaxed mb-4 line-clamp-2">
+                      {demand.description}
+                    </p>
+
+                    {/* Status Badges Médicos */}
+                    <div className="flex flex-wrap gap-2 mb-4">
+                      <span className={`status-indicator ${
+                        demand.status === 'PENDING' ? 'status-pending' :
+                        demand.status === 'IN_PROGRESS' ? 'status-progress' :
+                        demand.status === 'RESOLVED' ? 'status-resolved' :
+                        'status-pending'
+                      }`}>
+                        {status.label}
+                      </span>
+                      
+                      <span className={`status-indicator ${
+                        demand.priority === 'URGENT' ? 'status-urgent' :
+                        demand.priority === 'HIGH' ? 'status-pending' :
+                        'status-progress'
+                      }`}>
+                        {priority.label}
+                      </span>
+                    </div>
+
+                    {/* Location Médica */}
+                    <div className="flex items-center gap-2 text-slate-500 text-xs mb-4 p-2 bg-slate-50 rounded-lg">
+                      <MapPin size={14} className="text-blue-500 flex-shrink-0" />
+                      <span className="truncate">{demand.location}</span>
+                    </div>
+
+                    {/* Footer Stats Médicos */}
+                    <div className="flex items-center justify-between pt-4 border-t border-slate-100">
+                      <div className="flex items-center gap-4 text-xs text-slate-500">
+                        <div className="flex items-center gap-1">
+                          <User size={14} />
+                          <span className="font-medium">{demand.author}</span>
+                        </div>
+                        
+                        <div className="flex items-center gap-1">
+                          <Calendar size={14} />
+                          <span>{formatDate(demand.createdAt)}</span>
+                        </div>
+                      </div>
+                    </div>
                     </Link>
                   </div>
                 )
               })}
             </div>
 
-            {/* Pagination */}
+            {/* Pagination Médica */}
             {pagination.total_pages > 1 && (
-              <div className="flex items-center justify-center gap-4 mt-12">
+              <div className="flex items-center justify-center gap-3 mt-10">
                 {/* Previous Button */}
                 <button
                   onClick={() => handlePageChange(pagination.page - 1)}
                   disabled={!pagination.has_prev}
-                  className={`flex items-center gap-2 px-6 py-3 rounded-2xl border-2 transition-all duration-300 ${
+                  className={`flex items-center gap-2 px-4 py-2 rounded-lg border transition-all duration-200 ${
                     pagination.has_prev
-                      ? 'border-blue-500 text-blue-600 hover:bg-blue-50 bg-white/80 backdrop-blur-sm'
-                      : 'border-gray-200 text-gray-400 cursor-not-allowed bg-gray-50'
+                      ? 'border-blue-500 text-blue-600 hover:bg-blue-50 bg-white'
+                      : 'border-slate-200 text-slate-400 cursor-not-allowed bg-slate-50'
                   }`}
                 >
-                  <ChevronLeft size={20} />
+                  <ChevronLeft size={18} />
                   <span>Anterior</span>
                 </button>
 
                 {/* Page Numbers */}
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-1">
                   {Array.from({ length: Math.min(pagination.total_pages, 5) }, (_, i) => {
                     let pageNum: number
                     
@@ -520,10 +499,10 @@ export function DemandList({
                       <button
                         key={pageNum}
                         onClick={() => handlePageChange(pageNum)}
-                        className={`w-12 h-12 rounded-2xl border-2 font-bold transition-all duration-300 ${
+                        className={`w-10 h-10 rounded-lg border font-medium transition-all duration-200 ${
                           isCurrentPage
-                            ? 'bg-blue-500 text-white border-blue-500 shadow-lg scale-110'
-                            : 'border-gray-200 text-gray-600 hover:bg-blue-50 hover:border-blue-300 bg-white/80 backdrop-blur-sm'
+                            ? 'bg-blue-500 text-white border-blue-500'
+                            : 'border-slate-200 text-slate-600 hover:bg-slate-50 bg-white'
                         }`}
                       >
                         {pageNum}
@@ -536,40 +515,35 @@ export function DemandList({
                 <button
                   onClick={() => handlePageChange(pagination.page + 1)}
                   disabled={!pagination.has_next}
-                  className={`flex items-center gap-2 px-6 py-3 rounded-2xl border-2 transition-all duration-300 ${
+                  className={`flex items-center gap-2 px-4 py-2 rounded-lg border transition-all duration-200 ${
                     pagination.has_next
-                      ? 'border-blue-500 text-blue-600 hover:bg-blue-50 bg-white/80 backdrop-blur-sm'
-                      : 'border-gray-200 text-gray-400 cursor-not-allowed bg-gray-50'
+                      ? 'border-blue-500 text-blue-600 hover:bg-blue-50 bg-white'
+                      : 'border-slate-200 text-slate-400 cursor-not-allowed bg-slate-50'
                   }`}
                 >
                   <span>Próxima</span>
-                  <ChevronRight size={20} />
+                  <ChevronRight size={18} />
                 </button>
               </div>
             )}
 
             {/* Page Info */}
-            <div className="text-center mt-6">
-              <p className="text-gray-500 text-sm">
+            <div className="text-center mt-4">
+              <p className="text-slate-500 text-sm">
                 Mostrando {((pagination.page - 1) * pagination.limit) + 1} a{' '}
                 {Math.min(pagination.page * pagination.limit, pagination.total)} de{' '}
-                {pagination.total} consultas
+                {pagination.total} demandas
               </p>
             </div>
           </>
         )}
 
-        {/* Create New Demand Button - Always visible */}
-        <div className="text-center mt-12">
+        {/* Create New Demand Button - Design Médico */}
+        <div className="text-center mt-10">
           <Link href={`/org/${currentOrg}/unit/${currentUnit}/applicant`}>
-            <button className="group px-12 py-4 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-white rounded-2xl hover:from-blue-600 hover:via-purple-600 hover:to-pink-600 transition-all duration-500 transform hover:scale-105 shadow-xl font-medium text-lg relative overflow-hidden">
-              <span className="relative z-10 flex items-center gap-2">
-                <Sparkles className="w-5 h-5" />
-                Criar Nova Consulta
-              </span>
-              
-              {/* Button shine effect */}
-              <div className="absolute inset-0 -skew-x-12 translate-x-full opacity-0 bg-gradient-to-r from-transparent via-white/30 to-transparent group-hover:animate-shine group-hover:opacity-100 transition-opacity duration-700" />
+            <button className="btn-medical flex items-center gap-2 mx-auto">
+              <Sparkles className="w-5 h-5" />
+              Criar Nova Demanda Médica
             </button>
           </Link>
         </div>

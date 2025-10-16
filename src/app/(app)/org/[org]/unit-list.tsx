@@ -34,115 +34,122 @@ export async function UnitList() {
   }
 
   return (
-    <div className="w-full space-y-6">
-      {/* Header Section */}
-      <div className="space-y-2">
-        <div className="flex items-center gap-2">
-          <Building className="size-5 text-blue-600" />
-          <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
-            Unidades
-          </h2>
-        </div>
-        <p className="text-gray-600 dark:text-gray-400">
-          Selecione uma unidade para acessar ou crie uma nova
+    <div className="w-full medical-section">
+      {/* Header Section Médico */}
+      <div className="medical-section">
+        <h1 className="medical-section-title">
+          Unidades Médicas
+        </h1>
+        <p className="medical-section-subtitle">
+          Acesse as unidades de saúde da organização ou crie uma nova unidade
         </p>
       </div>
 
       {!units || units.length === 0 ? (
-        /* Empty State */
-        <div className="flex flex-col items-center justify-center py-12 px-4 text-center">
-          <div className="rounded-full bg-gray-100 dark:bg-gray-800 p-6 mb-4">
-            <Building className="size-12 text-gray-400" />
+        /* Empty State Médico */
+        <div className="medical-card p-12 text-center max-w-md mx-auto">
+          <div className="w-20 h-20 bg-blue-50 rounded-full flex items-center justify-center mx-auto mb-6">
+            <Building className="w-10 h-10 text-blue-500" />
           </div>
-          <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
+          <h3 className="text-xl font-semibold text-slate-800 mb-3">
             Nenhuma unidade encontrada
           </h3>
-          <p className="text-gray-600 dark:text-gray-400 mb-6 max-w-sm">
-            Esta organização ainda não possui unidades. Crie a primeira unidade para começar.
+          <p className="text-slate-600 mb-6">
+            Esta organização ainda não possui unidades médicas. Crie a primeira unidade para começar.
           </p>
-          <Button className="bg-blue-600 hover:bg-blue-700 text-white">
-            <Building className="size-4 mr-2" />
-            Criar primeira unidade
-          </Button>
+          <Link href={`/org/${currentOrg}/create-unit`}>
+            <button className="btn-medical">
+              <Building className="w-4 h-4 mr-2" />
+              Criar primeira unidade
+            </button>
+          </Link>
         </div>
       ) : (
-        <div className="space-y-4">
-          {/* Search and Actions */}
-          <div className="flex flex-col sm:flex-row gap-3 sm:items-center sm:justify-between">
-            <div className="relative flex-1 max-w-sm">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 size-4" />
-              <Input 
-                placeholder="Buscar unidades..." 
-                className="pl-10 h-10"
+        <div className="space-y-6">
+          {/* Search and Actions Médicos */}
+          <div className="flex flex-col sm:flex-row gap-4 sm:items-center sm:justify-between">
+            <div className="flex-1 max-w-sm medical-search">
+              <Search className="search-icon" size={18} />
+              <input 
+                type="text"
+                placeholder="Buscar unidades médicas..." 
+                className="medical-input"
               />
             </div>
             <Link href={`/org/${currentOrg}/create-unit`}>
-            <Button variant="outline" className="shrink-0 cursor-pointer">
-              <Building className="size-4 mr-2" />
-              Nova unidade
-            </Button>
+              <button className="btn-medical-secondary">
+                <Building className="w-4 h-4 mr-2" />
+                Nova unidade
+              </button>
             </Link>
           </div>
 
-          {/* Units Grid/List */}
-          <div className="grid gap-3 md:gap-4">
-            {units.map((unit) => (
+          {/* Units Grid Médico */}
+          <div className="grid gap-4">
+            {units.map((unit, index) => (
               <Link 
                 key={unit.id} 
                 href={`/org/${currentOrg}/unit/${unit.slug}`}
                 className="group"
               >
-                <div className="relative flex items-center gap-4 p-4 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg hover:shadow-md hover:border-blue-300 dark:hover:border-blue-600 transition-all duration-200 group-hover:bg-gray-50 dark:group-hover:bg-gray-700/50">
-                  {/* Avatar/Icon */}
-                  <div className="relative">
-                    <div className="flex items-center justify-center size-12 bg-blue-100 dark:bg-blue-900 rounded-lg ring-2 ring-gray-100 dark:ring-gray-700 group-hover:ring-blue-200 dark:group-hover:ring-blue-800 transition-colors">
-                      <Building className="size-6 text-blue-600 dark:text-blue-400" />
+                <div className={`medical-card p-6 hover:shadow-lg transition-all duration-300 medical-fade-in ${
+                  unit.slug === currentUnitSlug ? 'border-l-4 border-l-blue-500' : ''
+                }`}
+                  style={{ animationDelay: `${index * 100}ms` }}
+                >
+                  <div className="flex items-center gap-4">
+                    {/* Icon Médico */}
+                    <div className="relative">
+                      <div className="w-14 h-14 bg-blue-100 rounded-xl flex items-center justify-center ring-2 ring-blue-100 group-hover:ring-blue-200 transition-colors">
+                        <Building className="w-7 h-7 text-blue-600" />
+                      </div>
+                      {unit.slug === currentUnitSlug && (
+                        <div className="absolute -top-1 -right-1 bg-emerald-500 rounded-full p-1">
+                          <Flag className="w-3 h-3 text-white" />
+                        </div>
+                      )}
                     </div>
-                    {unit.slug === currentUnitSlug && (
-                      <div className="absolute -top-1 -right-1 bg-green-500 rounded-full p-1">
-                        <Flag className="size-3 text-white" />
-                      </div>
-                    )}
-                  </div>
 
-                  {/* Content */}
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-start justify-between gap-2">
-                      <div className="min-w-0 flex-1">
-                        <h3 className="font-semibold text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors truncate">
-                          {unit.name}
-                        </h3>
-                        
-                        {/* Unit details */}
-                        <div className="space-y-1 mt-2">
-                          {unit.description && (
-                            <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
-                              <Flag className="size-3 flex-shrink-0" />
-                              <span className="truncate">{unit.description}</span>
-                            </div>
-                          )}
+                    {/* Content Médico */}
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-start justify-between gap-3">
+                        <div className="min-w-0 flex-1">
+                          <h3 className="text-lg font-semibold text-slate-800 group-hover:text-blue-600 transition-colors mb-2">
+                            {unit.name}
+                          </h3>
                           
-                          {unit.location && (
-                            <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
-                              <MapPin className="size-3 flex-shrink-0" />
-                              <span className="truncate">{unit.location}</span>
-                            </div>
-                          )}
+                          {/* Unit details */}
+                          <div className="space-y-1.5 mb-3">
+                            {unit.description && (
+                              <div className="flex items-center gap-2 text-sm text-slate-600">
+                                <Flag className="w-4 h-4 flex-shrink-0 text-blue-500" />
+                                <span className="truncate">{unit.description}</span>
+                              </div>
+                            )}
+                            
+                            {unit.location && (
+                              <div className="flex items-center gap-2 text-sm text-slate-600">
+                                <MapPin className="w-4 h-4 flex-shrink-0 text-blue-500" />
+                                <span className="truncate">{unit.location}</span>
+                              </div>
+                            )}
+                          </div>
+
+                          {/* Status badges */}
+                          <div className="flex items-center gap-2">
+                            {unit.slug === currentUnitSlug && (
+                              <span className="status-indicator status-progress">
+                                <Flag className="w-3 h-3" />
+                                Unidade Atual
+                              </span>
+                            )}
+                          </div>
                         </div>
 
-                        {/* Unit status */}
-                        <div className="flex items-center gap-2 mt-3">
-                          {unit.slug === currentUnitSlug && (
-                            <Badge variant="secondary" className="bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 text-xs">
-                              Atual
-                            </Badge>
-                          )}
+                        {/* Arrow */}
+                        <div className="flex items-center">
+                          <ArrowRight className="w-5 h-5 text-slate-400 group-hover:text-blue-500 group-hover:translate-x-1 transition-all duration-200" />
                         </div>
-                      </div>
-
-                      {/* Arrow */}
-                      <div className="flex items-center">
-                        <ArrowRight className="size-4 text-gray-400 group-hover:text-blue-500 group-hover:translate-x-1 transition-all duration-200" />
                       </div>
                     </div>
                   </div>
@@ -151,16 +158,18 @@ export async function UnitList() {
             ))}
           </div>
 
-          {/* Footer info */}
-          <div className="flex items-center justify-between pt-4 border-t border-gray-200 dark:border-gray-700">
-            <p className="text-sm text-gray-500 dark:text-gray-400">
-              {units.length} {units.length === 1 ? 'unidade' : 'unidades'}
-            </p>
-            {currentUnit && (
-              <p className="text-sm text-gray-500 dark:text-gray-400">
-                Unidade atual: <span className="font-medium text-gray-700 dark:text-gray-300">{currentUnit.name}</span>
+          {/* Footer info Médico */}
+          <div className="medical-card p-4">
+            <div className="flex items-center justify-between text-sm">
+              <p className="text-slate-600">
+                {units.length} {units.length === 1 ? 'unidade' : 'unidades'} médica{units.length === 1 ? '' : 's'}
               </p>
-            )}
+              {currentUnit && (
+                <p className="text-slate-600">
+                  Unidade atual: <span className="font-medium text-slate-800">{currentUnit.name}</span>
+                </p>
+              )}
+            </div>
           </div>
         </div>
       )}

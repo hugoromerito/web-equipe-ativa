@@ -27,10 +27,10 @@ export function BadgeDemand({
   let config = {
     label: children || '',
     icon: '📋',
-    color: 'from-gray-400 to-gray-500',
-    bgColor: 'bg-gray-500',
-    lightBg: 'bg-gray-50',
-    textColor: 'text-gray-700',
+    color: 'from-slate-400 to-slate-500',
+    bgColor: 'bg-slate-500',
+    lightBg: 'bg-slate-50',
+    textColor: 'text-slate-700',
     pulse: false
   }
 
@@ -49,8 +49,8 @@ export function BadgeDemand({
   }
 
   const baseClasses = `
-    inline-flex items-center gap-1.5 rounded-full font-medium
-    transition-all duration-300 transform hover:scale-105
+    inline-flex items-center gap-1.5 rounded-lg font-medium
+    transition-all duration-200 border
     ${sizeClasses[size]}
   `
 
@@ -58,57 +58,55 @@ export function BadgeDemand({
   
   if (variant === 'outline') {
     variantClasses = `
-      border-2 bg-white backdrop-blur-sm
-      ${config.textColor} border-current
-      hover:bg-gradient-to-r hover:${config.color} hover:text-white hover:border-transparent
-      shadow-sm hover:shadow-md
+      bg-white border-current
+      ${config.textColor} 
+      hover:bg-slate-50
     `
   } else if (variant === 'secondary') {
     variantClasses = `
-      ${config.lightBg} ${config.textColor}
-      hover:bg-gradient-to-r hover:${config.color} hover:text-white
-      shadow-sm hover:shadow-md
+      ${config.lightBg} ${config.textColor} border-transparent
+      hover:bg-slate-100
     `
   } else {
-    variantClasses = `
-      bg-gradient-to-r ${config.color} text-white
-      shadow-md hover:shadow-lg
-      ${animated && config.pulse ? 'animate-pulse' : ''}
-    `
+    // Medical status colors for default variant
+    if (status === 'PENDING') {
+      variantClasses = 'bg-amber-50 text-amber-700 border-amber-200'
+    } else if (status === 'IN_PROGRESS') {
+      variantClasses = 'bg-blue-50 text-blue-700 border-blue-200'
+    } else if (status === 'RESOLVED') {
+      variantClasses = 'bg-emerald-50 text-emerald-700 border-emerald-200'
+    } else if (priority === 'URGENT') {
+      variantClasses = 'bg-red-50 text-red-700 border-red-200'
+    } else if (priority === 'HIGH') {
+      variantClasses = 'bg-orange-50 text-orange-700 border-orange-200'
+    } else if (priority === 'MEDIUM') {
+      variantClasses = 'bg-yellow-50 text-yellow-700 border-yellow-200'
+    } else if (priority === 'LOW') {
+      variantClasses = 'bg-green-50 text-green-700 border-green-200'
+    } else {
+      variantClasses = 'bg-slate-50 text-slate-700 border-slate-200'
+    }
   }
-
-  const pulseEffect = animated && config.pulse && variant === 'default' ? 
-    'before:absolute before:inset-0 before:rounded-full before:bg-current before:opacity-20 before:animate-ping' : ''
 
   return (
     <span
       className={`
         ${baseClasses}
         ${variantClasses}
-        ${pulseEffect}
         ${className}
-        relative overflow-hidden
-        hover:shadow-lg
+        ${animated && config.pulse ? 'animate-pulse' : ''}
       `}
       {...props}
     >
-      {/* Background Animation */}
-      <div className="absolute inset-0 bg-white opacity-0 hover:opacity-10 transition-opacity duration-300 rounded-full" />
-      
       {/* Icon */}
-      <span className="relative z-10 text-current opacity-90">
+      <span className="text-current opacity-80">
         {config.icon}
       </span>
       
       {/* Text */}
-      <span className="relative z-10 font-medium tracking-wide">
+      <span className="font-medium">
         {children || config.label}
       </span>
-      
-      {/* Shine effect */}
-      {animated && (
-        <div className="absolute inset-0 -skew-x-12 translate-x-full opacity-0 bg-gradient-to-r from-transparent via-white to-transparent hover:animate-shine hover:opacity-30 transition-opacity duration-700" />
-      )}
     </span>
   )
 }

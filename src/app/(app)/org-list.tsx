@@ -34,114 +34,120 @@ export async function OrgList() {
   }
 
   return (
-    <div className="w-full space-y-6">
-      {/* Header Section */}
-      <div className="space-y-2">
-        <div className="flex items-center gap-2">
-          <Building2 className="size-5 text-blue-600" />
-          <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
-            Organizações
-          </h2>
-        </div>
-        <p className="text-gray-600 dark:text-gray-400">
-          Selecione uma organização para continuar ou crie uma nova
+    <div className="w-full medical-section">
+      {/* Header Section Médico */}
+      <div className="medical-section">
+        <h1 className="medical-section-title">
+          Central de Organizações
+        </h1>
+        <p className="medical-section-subtitle">
+          Acesse suas organizações médicas ou crie uma nova unidade de saúde
         </p>
       </div>
 
       {organizations.length === 0 ? (
-        /* Empty State */
-        <div className="flex flex-col items-center justify-center py-12 px-4 text-center">
-          <div className="rounded-full bg-gray-100 dark:bg-gray-800 p-6 mb-4">
-            <Building2 className="size-12 text-gray-400" />
+        /* Empty State Médico */
+        <div className="medical-card p-12 text-center max-w-md mx-auto">
+          <div className="w-20 h-20 bg-blue-50 rounded-full flex items-center justify-center mx-auto mb-6">
+            <Building2 className="w-10 h-10 text-blue-500" />
           </div>
-          <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
+          <h3 className="text-xl font-semibold text-slate-800 mb-3">
             Nenhuma organização encontrada
           </h3>
-          <p className="text-gray-600 dark:text-gray-400 mb-6 max-w-sm">
-            Você ainda não faz parte de nenhuma organização. Crie uma nova ou aguarde um convite.
+          <p className="text-slate-600 mb-6">
+            Você ainda não faz parte de nenhuma organização de saúde. Crie uma nova ou aguarde um convite.
           </p>
-          <Button className="bg-blue-600 hover:bg-blue-700 text-white">
-            <Building2 className="size-4 mr-2" />
-            Criar primeira organização
-          </Button>
+          <Link href="/create-organization">
+            <button className="btn-medical">
+              <Building2 className="w-4 h-4 mr-2" />
+              Criar primeira organização
+            </button>
+          </Link>
         </div>
       ) : (
-        <div className="space-y-4">
-          {/* Search and Actions */}
-          <div className="flex flex-col sm:flex-row gap-3 sm:items-center sm:justify-between">
-            <div className="relative flex-1 max-w-sm">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 size-4" />
-              <Input 
-                placeholder="Buscar organizações..." 
-                className="pl-10 h-10"
+        <div className="space-y-6">
+          {/* Search and Actions Médicos */}
+          <div className="flex flex-col sm:flex-row gap-4 sm:items-center sm:justify-between">
+            <div className="flex-1 max-w-sm medical-search">
+              <Search className="search-icon" size={18} />
+              <input 
+                type="text"
+                placeholder="Buscar organizações de saúde..." 
+                className="medical-input"
               />
             </div>
-              <Link href="/create-organization">
-            <Button variant="outline" className="shrink-0 cursor-pointer">
-                           
-              <Building2 className="size-4 mr-2" />
-              Nova organização
-            </Button>
-                          </Link>
+            <Link href="/create-organization">
+              <button className="btn-medical-secondary">
+                <Building2 className="w-4 h-4 mr-2" />
+                Nova organização
+              </button>
+            </Link>
           </div>
 
-          {/* Organizations Grid/List */}
-          <div className="grid gap-3 md:gap-4">
-            {organizations.map((organization) => (
+          {/* Organizations Grid Médico */}
+          <div className="grid gap-4">
+            {organizations.map((organization, index) => (
               <Link 
                 key={organization.id} 
                 href={`org/${organization.slug}`}
                 className="group"
               >
-                <div className="relative flex items-center gap-4 p-4 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg hover:shadow-md hover:border-blue-300 dark:hover:border-blue-600 transition-all duration-200 group-hover:bg-gray-50 dark:group-hover:bg-gray-700/50">
-                  {/* Avatar */}
-                  <div className="relative">
-                    <Avatar className="size-12 ring-2 ring-gray-100 dark:ring-gray-700 group-hover:ring-blue-200 dark:group-hover:ring-blue-800 transition-colors">
-                      {organization.avatarUrl && (
-                        <AvatarImage src={organization.avatarUrl} />
+                <div className={`medical-card p-6 hover:shadow-lg transition-all duration-300 medical-fade-in ${
+                  organization.slug === currentOrg ? 'border-l-4 border-l-blue-500' : ''
+                }`}
+                  style={{ animationDelay: `${index * 100}ms` }}
+                >
+                  <div className="flex items-center gap-4">
+                    {/* Avatar Médico */}
+                    <div className="relative">
+                      <Avatar className="w-14 h-14 ring-2 ring-blue-100 group-hover:ring-blue-200 transition-colors">
+                        {organization.avatarUrl && (
+                          <AvatarImage src={organization.avatarUrl} />
+                        )}
+                        {organization.name && (
+                          <AvatarFallback className="bg-blue-100 text-blue-700 font-semibold text-lg">
+                            {getInitials(organization.name)}
+                          </AvatarFallback>
+                        )}
+                      </Avatar>
+                      {organization.slug === currentOrg && (
+                        <div className="absolute -top-1 -right-1 bg-emerald-500 rounded-full p-1">
+                          <Flag className="w-3 h-3 text-white" />
+                        </div>
                       )}
-                      {organization.name && (
-                        <AvatarFallback className="bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 font-semibold">
-                          {getInitials(organization.name)}
-                        </AvatarFallback>
-                      )}
-                    </Avatar>
-                    {organization.slug === currentOrg && (
-                      <div className="absolute -top-1 -right-1 bg-green-500 rounded-full p-1">
-                        <Flag className="size-3 text-white" />
-                      </div>
-                    )}
-                  </div>
+                    </div>
 
-                  {/* Content */}
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-start justify-between gap-2">
-                      <div className="min-w-0 flex-1">
-                        <h3 className="font-semibold text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors truncate">
-                          {organization.name}
-                        </h3>
-                        
-                        {/* Organization details */}
-                        <div className="flex items-center gap-4 mt-1 text-sm text-gray-500 dark:text-gray-400">
-                          <div className="flex items-center gap-1">
-                            <Building2 className="size-3" />
-                            <span>Organização</span>
+                    {/* Content Médico */}
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-start justify-between gap-3">
+                        <div className="min-w-0 flex-1">
+                          <h3 className="text-lg font-semibold text-slate-800 group-hover:text-blue-600 transition-colors mb-2">
+                            {organization.name}
+                          </h3>
+                          
+                          {/* Organization details */}
+                          <div className="flex items-center gap-4 text-sm text-slate-500 mb-3">
+                            <div className="flex items-center gap-1.5">
+                              <Building2 className="w-4 h-4" />
+                              <span>Organização de Saúde</span>
+                            </div>
+                          </div>
+
+                          {/* Status badges */}
+                          <div className="flex items-center gap-2">
+                            {organization.slug === currentOrg && (
+                              <span className="status-indicator status-progress">
+                                <Flag className="w-3 h-3" />
+                                Organização Atual
+                              </span>
+                            )}
                           </div>
                         </div>
 
-                        {/* Organization type/role */}
-                        <div className="flex items-center gap-2 mt-2">
-                          {organization.slug === currentOrg && (
-                            <Badge variant="secondary" className="bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 text-xs">
-                              Atual
-                            </Badge>
-                          )}
+                        {/* Arrow */}
+                        <div className="flex items-center">
+                          <ArrowRight className="w-5 h-5 text-slate-400 group-hover:text-blue-500 group-hover:translate-x-1 transition-all duration-200" />
                         </div>
-                      </div>
-
-                      {/* Arrow */}
-                      <div className="flex items-center">
-                        <ArrowRight className="size-4 text-gray-400 group-hover:text-blue-500 group-hover:translate-x-1 transition-all duration-200" />
                       </div>
                     </div>
                   </div>
@@ -150,16 +156,18 @@ export async function OrgList() {
             ))}
           </div>
 
-          {/* Footer info */}
-          <div className="flex items-center justify-between pt-4 border-t border-gray-200 dark:border-gray-700">
-            <p className="text-sm text-gray-500 dark:text-gray-400">
-              {organizations.length} {organizations.length === 1 ? 'organização' : 'organizações'}
-            </p>
-            {currentOrganization && (
-              <p className="text-sm text-gray-500 dark:text-gray-400">
-                Organização atual: <span className="font-medium text-gray-700 dark:text-gray-300">{currentOrganization.name}</span>
+          {/* Footer info Médico */}
+          <div className="medical-card p-4">
+            <div className="flex items-center justify-between text-sm">
+              <p className="text-slate-600">
+                {organizations.length} {organizations.length === 1 ? 'organização' : 'organizações'} de saúde
               </p>
-            )}
+              {currentOrganization && (
+                <p className="text-slate-600">
+                  Organização atual: <span className="font-medium text-slate-800">{currentOrganization.name}</span>
+                </p>
+              )}
+            </div>
           </div>
         </div>
       )}
