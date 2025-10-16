@@ -22,7 +22,7 @@ interface PageProps {
   }
 }
 
-// Tipo para as demandas
+// Tipo para as consultas
 interface Demand {
   id: string
   title: string
@@ -38,23 +38,25 @@ interface Demand {
 
 export default async function DemandsPage({ params, searchParams }: PageProps) {
   const permissions = await ability()
-  const currentOrg = params.org
-  const currentUnit = params.unit
+  
+  // Await params e searchParams (Next.js 15)
+  const { org: currentOrg, unit: currentUnit } = await params
+  const search = await searchParams
 
   // Processar os parâmetros de busca
   const processedParams = {
     organizationSlug: currentOrg,
     unitSlug: currentUnit,
-    page: searchParams.page ? parseInt(searchParams.page) : 1,
-    limit: searchParams.limit ? parseInt(searchParams.limit) : 20,
-    category: searchParams.category || undefined,
-    status: searchParams.status || undefined, 
-    priority: searchParams.priority || undefined,
-    search: searchParams.search || undefined,
-    sort_by: searchParams.sort_by || 'created_at',
-    sort_order: searchParams.sort_order || 'desc',
-    created_at: searchParams.created_at ? new Date(searchParams.created_at) : undefined,
-    updated_at: searchParams.updated_at ? new Date(searchParams.updated_at) : undefined,
+    page: search.page ? parseInt(search.page) : 1,
+    limit: search.limit ? parseInt(search.limit) : 20,
+    category: search.category || undefined,
+    status: search.status || undefined, 
+    priority: search.priority || undefined,
+    search: search.search || undefined,
+    sort_by: search.sort_by || 'created_at',
+    sort_order: search.sort_order || 'desc',
+    created_at: search.created_at ? new Date(search.created_at) : undefined,
+    updated_at: search.updated_at ? new Date(search.updated_at) : undefined,
   }
 
   let demands: Demand[] = []
@@ -94,7 +96,7 @@ export default async function DemandsPage({ params, searchParams }: PageProps) {
     pagination = response.pagination
 
   } catch (error) {
-    console.error('❌ Erro ao carregar demandas:', error)
+    console.error('❌ Erro ao carregar consultas:', error)
     
     // Em caso de erro, ainda renderizamos a página com array vazio
     // para não quebrar a interface
