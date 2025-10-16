@@ -79,17 +79,17 @@
 - `POST /invites/:inviteId/accept` - Aceitar convite
 - `POST /invites/:inviteId/reject` - Rejeitar convite
 
-### Applicants (Solicitantes)
+### Applicants (Pacientes)
 - `GET /organizations/:organizationSlug/applicants` - Listar applicants
 - `POST /organizations/:organizationSlug/applicants` - Criar applicant
 - `GET /organizations/:organizationSlug/applicant/:applicantSlug` - Obter applicant
 - `GET /organizations/:organizationSlug/applicant?cpf=xxx` - Verificar se applicant existe por CPF
 
-### Demands (Demandas)
-- `GET /organizations/:organizationSlug/units/:unitSlug/demands` - Listar demandas
-- `POST /organizations/:organizationSlug/units/:unitSlug/applicants/:applicantSlug/demands` - Criar demanda
-- `GET /organizations/:organizationSlug/units/:unitSlug/demands/:demandId` - Obter demanda
-- `PUT /organizations/:organizationSlug/units/:unitSlug/demands/:demandId` - Atualizar demanda
+### Demands (Consultas)
+- `GET /organizations/:organizationSlug/units/:unitSlug/demands` - Listar consultas
+- `POST /organizations/:organizationSlug/units/:unitSlug/applicants/:applicantSlug/demands` - Criar consulta
+- `GET /organizations/:organizationSlug/units/:unitSlug/demands/:demandId` - Obter consulta
+- `PUT /organizations/:organizationSlug/units/:unitSlug/demands/:demandId` - Atualizar consulta
 
 ## Mudanças Necessárias no Frontend
 
@@ -187,9 +187,9 @@ type Role = 'ADMIN' | 'MANAGER' | 'CLERK' | 'ANALYST' | 'BILLING'
 
 ### Permissões por Role:
 - **ADMIN**: Gerencia tudo na organização
-- **MANAGER**: Cria demandas, applicants, gerencia usuários
-- **CLERK**: Cria demandas e applicants, visualiza próprias demandas
-- **ANALYST**: Visualiza e atualiza demandas
+- **MANAGER**: Cria consultas, applicants, gerencia usuários
+- **CLERK**: Cria consultas e applicants, visualiza próprias consultas
+- **ANALYST**: Visualiza e atualiza consultas
 - **BILLING**: Gerencia billing (financeiro)
 
 ## Observações Importantes

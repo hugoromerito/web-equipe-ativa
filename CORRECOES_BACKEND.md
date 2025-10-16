@@ -221,7 +221,7 @@ npm run dev
 
 ### Roles Disponíveis
 - `ADMIN` - Administrador da organização
-- `MANAGER` - Gestor (cria demandas, gerencia usuários)
-- `CLERK` - Atendente (cria demandas e applicants)
-- `ANALYST` - Analista (atualiza status de demandas)
+- `MANAGER` - Gestor (cria consultas, gerencia usuários)
+- `CLERK` - Atendente (cria consultas e applicants)
+- `ANALYST` - Analista (atualiza status de consultas)
 - `BILLING` - Financeiro (gerencia billing)
