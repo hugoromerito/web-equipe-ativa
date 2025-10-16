@@ -12,7 +12,7 @@ import { Separator } from '@/components/ui/separator'
 import { Badge } from '@/components/ui/badge'
 
 import { useFormState } from '@/hooks/use-form-state'
-import { createDemandAction, type DemandSchema } from './actions'
+import { createConsultaction, type DemandSchema } from './actions'
 import { Textarea } from '@/components/ui/textarea'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
@@ -37,7 +37,7 @@ export function DemandForm({ initialData }: DemandFormProps) {
     neighborhood: '',
   })
 
-  const formAction = createDemandAction
+  const formAction = createConsultaction
 
   const [{ errors, message, success }, handleSubmit, isPending] = useFormState(
     formAction,
@@ -112,7 +112,7 @@ export function DemandForm({ initialData }: DemandFormProps) {
               <FileText className="w-5 h-5 text-blue-600 dark:text-blue-400" />
             </div>
             <div>
-              <CardTitle>Registrar Nova Demanda</CardTitle>
+              <CardTitle>Registrar Nova Consulta</CardTitle>
               <CardDescription>
                 Preencha os dados da solicitação e endereço
               </CardDescription>
@@ -125,7 +125,7 @@ export function DemandForm({ initialData }: DemandFormProps) {
             {success === false && message && (
               <Alert variant="destructive">
                 <XCircle className="h-4 w-4" />
-                <AlertTitle>Erro ao registrar demanda</AlertTitle>
+                <AlertTitle>Erro ao registrar consulta</AlertTitle>
                 <AlertDescription>{message}</AlertDescription>
               </Alert>
             )}
@@ -138,15 +138,15 @@ export function DemandForm({ initialData }: DemandFormProps) {
               </Alert>
             )}
 
-            {/* Dados da Demanda */}
+            {/* Dados da Consulta */}
             <div className="space-y-4">
               <div className="flex items-center gap-2 mb-4">
                 <FileText className="w-4 h-4 text-muted-foreground" />
-                <h3 className="font-medium text-sm text-muted-foreground uppercase tracking-wide">Dados da Demanda</h3>
+                <h3 className="font-medium text-sm text-muted-foreground uppercase tracking-wide">Dados da Consulta</h3>
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="title">Título da demanda *</Label>
+                <Label htmlFor="title">Título da consulta *</Label>
                 <Input
                   name="title"
                   id="title"
@@ -208,7 +208,7 @@ export function DemandForm({ initialData }: DemandFormProps) {
             <div className="space-y-4">
               <div className="flex items-center gap-2 mb-4">
                 <MapPin className="w-4 h-4 text-muted-foreground" />
-                <h3 className="font-medium text-sm text-muted-foreground uppercase tracking-wide">Endereço da Demanda</h3>
+                <h3 className="font-medium text-sm text-muted-foreground uppercase tracking-wide">Endereço da Consulta</h3>
               </div>
 
               {/* ZipCode com indicador de loading */}
@@ -382,12 +382,12 @@ export function DemandForm({ initialData }: DemandFormProps) {
                 {isPending ? (
                   <>
                     <Loader2 className="w-4 h-4 animate-spin mr-2" />
-                    Registrando demanda...
+                    Registrando consulta...
                   </>
                 ) : (
                   <>
                     <CheckCircle2 className="w-4 h-4 mr-2" />
-                    Registrar Demanda
+                    Registrar Consulta
                   </>
                 )}
               </Button>

@@ -10,7 +10,7 @@ export default async function CreateDemandPage() {
       <Header />
       <main>
         <h1 className="pb-4 text-2xl font-bold">
-          Selecione o solicitante da demanda
+          Selecione o paciente da consulta
         </h1>
         <ApplicantForm organizationSlug={org} unitSlug={unit} />
       </main>

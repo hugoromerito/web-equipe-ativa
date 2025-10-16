@@ -80,7 +80,7 @@ function WelcomeSection() {
           </span>
         </h1>
         <p className="mx-auto max-w-2xl text-lg text-white/90 sm:text-xl">
-          Gerencie suas demandas e equipe com facilidade. Selecione uma das opções abaixo para começar.
+          Gerencie suas consultas e equipe com facilidade. Selecione uma das opções abaixo para começar.
         </p>
       </div>
 
@@ -131,8 +131,8 @@ export default async function Projects() {
     {
       href: `${baseUrl}/applicant`,
       icon: <NotebookPen strokeWidth={2} className="size-7 text-indigo-600" />,
-      title: 'Registrar Demanda',
-      description: 'Crie novas solicitações e gerencie demandas de forma intuitiva e eficiente.',
+      title: 'Registrar Consulta',
+      description: 'Crie novas solicitações e gerencie consultas de forma intuitiva e eficiente.',
       canAccess: permissions?.can('create', 'Demand') ?? false,
       gradient: 'from-indigo-500 to-purple-600',
       iconBg: 'bg-indigo-50 dark:bg-indigo-900/30'
@@ -140,8 +140,8 @@ export default async function Projects() {
     {
       href: `${baseUrl}/demands`,
       icon: <FileSearch strokeWidth={2} className="size-7 text-emerald-600" />,
-      title: 'Visualizar Demandas',
-      description: 'Consulte, acompanhe e monitore todas as demandas em andamento no sistema.',
+      title: 'Visualizar Consultas',
+      description: 'Consulte, acompanhe e monitore todas as consultas em andamento no sistema.',
       canAccess: permissions?.can('get', 'Demand') ?? false,
       gradient: 'from-emerald-500 to-teal-600',
       iconBg: 'bg-emerald-50 dark:bg-emerald-900/30'

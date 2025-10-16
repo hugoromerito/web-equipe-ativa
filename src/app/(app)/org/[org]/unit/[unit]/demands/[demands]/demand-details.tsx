@@ -158,7 +158,7 @@ export async function DemandDetails() {
               <div className="p-2 rounded-lg bg-green-100 text-green-600 group-hover:bg-green-500 group-hover:text-white transition-colors">
                 <User className="h-5 w-5" />
               </div>
-              Solicitante
+              Paciente
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -215,7 +215,7 @@ export async function DemandDetails() {
               <div className="p-2 rounded-lg bg-purple-100 text-purple-600 group-hover:bg-purple-500 group-hover:text-white transition-colors">
                 <Users className="h-5 w-5" />
               </div>
-              Responsável pela Demanda
+              Responsável pela Consulta
             </CardTitle>
           </CardHeader>
           <CardContent>

@@ -192,7 +192,7 @@ export async function createApplicantAction(
 
     return {
       success: true,
-      message: 'Solicitante cadastrado com sucesso.',
+      message: 'Paciente cadastrado com sucesso.',
       errors: null,
       applicantId: response.applicantId,
     }
@@ -256,7 +256,7 @@ export async function getCheckApplicantAction(data: FormData) {
     // Se não existe, retornar erro indicando que deve preencher o formulário
     return {
       success: false,
-      message: 'CPF não encontrado. Preencha os dados do solicitante.',
+      message: 'CPF não encontrado. Preencha os dados do paciente.',
       errors: null,
     }
   } catch (err) {

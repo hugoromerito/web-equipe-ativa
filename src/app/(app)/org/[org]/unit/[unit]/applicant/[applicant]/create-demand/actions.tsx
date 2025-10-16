@@ -16,7 +16,7 @@ import { applicantSchema } from '@/lib/auth/models/applicant'
 const demandSchema = z.object({
   title: z
     .string()
-    .min(4, { message: 'Por favor, inclua o título da demanda.' }),
+    .min(4, { message: 'Por favor, inclua o título da consulta.' }),
   description: z
     .string()
     .min(10, { message: 'Por favor, detalhe a solicitação.' }),
@@ -31,7 +31,7 @@ const demandSchema = z.object({
 
 export type DemandSchema = z.infer<typeof demandSchema>
 
-export async function createDemandAction(data: FormData) {
+export async function createConsultaction(data: FormData) {
   const currentOrg = await getCurrentOrg()
   const currentUnit = await getCurrentUnit()
   const currentApplicant = await getCurrentApplicantId()
@@ -90,7 +90,7 @@ export async function createDemandAction(data: FormData) {
 
   return {
     success: true,
-    message: 'A demanda foi registrada com sucesso.',
+    message: 'A consulta foi registrada com sucesso.',
     errors: null,
   }
 }

@@ -41,7 +41,7 @@ export async function MemberList() {
   }
 
   function getRoleColor(role: string) {
-    switch (role.toLowerCase()) {
+    switch (orgRole.toLowerCase()) {
       case 'owner':
         return 'bg-yellow-100 text-yellow-800 border-yellow-200'
       case 'admin':

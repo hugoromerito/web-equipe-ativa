@@ -189,7 +189,7 @@ export function ApplicantForm({
           `/org/${organizationSlug}/unit/${unitSlug}/applicant/${result.applicant.id}/create-demand`,
         )
       } else {
-        setErrorMessage(result.message || 'Solicitante não encontrado.')
+        setErrorMessage(result.message || 'Paciente não encontrado.')
         setShowFullForm(true)
       }
     })
@@ -204,9 +204,9 @@ export function ApplicantForm({
             <div className="mx-auto w-12 h-12 bg-blue-100 dark:bg-blue-900/20 rounded-full flex items-center justify-center mb-4">
               <Search className="w-6 h-6 text-blue-600 dark:text-blue-400" />
             </div>
-            <CardTitle className="text-xl">Buscar Solicitante</CardTitle>
+            <CardTitle className="text-xl">Buscar Paciente</CardTitle>
             <CardDescription>
-              Digite o CPF para verificar se o solicitante já está cadastrado
+              Digite o CPF para verificar se o paciente já está cadastrado
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -238,7 +238,7 @@ export function ApplicantForm({
                 ) : (
                   <>
                     <Search className="w-4 h-4 mr-2" />
-                    Buscar Solicitante
+                    Buscar Paciente
                   </>
                 )}
               </Button>
@@ -248,7 +248,7 @@ export function ApplicantForm({
                   <XCircle className="h-4 w-4" />
                   <AlertTitle>CPF não encontrado</AlertTitle>
                   <AlertDescription>
-                    {errorMessage} Preencha o formulário abaixo para cadastrar um novo solicitante.
+                    {errorMessage} Preencha o formulário abaixo para cadastrar um novo paciente.
                   </AlertDescription>
                 </Alert>
               )}
@@ -266,9 +266,9 @@ export function ApplicantForm({
                 <User className="w-5 h-5 text-green-600 dark:text-green-400" />
               </div>
               <div>
-                <CardTitle>Cadastrar Novo Solicitante</CardTitle>
+                <CardTitle>Cadastrar Novo Paciente</CardTitle>
                 <CardDescription>
-                  Preencha os dados pessoais do solicitante
+                  Preencha os dados pessoais do paciente
                 </CardDescription>
               </div>
             </div>
@@ -282,7 +282,7 @@ export function ApplicantForm({
               {success === false && message && (
                 <Alert variant="destructive">
                   <XCircle className="h-4 w-4" />
-                  <AlertTitle>Erro ao registrar solicitante</AlertTitle>
+                  <AlertTitle>Erro ao registrar paciente</AlertTitle>
                   <AlertDescription>{message}</AlertDescription>
                 </Alert>
               )}
@@ -740,12 +740,12 @@ export function ApplicantForm({
                   {isPending ? (
                     <>
                       <Loader2 className="w-4 h-4 animate-spin mr-2" />
-                      Cadastrando solicitante...
+                      Cadastrando paciente...
                     </>
                   ) : (
                     <>
                       <CheckCircle2 className="w-4 h-4 mr-2" />
-                      Cadastrar Solicitante
+                      Cadastrar Paciente
                     </>
                   )}
                 </Button>

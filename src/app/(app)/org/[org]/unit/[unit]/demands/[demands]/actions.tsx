@@ -13,13 +13,13 @@ const updateDemandSchema = z.object({
   //   .string()
   //   .min(30, { message: 'Por favor, detalhe a solicitação.' }),
   status: demandStatusSchema.refine((val) => !!val, {
-    message: 'Por favor, selecione o status da demanda.',
+    message: 'Por favor, selecione o status da consulta.',
   }),
 })
 
 export type UpdateDemandSchema = z.infer<typeof updateDemandSchema>
 
-export async function updateDemandAction(data: FormData) {
+export async function updateConsultaction(data: FormData) {
   const currentOrg = await getCurrentOrg()
   const currentUnit = await getCurrentUnit()
   const currentDemand = await getCurrentDemand()
@@ -60,7 +60,7 @@ export async function updateDemandAction(data: FormData) {
 
   return {
     success: true,
-    message: 'A demanda foi atualizada com sucesso.',
+    message: 'A consulta foi atualizada com sucesso.',
     errors: null,
   }
 }

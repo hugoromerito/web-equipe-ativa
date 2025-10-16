@@ -22,19 +22,19 @@ export default function CreateDemandPage() {
                 <FileText className="w-6 h-6 text-blue-600 dark:text-blue-400" />
               </div>
               <div>
-                <h1 className="text-3xl font-bold text-foreground">Registrar Demanda</h1>
+                <h1 className="text-3xl font-bold text-foreground">Registrar Consulta</h1>
                 <p className="text-muted-foreground mt-1">
-                  Crie uma nova solicitação para o solicitante
+                  Crie uma nova solicitação para o paciente
                 </p>
               </div>
             </div>
 
-            {/* Card com informações do solicitante */}
+            {/* Card com informações do paciente */}
             <div className="bg-white dark:bg-slate-800 rounded-lg border p-4 shadow-sm">
               <div className="flex items-center gap-2 mb-2">
                 <div className="w-2 h-2 bg-green-500 rounded-full"></div>
                 <span className="text-sm font-medium text-muted-foreground uppercase tracking-wide">
-                  Solicitante Selecionado
+                  Paciente Selecionado
                 </span>
               </div>
               <ApplicantName />

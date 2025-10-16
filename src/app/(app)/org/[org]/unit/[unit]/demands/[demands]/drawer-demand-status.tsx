@@ -3,7 +3,7 @@
 import { translateStatus } from '@/constants/demand-translations'
 import { useTransition } from 'react'
 import { updateDemand } from '@/http/update-demand-status'
-import { updateDemandAction, type UpdateDemandSchema } from './actions'
+import { updateConsultaction, type UpdateDemandSchema } from './actions'
 import { useFormState } from '@/hooks/use-form-state'
 import { Button } from '@/components/ui/button'
 import { AlertTriangle, Loader2, CheckCircle, ArrowRight, Edit } from 'lucide-react'
@@ -74,7 +74,7 @@ export function DrawerDemandStatus() {
             >
               <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-10 transition-opacity duration-300" />
               <Edit className="h-5 w-5 mr-2 group-hover:rotate-12 transition-transform duration-300" />
-              <span className="relative z-10 font-semibold">Atualizar Status da Demanda</span>
+              <span className="relative z-10 font-semibold">Atualizar Status da Consulta</span>
               <ArrowRight className="h-4 w-4 ml-2 group-hover:translate-x-1 transition-transform duration-300" />
             </Button>
           </div>
@@ -87,10 +87,10 @@ export function DrawerDemandStatus() {
                 <div className="p-2 rounded-lg bg-gradient-to-r from-blue-100 to-purple-100">
                   <Edit className="h-6 w-6 text-blue-600" />
                 </div>
-                Atualizar Demanda
+                Atualizar Consulta
               </DialogTitle>
               <DialogDescription className="text-gray-600 text-base leading-relaxed">
-                Dê andamento à demanda alterando seu status atual. Esta ação será registrada no histórico da demanda.
+                Dê andamento à consulta alterando seu status atual. Esta ação será registrada no histórico da consulta.
               </DialogDescription>
             </DialogHeader>
             <ProfileForm setOpen={setOpen} />
@@ -125,10 +125,10 @@ export function DrawerDemandStatus() {
               </div>
             </div>
             <DrawerTitle className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-              Atualizar Demanda
+              Atualizar Consulta
             </DrawerTitle>
             <DrawerDescription className="text-gray-600 text-base leading-relaxed px-4">
-              Dê andamento à demanda alterando seu status atual. Esta ação será registrada no histórico da demanda.
+              Dê andamento à consulta alterando seu status atual. Esta ação será registrada no histórico da consulta.
             </DrawerDescription>
           </DrawerHeader>
           <ProfileForm className="px-6" setOpen={setOpen} />
@@ -152,7 +152,7 @@ function ProfileForm({
   className,
   setOpen,
 }: React.ComponentProps<'form'> & { setOpen?: (open: boolean) => void }) {
-  const formAction = updateDemandAction
+  const formAction = updateConsultaction
 
   const [{ errors, message, success }, handleSubmit, isPending] = useFormState(
     formAction,
@@ -193,14 +193,14 @@ function ProfileForm({
 
       <div className="space-y-3">
         <Label htmlFor="status" className="text-base font-semibold text-gray-900">
-          Novo Status da Demanda
+          Novo Status da Consulta
         </Label>
         <div className="relative">
           <ComboBoxStatus id="status" name="status" />
           {errors?.status && (
             <p className="text-sm font-medium text-red-600 mt-2 flex items-center gap-2">
               <AlertTriangle className="h-4 w-4" />
-              Por favor, selecione o status da demanda
+              Por favor, selecione o status da consulta
             </p>
           )}
         </div>

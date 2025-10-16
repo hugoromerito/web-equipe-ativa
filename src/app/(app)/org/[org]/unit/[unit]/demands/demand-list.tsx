@@ -186,15 +186,15 @@ export function DemandList({
         <div className="text-center mb-12">
           <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-full text-sm font-medium mb-6">
             <Sparkles className="w-4 h-4" />
-            <span>Sistema de Demandas Públicas</span>
+            <span>Sistema de Consultas Públicas</span>
           </div>
           
           <h1 className="text-4xl md:text-6xl font-bold bg-gradient-to-r from-gray-900 via-blue-800 to-purple-800 bg-clip-text text-transparent mb-4">
-            Demandas da Comunidade
+            Consultas da Comunidade
           </h1>
           
           <p className="text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
-            Acompanhe, gerencie e participe das demandas que transformam nossa cidade. 
+            Acompanhe, gerencie e participe das consultas que transformam nossa cidade. 
             Sua voz importa para construir um futuro melhor.
           </p>
 
@@ -202,7 +202,7 @@ export function DemandList({
           <div className="flex flex-wrap justify-center gap-6 mt-8">
             <div className="bg-white/70 backdrop-blur-sm rounded-2xl px-6 py-4 shadow-lg border border-white/20">
               <div className="text-2xl font-bold text-gray-900">{pagination.total}</div>
-              <div className="text-sm text-gray-600">Total de Demandas</div>
+              <div className="text-sm text-gray-600">Total de Consultas</div>
             </div>
             <div className="bg-white/70 backdrop-blur-sm rounded-2xl px-6 py-4 shadow-lg border border-white/20">
               <div className="text-2xl font-bold text-green-600">
@@ -227,7 +227,7 @@ export function DemandList({
               <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 group-hover:text-blue-500 transition-colors" size={20} />
               <input
                 type="text"
-                placeholder="Buscar demandas por título ou descrição..."
+                placeholder="Buscar consultas por título ou descrição..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="w-full pl-12 pr-4 py-4 border-2 border-gray-200 rounded-2xl focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-300 bg-white/50 backdrop-blur-sm hover:bg-white/80"
@@ -340,7 +340,7 @@ export function DemandList({
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-4">
             <h2 className="text-2xl font-bold text-gray-900">
-              {demands.length} demanda{demands.length !== 1 ? 's' : ''} 
+              {demands.length} consulta{demands.length !== 1 ? 's' : ''} 
               {pagination.total > demands.length && (
                 <span className="text-gray-500 text-lg"> de {pagination.total}</span>
               )}
@@ -361,14 +361,14 @@ export function DemandList({
               <Search className="w-12 h-12 text-gray-400" />
             </div>
             <h3 className="text-2xl font-bold text-gray-900 mb-4">
-              Nenhuma demanda encontrada
+              Nenhuma consulta encontrada
             </h3>
             <p className="text-gray-600 text-lg mb-8 max-w-md mx-auto">
-              Tente ajustar os filtros de busca ou criar uma nova demanda para a comunidade.
+              Tente ajustar os filtros de busca ou criar uma nova consulta para a comunidade.
             </p>
             <Link href={`/org/${currentOrg}/unit/${currentUnit}/applicant`}>
               <button className="px-8 py-4 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-2xl hover:from-blue-600 hover:to-purple-700 transition-all duration-300 transform hover:scale-105 shadow-lg font-medium">
-                Criar Nova Demanda
+                Criar Nova Consulta
               </button>
             </Link>
           </div>
@@ -553,7 +553,7 @@ export function DemandList({
               <p className="text-gray-500 text-sm">
                 Mostrando {((pagination.page - 1) * pagination.limit) + 1} a{' '}
                 {Math.min(pagination.page * pagination.limit, pagination.total)} de{' '}
-                {pagination.total} demandas
+                {pagination.total} consultas
               </p>
             </div>
           </>
@@ -565,7 +565,7 @@ export function DemandList({
             <button className="group px-12 py-4 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-white rounded-2xl hover:from-blue-600 hover:via-purple-600 hover:to-pink-600 transition-all duration-500 transform hover:scale-105 shadow-xl font-medium text-lg relative overflow-hidden">
               <span className="relative z-10 flex items-center gap-2">
                 <Sparkles className="w-5 h-5" />
-                Criar Nova Demanda
+                Criar Nova Consulta
               </span>
               
               {/* Button shine effect */}
