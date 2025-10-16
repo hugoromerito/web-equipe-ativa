@@ -1,20 +1,20 @@
 // src/http/update-demand-status.ts
-import type { DemandStatus } from '@/lib/auth/'
+// DEPRECATED: Use update-demand.ts instead
 import { api } from './api-client'
 
-interface UpdateDemandRequest {
+interface UpdateDemandStatusRequest {
   organizationSlug: string
   unitSlug: string
   demandSlug: string
-  status: DemandStatus
+  status: string
 }
 
-export async function updateDemand({
+export async function updateDemandStatus({
   organizationSlug,
   unitSlug,
   demandSlug,
   status,
-}: UpdateDemandRequest): Promise<void> {
+}: UpdateDemandStatusRequest): Promise<void> {
   await api.patch(
     `organizations/${organizationSlug}/units/${unitSlug}/demands/${demandSlug}`,
     { json: { status } },

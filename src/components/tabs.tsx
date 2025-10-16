@@ -35,7 +35,7 @@ export async function Tabs() {
           className="text-muted-foreground data-[current=true]:border-border data-[current=true]:text-foreground border border-transparent"
         >
           <NavLink href={`/org/${currentOrg}/unit/${currentUnit}/applicant`}>
-            Registrar demandas
+            Registrar consultas
           </NavLink>
         </Button>
       )}
@@ -48,7 +48,7 @@ export async function Tabs() {
           className="text-muted-foreground data-[current=true]:border-border data-[current=true]:text-foreground border border-transparent"
         >
           <NavLink href={`/org/${currentOrg}/unit/${currentUnit}/demands`}>
-            Visualizar demandas
+            Visualizar consultas
           </NavLink>
         </Button>
       )}

@@ -1,9 +1,9 @@
 import { z } from 'zod'
 
 /*
-  Demandas registradas pela população
-  id - Identificador único da demanda
-  ownerId - Identificador único do solicitante da demanda
+  Consultas registradas pela população
+  id - Identificador único da consulta
+  ownerId - Identificador único do paciente da consulta
 */
 export const demandSchema = z.object({
   __typename: z.literal('Demand').default('Demand'),

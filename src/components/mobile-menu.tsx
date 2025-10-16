@@ -35,14 +35,14 @@ export function MobileMenu() {
         <DropdownMenuItem asChild>
           <Link href="/demands/create" className="flex items-center gap-2">
             <FileText className="size-4" />
-            Registrar Demandas
+            Registrar Consultas
           </Link>
         </DropdownMenuItem>
         
         <DropdownMenuItem asChild>
           <Link href="/demands" className="flex items-center gap-2">
             <Eye className="size-4" />
-            Visualizar Demandas
+            Visualizar Consultas
           </Link>
         </DropdownMenuItem>
         

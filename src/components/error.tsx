@@ -25,7 +25,7 @@ export default function Error({
         </h2>
         
         <p className="text-gray-600 mb-8 leading-relaxed">
-          Não foi possível carregar as demandas. Por favor, tente novamente.
+          Não foi possível carregar as consultas. Por favor, tente novamente.
         </p>
         
         <button

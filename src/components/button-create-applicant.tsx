@@ -15,7 +15,7 @@ export async function ButtonCreateApplicant() {
           asChild
         >
           <Link href={`${currentOrg}/create-applicant`}>
-            Cadastrar solicitante
+            Cadastrar paciente
             <PlusCircle className="ml-2 size-4" />
           </Link>
         </Button>

@@ -45,7 +45,7 @@ export async function ApplicantName() {
 
   return (
     <div className="flex flex-col pb-2">
-      <h2 className="font-medium">Solicitante</h2>
+      <h2 className="font-medium">Paciente</h2>
       <span className="text-left text-sm">Nome: {currentApplicant.name}</span>
       <span className="text-left text-sm">
         Data de nascimento: {formatBirthdate(currentApplicant.birthdate)}

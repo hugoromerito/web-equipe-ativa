@@ -19,24 +19,24 @@ export const permissions: Record<Role, PermissionsByRole> = {
     })
   },
   MANAGER: (_, { can, cannot }) => {
-    can('create', 'Applicant') // Pode criar demandas
-    can('create', 'Demand') // Pode criar demandas
-    can('get', 'Demand') // Pode listar demandas da unidade a qual pertence
+    can('create', 'Applicant') // Pode criar consultas
+    can('create', 'Demand') // Pode criar consultas
+    can('get', 'Demand') // Pode listar consultas da unidade a qual pertence
     can('manage', 'User') // Pode gerenciar usuários
     cannot('delete', 'User') // Não pode deletar um usuário
   },
   CLERK: (user, { can }) => {
     can('get', 'Applicant') // Pode visualizar applicant
     can('create', 'Applicant') // Pode criar applicant
-    can('create', 'Demand') // Pode criar demandas
-    can('get', 'Demand', { ownerId: { $eq: user.id } }) // Pode listar demandas próprias
-    can(['assign', 'create'], 'User') // Pode atribuir demandas e criar usuários
+    can('create', 'Demand') // Pode criar consultas
+    can('get', 'Demand', { ownerId: { $eq: user.id } }) // Pode listar consultas próprias
+    can(['assign', 'create'], 'User') // Pode atribuir consultas e criar usuários
   },
   ANALYST: (_, { can }) => {
-    can(['get', 'update'], 'Demand') // Pode listar e atualizar demandas
+    can(['get', 'update'], 'Demand') // Pode listar e atualizar consultas
   },
   // APPLICANT: (user, { can }) => {
-  //   can('get', 'Demand', { ownerId: { $eq: user.id } }) // Pode listar demandas
+  //   can('get', 'Demand', { ownerId: { $eq: user.id } }) // Pode listar consultas
   // },
   BILLING: (_, { can }) => {
     can('manage', 'Billing')
