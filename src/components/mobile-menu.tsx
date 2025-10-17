@@ -28,7 +28,7 @@ export function MobileMenu() {
         <DropdownMenuItem asChild>
           <Link href="/units" className="flex items-center gap-2">
             <Building2 className="size-4" />
-            Unidades
+            Setores
           </Link>
         </DropdownMenuItem>
         

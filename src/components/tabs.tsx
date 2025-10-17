@@ -15,54 +15,41 @@ export async function Tabs() {
   const canGetUnits = permissions?.can('get', 'Unit')
 
   return (
-    <nav className="grid grid-cols-2 gap-2 md:flex md:max-w-[1200px] md:items-center md:gap-2">
+    <nav className="medical-nav">
       {canGetUnits && (
-        <Button
-          asChild
-          variant="ghost"
-          size="sm"
-          className="text-muted-foreground data-[current=true]:border-border data-[current=true]:text-foreground border border-transparent"
+        <NavLink 
+          href={`/org/${currentOrg}`}
+          className="medical-nav-item data-[current=true]:medical-nav-item-active"
         >
-          <NavLink href={`/org/${currentOrg}`}>Unidades</NavLink>
-        </Button>
+          Setores
+        </NavLink>
       )}
 
       {canCreateDemands && currentUnit && (
-        <Button
-          asChild
-          variant="ghost"
-          size="sm"
-          className="text-muted-foreground data-[current=true]:border-border data-[current=true]:text-foreground border border-transparent"
+        <NavLink 
+          href={`/org/${currentOrg}/unit/${currentUnit}/applicant`}
+          className="medical-nav-item data-[current=true]:medical-nav-item-active"
         >
-          <NavLink href={`/org/${currentOrg}/unit/${currentUnit}/applicant`}>
-            Registrar consultas
-          </NavLink>
-        </Button>
+          Registrar consultas
+        </NavLink>
       )}
 
       {canGetDemands && currentUnit && (
-        <Button
-          asChild
-          variant="ghost"
-          size="sm"
-          className="text-muted-foreground data-[current=true]:border-border data-[current=true]:text-foreground border border-transparent"
+        <NavLink 
+          href={`/org/${currentOrg}/unit/${currentUnit}/demands`}
+          className="medical-nav-item data-[current=true]:medical-nav-item-active"
         >
-          <NavLink href={`/org/${currentOrg}/unit/${currentUnit}/demands`}>
-            Visualizar consultas
-          </NavLink>
-        </Button>
+          Visualizar consultas
+        </NavLink>
       )}
+      
       {canGetMembers && currentUnit && (
-        <Button
-          asChild
-          variant="ghost"
-          size="sm"
-          className="text-muted-foreground data-[current=true]:border-border data-[current=true]:text-foreground border border-transparent"
+        <NavLink 
+          href={`/org/${currentOrg}/unit/${currentUnit}/members`}
+          className="medical-nav-item data-[current=true]:medical-nav-item-active"
         >
-          <NavLink href={`/org/${currentOrg}/unit/${currentUnit}/members`}>
-            Visualizar membros
-          </NavLink>
-        </Button>
+          Visualizar membros
+        </NavLink>
       )}
     </nav>
   )

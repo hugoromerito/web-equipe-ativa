@@ -5,7 +5,7 @@ import { OrganizationSwitcher } from './organization-switcher'
 import { UnitSwitcher } from './unit-switcher'
 import { ability } from '@/lib/auth'
 // import { ButtonCreateApplicant } from './button-create-applicant'
-// import { ThemeSwitcher } from './theme/theme-switcher'
+import { ThemeSwitcher } from './theme/theme-switcher'
 import Link from 'next/link'
 import { PendingInvites } from './pending-invites'
 import { ProfileMobile } from './profile-mobile'
@@ -16,47 +16,67 @@ import { Tabs } from './tabs'
 export async function Header() {
   const permissions = await ability()
   return (
-    <div className="mx-auto mb-4 flex max-w-[1200px] flex-col justify-between gap-2 border-b pb-2">
-      <div className="flex w-full flex-col items-center justify-between md:flex-row">
-        <div className="flex w-full items-center justify-between md:justify-normal">
-          <Link href="/">
-            <Image
-              src={eaLogo}
-              alt="Equipe Ativa"
-              className="size-20 md:size-16"
-            />
-          </Link>
+    <header className="medical-header sticky top-0 z-50 mb-6">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="flex flex-col gap-4 py-4">
+          {/* Header principal */}
+          <div className="flex w-full items-center justify-between">
+            {/* Logo e navegação principal */}
+            <div className="flex items-center space-x-6">
+              <Link href="/" className="flex items-center space-x-2 group">
+                <div className="p-2 rounded-lg bg-primary/5 group-hover:bg-primary/10 transition-colors">
+                  <Image
+                    src={eaLogo}
+                    alt="Equipe Ativa"
+                    className="h-20 w-20 md:h-20 md:w-20"
+                  />
+                </div>
+                {/* <div className="hidden md:block">
+                  <h1 className="text-xl font-bold text-primary">Equipe Ativa</h1>
+                  <p className="text-xs text-muted-foreground">Sistema Médico</p>
+                </div> */}
+              </Link>
 
-          <Slash className="text-border hidden size-3 -rotate-[24deg] md:flex" />
+              {/* Separador visual */}
+              <div className="hidden md:block h-8 w-px bg-border"></div>
 
-          <div className="hidden items-center justify-center md:flex md:flex-row">
+              {/* Seletores de organização e setor */}
+              <div className="hidden md:flex items-center space-x-4">
+                <OrganizationSwitcher />
+                <div className="h-4 w-px bg-border"></div>
+                <UnitSwitcher />
+              </div>
+            </div>
+
+            {/* Ações do usuário */}
+            <div className="flex items-center space-x-3">
+              <PendingInvites />
+              <div className="hidden md:block">
+                <ThemeSwitcher />
+              </div>
+              <div className="h-4 w-px bg-border hidden md:block"></div>
+              <div className="hidden md:block">
+                <ProfileDesktop />
+              </div>
+              <div className="md:hidden">
+                <ProfileMobile />
+              </div>
+            </div>
+          </div>
+
+          {/* Seletores mobile */}
+          <div className="flex md:hidden items-center space-x-4 pt-2 border-t border-border/50">
             <OrganizationSwitcher />
-            <Slash className="text-border hidden size-3 -rotate-[24deg] md:flex" />
+            <div className="h-4 w-px bg-border"></div>
             <UnitSwitcher />
           </div>
 
-          <div className="flex items-center gap-4 md:hidden">
-            <PendingInvites />
-            <ProfileMobile />
+          {/* Navegação por abas */}
+          <div className="hidden md:block pt-2 border-t border-border/50">
+            <Tabs />
           </div>
         </div>
-
-        <div className="w-full flex items-center justify-start md:hidden">
-          <OrganizationSwitcher />
-          <Slash className="text-border size-3 -rotate-[24deg]" />
-          <UnitSwitcher />
-        </div>
-
-        <div className="hidden items-center gap-4 md:flex">
-          <PendingInvites />
-          {/* <ThemeSwitcher /> */}
-          <Slash className="text-border size-3 -rotate-45" />
-          <ProfileDesktop />
-        </div>
       </div>
-      <div className='hidden md:flex'>
-      <Tabs />
-      </div>
-    </div>
+    </header>
   )
 }
