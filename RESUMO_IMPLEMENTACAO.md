@@ -65,8 +65,8 @@ Documentação:
 - Membership
 - Encerrar organização ✨ NOVO
 
-### 3. **Unidades** (2 endpoints)
-- Criar e listar unidades
+### 3. **Setores** (2 endpoints)
+- Criar e listar setores
 
 ### 4. **Usuários** (2 endpoints) ✨ NOVO
 - Criar usuário com paginação e filtros
@@ -75,7 +75,7 @@ Documentação:
 ### 5. **Membros** (3 endpoints) ✨ NOVO
 - Listar membros gerais
 - Listar membros da organização
-- Listar membros da unidade
+- Listar membros da setor
 
 ### 6. **Convites** (7 endpoints)
 - Criar, aceitar, rejeitar ✨ 1 NOVO

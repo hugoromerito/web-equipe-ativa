@@ -73,7 +73,7 @@ Criadas em `src/app/(app)/`:
 
 #### Membros
 - ✅ `/org/[org]/members/page.tsx` - Listagem de membros da organização
-- ✅ `/org/[org]/unit/[unit]/members/page.tsx` - Listagem de membros da unidade
+- ✅ `/org/[org]/unit/[unit]/members/page.tsx` - Listagem de membros da setor
 
 #### Convites
 - ✅ `/org/[org]/invites/page.tsx` - Gerenciamento de convites
@@ -161,11 +161,11 @@ const { data } = useUsers({
 
 **Páginas:**
 - `/org/[org]/members` - Membros da organização
-- `/org/[org]/unit/[unit]/members` - Membros da unidade
+- `/org/[org]/unit/[unit]/members` - Membros da setor
 
 **Recursos:**
 - ✅ Listagem com paginação
-- ✅ Tabs para organização/unidade
+- ✅ Tabs para organização/setor
 - ✅ Exibição de avatares
 - ✅ Mostrar roles
 - ✅ Contador de membros
@@ -200,7 +200,7 @@ createMutation.mutate({
   organizationSlug: 'org',
   email: 'user@example.com',
   role: 'CLERK',
-  unitSlug: 'unidade' // opcional
+  unitSlug: 'setor' // opcional
 })
 ```
 
@@ -309,7 +309,7 @@ resetMutation.mutate({
    - Diálogo de criação
 
 2. **MembersList** - Lista de membros com:
-   - Tabs (organização/unidade)
+   - Tabs (organização/setor)
    - Avatares
    - Badges de roles
    - Paginação

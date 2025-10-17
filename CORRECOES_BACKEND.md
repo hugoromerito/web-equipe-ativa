@@ -130,8 +130,8 @@ export const userSchema = z.object({
 ```
 
 **Por que essa mudança é importante**:
-- No backend, usuários podem pertencer apenas à organização (sem unidade específica)
-- `unit_role` é opcional quando o usuário não está vinculado a uma unidade
+- No backend, usuários podem pertencer apenas à organização (sem setor específico)
+- `unit_role` é opcional quando o usuário não está vinculado a um setor
 - Tornar opcional evita erros de validação do Zod
 
 ---
@@ -217,7 +217,7 @@ npm run dev
 ### Membership
 - Todo usuário **DEVE** pertencer a uma organização para acessar o sistema
 - `organization_role` é **obrigatório**
-- `unit_role` é **opcional** (só para usuários vinculados a unidades)
+- `unit_role` é **opcional** (só para usuários vinculados aos setores)
 
 ### Roles Disponíveis
 - `ADMIN` - Administrador da organização

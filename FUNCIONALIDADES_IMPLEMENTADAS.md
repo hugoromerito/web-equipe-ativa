@@ -19,9 +19,9 @@ Este documento lista todas as funcionalidades do backend que foram implementadas
 - [x] `updateOrganizationRoute` - Atualizar organização (já existia)
 - [x] `shutdownOrganizationRoute` - Encerrar organização ✨ **NOVO**
 
-### 🏛️ Unidades (Units)
-- [x] `createUnitRoute` - Criar unidade (já existia)
-- [x] `getUnitsRoute` - Listar unidades (já existia)
+### 🏛️ Setores (Units)
+- [x] `createUnitRoute` - Criar setor (já existia)
+- [x] `getUnitsRoute` - Listar setores (já existia)
 
 ### 👥 Usuários (Users)
 - [x] `createUserRoute` - Criar usuário ✨ **NOVO**
@@ -29,7 +29,7 @@ Este documento lista todas as funcionalidades do backend que foram implementadas
 
 ### 👤 Membros (Members)
 - [x] `getMembersOrganizationRoute` - Listar membros da organização ✨ **NOVO**
-- [x] `getMembersUnitRoute` - Listar membros da unidade ✨ **NOVO**
+- [x] `getMembersUnitRoute` - Listar membros da setor ✨ **NOVO**
 
 ### ✉️ Convites (Invites)
 - [x] `createInviteRoute` - Criar convite ✨ **NOVO**
@@ -68,7 +68,7 @@ Este documento lista todas as funcionalidades do backend que foram implementadas
 
 ### HTTP Functions (`src/http/`)
 1. `get-members-organization.ts` - Listar membros da organização
-2. `get-members-unit.ts` - Listar membros da unidade
+2. `get-members-unit.ts` - Listar membros da setor
 3. `create-user.ts` - Criar usuário
 4. `get-users.ts` - Listar usuários com paginação
 5. `get-invites.ts` - Listar convites pendentes
