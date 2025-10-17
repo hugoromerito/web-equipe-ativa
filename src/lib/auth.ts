@@ -32,8 +32,10 @@ export async function getCurrentUnits() {
   return units
 }
 
+import { getPendingInvitesServer } from '@/http/server/get-pending-invites'
+
 export async function getCurrentPendingInvites() {
-  const { invites } = await getPendingInvites()
+  const { invites } = await getPendingInvitesServer()
 
   return invites
 }
@@ -43,9 +45,12 @@ export async function getCurrentPendingInvite() {
   if (!inviteId) {
     return null
   }
-  const { invite } = await getInvite(inviteId)
+  
+  // Buscar o convite na lista de convites pendentes
+  const invites = await getCurrentPendingInvites()
+  const invite = invites.find(inv => inv.id === inviteId)
 
-  return invite
+  return invite || null
 }
 
 export async function getCurrentApplicant() {
