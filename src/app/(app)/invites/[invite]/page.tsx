@@ -4,17 +4,99 @@ import { CheckCircle, LogIn, LogOut, X } from 'lucide-react'
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
 
-import { auth, getCurrentPendingInvite, isAuthenticated } from '@/lib/auth'
+import { auth, isAuthenticated } from '@/lib/auth'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
-import { acceptInvite } from '@/http/accept-invite'
-import { rejectInvite } from '@/http/reject-invite'
+import { acceptInviteServer } from '@/http/server/accept-invite'
+import { rejectInviteServer } from '@/http/server/reject-invite'
+import { getPendingInvitesServer } from '@/http/server/get-pending-invites'
 
 dayjs.extend(relativeTime).locale('pt-br')
 
-export default async function InvitePage() {
-  const invite = await getCurrentPendingInvite()
+interface InvitePageProps {
+  params: {
+    invite: string
+  }
+}
+
+export default async function InvitePage({ params }: InvitePageProps) {
+  const { invite: inviteId } = await params
+  
+  console.log('🔍 Página de convite iniciada para ID:', inviteId)
+  
+  // Primeiro, vamos buscar na lista de convites pendentes para descobrir a organização
+  let invite: {
+    id: string
+    email: string
+    role: any
+    createdAt: string
+    unit: {
+      name: string
+      organization: {
+        name: string
+      }
+    } | null
+    author: {
+      name: string | null
+      id: string
+      avatarUrl: string | null
+    } | null
+  } | null = null
+  let errorMessage = ''
+  
+  try {
+    console.log('🔍 Buscando na lista de convites pendentes para descobrir organização...')
+    const { invites } = await getPendingInvitesServer()
+    const foundInvite = invites.find((inv) => inv.id === inviteId)
+    
+    if (foundInvite && foundInvite.unit?.organization?.name) {
+      // Temos a organização, agora vamos buscar o convite completo
+      console.log('🔍 Convite encontrado na lista, organização:', foundInvite.unit.organization.name)
+      
+      // Precisamos do slug da organização, mas temos só o nome
+      // Por enquanto, vamos usar os dados da lista de convites pendentes
+      invite = {
+        id: foundInvite.id,
+        email: foundInvite.email,
+        role: foundInvite.role,
+        createdAt: foundInvite.createdAt,
+        unit: foundInvite.unit,
+        author: foundInvite.author
+      }
+      
+      console.log('✅ Usando dados da lista de convites pendentes:', invite.id)
+    } else {
+      console.log('❌ Convite não encontrado na lista de pendentes')
+      errorMessage = 'Convite não encontrado ou já foi processado'
+    }
+  } catch (error) {
+    console.error('❌ Erro ao buscar convites pendentes:', error)
+    errorMessage = error instanceof Error ? error.message : 'Erro ao buscar convites'
+  }
+  
+  // Se não conseguiu buscar o convite, mostrar página de erro
+  if (!invite) {
+    return (
+      <div className="flex min-h-screen flex-col items-center justify-center px-4">
+        <div className="flex w-full max-w-sm flex-col justify-center space-y-6 text-center">
+          <h1 className="text-2xl font-bold text-medical-red-600">Convite não encontrado</h1>
+          <p className="text-muted-foreground">
+            Este convite pode ter expirado, já foi aceito/rejeitado, ou não existe mais.
+          </p>
+          {errorMessage && (
+            <div className="text-xs text-medical-red-500 bg-medical-red-50 p-2 rounded">
+              Erro técnico: {errorMessage}
+            </div>
+          )}
+          <Button asChild>
+            <Link href="/">Voltar para tela inicial</Link>
+          </Button>
+        </div>
+      </div>
+    )
+  }
+  
   const isUserAuthenticated = isAuthenticated()
 
   function getInitials(name: string): string {
@@ -47,22 +129,14 @@ export default async function InvitePage() {
   async function acceptInviteAction() {
     'use server'
 
-    if (!invite?.id) {
-      return
-    }
-
-    await acceptInvite(invite?.id)
+    await acceptInviteServer(inviteId)
 
     redirect('/')
   }
   async function rejectInviteAction() {
     'use server'
 
-    if (!invite?.id) {
-      return
-    }
-
-    await rejectInvite(invite?.id)
+    await rejectInviteServer(inviteId)
 
     redirect('/')
   }
