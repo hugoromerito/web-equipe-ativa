@@ -16,6 +16,11 @@ export function useInvites() {
   })
 }
 
+// Alias para compatibilidade
+export function usePendingInvites() {
+  return useInvites()
+}
+
 export function useOrganizationInvites(params: GetOrganizationInvitesRequest) {
   return useQuery({
     queryKey: ['invites', 'organization', params.organizationSlug],

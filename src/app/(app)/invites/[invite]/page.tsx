@@ -15,9 +15,9 @@ import { getPendingInvitesServer } from '@/http/server/get-pending-invites'
 dayjs.extend(relativeTime).locale('pt-br')
 
 interface InvitePageProps {
-  params: {
+  params: Promise<{
     invite: string
-  }
+  }>
 }
 
 export default async function InvitePage({ params }: InvitePageProps) {

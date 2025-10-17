@@ -4,11 +4,11 @@ import { Header } from '@/components/header'
 import { getDemands } from '@/http/get-demands'
 
 interface PageProps {
-  params: {
+  params: Promise<{
     org: string
     unit: string
-  }
-  searchParams: {
+  }>
+  searchParams: Promise<{
     page?: string
     limit?: string
     category?: string
@@ -19,7 +19,7 @@ interface PageProps {
     search?: string
     sort_by?: 'created_at' | 'updated_at' | 'priority' | 'status'
     sort_order?: 'asc' | 'desc'
-  }
+  }>
 }
 
 // Tipo para as consultas
@@ -37,11 +37,13 @@ interface Demand {
 }
 
 export default async function DemandsPage({ params, searchParams }: PageProps) {
+  const resolvedParams = await params
+  const resolvedSearchParams = await searchParams
   const permissions = await ability()
   
-  // Await params e searchParams (Next.js 15)
-  const { org: currentOrg, unit: currentUnit } = await params
-  const search = await searchParams
+  // Extrair valores dos parâmetros
+  const { org: currentOrg, unit: currentUnit } = resolvedParams
+  const search = resolvedSearchParams
 
   // Processar os parâmetros de busca
   const processedParams = {
@@ -112,7 +114,7 @@ export default async function DemandsPage({ params, searchParams }: PageProps) {
           currentUnit={currentUnit}
           demands={demands}
           pagination={pagination}
-          initialSearchParams={searchParams}
+          initialSearchParams={resolvedSearchParams}
         />
       </div>
     </>
