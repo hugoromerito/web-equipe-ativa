@@ -1,6 +1,5 @@
 
 import type { Role } from '@/lib/auth/'
-import { api } from './api-client'
 
 interface GetInviteResponse {
   invite: {
@@ -23,7 +22,22 @@ interface GetInviteResponse {
 }
 
 export async function getInvite(inviteId: string) {
-  const result = await api.get(`invites/${inviteId}`).json<GetInviteResponse>()
+  // Como o backend não tem rota /invites/{id}, vamos buscar na lista de convites pendentes
+  const response = await fetch(`/api/invite/pending`)
 
-  return result
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({ message: 'Erro desconhecido' }))
+    throw new Error(errorData.message || errorData.error || 'Erro ao buscar convites')
+  }
+
+  const result = await response.json()
+  
+  // Procurar o convite específico na lista
+  const foundInvite = result.invites?.find((inv: any) => inv.id === inviteId)
+  
+  if (!foundInvite) {
+    throw new Error('Convite não encontrado')
+  }
+
+  return { invite: foundInvite } as GetInviteResponse
 }

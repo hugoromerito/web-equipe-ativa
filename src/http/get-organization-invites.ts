@@ -1,5 +1,3 @@
-import { api } from './api-client'
-
 export interface GetOrganizationInvitesRequest {
   organizationSlug: string
 }
@@ -29,9 +27,15 @@ interface GetOrganizationInvitesResponse {
 export async function getOrganizationInvites({
   organizationSlug,
 }: GetOrganizationInvitesRequest) {
-  const result = await api
-    .get(`organizations/${organizationSlug}/invites`)
-    .json<GetOrganizationInvitesResponse>()
+  // Esta função só deve ser usada no client-side
+  // Para server components, use getOrganizationInvitesServer()
+  const response = await fetch(`/api/invite/${encodeURIComponent(organizationSlug)}/org-invites`)
 
-  return result
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({ message: 'Erro desconhecido' }))
+    throw new Error(errorData.message || errorData.error || 'Erro ao buscar convites')
+  }
+
+  const result = await response.json()
+  return result as GetOrganizationInvitesResponse
 }

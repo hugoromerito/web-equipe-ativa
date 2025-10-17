@@ -1,5 +1,3 @@
-import { api } from './api-client'
-
 export interface Invite {
   id: string
   email: string
@@ -23,9 +21,14 @@ interface GetInvitesResponse {
 }
 
 export async function getInvites() {
-  const result = await api
-    .get('invites/pending')
-    .json<GetInvitesResponse>()
+  // Esta função é um alias para getPendingInvites - usar para compatibilidade
+  const response = await fetch(`/api/invite/pending`)
 
-  return result
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({ message: 'Erro desconhecido' }))
+    throw new Error(errorData.message || errorData.error || 'Erro ao buscar convites')
+  }
+
+  const result = await response.json()
+  return result as GetInvitesResponse
 }
