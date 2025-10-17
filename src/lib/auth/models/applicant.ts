@@ -1,8 +1,8 @@
 import { z } from 'zod'
 
 /*
-  Unidades de Atendimento
-  ownerId - Identificador único do dono da unidade
+  Setores de Atendimento
+  ownerId - Identificador único do dono do setor
 */
 export const applicantSchema = z.object({
   __typename: z.literal('Applicant').default('Applicant'),

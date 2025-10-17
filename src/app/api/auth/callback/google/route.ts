@@ -11,9 +11,7 @@ export async function GET(request: NextRequest) {
     // Se o usuário negou o acesso
     if (error) {
       console.error('❌ Erro no OAuth:', error)
-      const redirectUrl = request.nextUrl.clone()
-      redirectUrl.pathname = '/auth/sign-in'
-      redirectUrl.search = `?error=${error}`
+      const redirectUrl = new URL(`/auth/sign-in?error=${error}`, request.nextUrl.origin)
       return NextResponse.redirect(redirectUrl)
     }
 
@@ -42,20 +40,17 @@ export async function GET(request: NextRequest) {
       sameSite: 'lax',
     })
 
-    const redirectUrl = request.nextUrl.clone()
-
-    redirectUrl.pathname = '/'
-    redirectUrl.search = ''
-
     console.log('✅ Redirecionando para home...')
+
+    // Create a proper redirect URL without duplicating port
+    const redirectUrl = new URL('/', request.nextUrl.origin)
 
     return NextResponse.redirect(redirectUrl)
   } catch (error) {
     console.error('❌ Erro no callback do Google:', error)
     
-    const redirectUrl = request.nextUrl.clone()
-    redirectUrl.pathname = '/auth/sign-in'
-    redirectUrl.search = '?error=auth_failed'
+    // Create a proper redirect URL without duplicating port
+    const redirectUrl = new URL('/auth/sign-in?error=auth_failed', request.nextUrl.origin)
     
     return NextResponse.redirect(redirectUrl)
   }

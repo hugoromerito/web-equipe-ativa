@@ -4,6 +4,12 @@ import { env } from '@/config/env'
 
 export const api = ky.create({
   prefixUrl: env.NEXT_PUBLIC_API_URL,
+  timeout: 30000, // 30 segundos
+  retry: {
+    limit: 2,
+    methods: ['get', 'post', 'put', 'delete'],
+    statusCodes: [408, 413, 429, 500, 502, 503, 504],
+  },
   hooks: {
     beforeRequest: [
       async (request) => {
@@ -15,8 +21,18 @@ export const api = ky.create({
           const serverCookies = cookies()
           token = (await serverCookies).get('token')?.value
         } else {
-          // Código do cliente (browser) - ESSA PARTE ESTAVA FALTANDO!
+          // Código do cliente (browser)
           token = getCookie('token') as string | undefined
+          
+          // Fallback: tentar pegar do document.cookie diretamente
+          if (!token) {
+            const cookieValue = document.cookie
+              .split('; ')
+              .find(row => row.startsWith('token='))
+              ?.split('=')[1];
+            
+            token = cookieValue;
+          }
         }
 
         if (token) {
@@ -24,7 +40,8 @@ export const api = ky.create({
         } else {
           console.warn('⚠️ No auth token found!', {
             environment: typeof window === 'undefined' ? 'server' : 'client',
-            url: request.url
+            url: request.url,
+            cookies: typeof window !== 'undefined' ? document.cookie : 'server-side'
           })
         }
       },

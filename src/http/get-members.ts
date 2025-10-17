@@ -5,13 +5,13 @@ interface GetMembersResponse {
   members: {
     userId: string
     id: string
-    orgRole: Role,
-    unitRole: Role,
+    orgRole: Role
+    unitRole: Role
     name: string | null
     avatarUrl: string | null
     email: string
     isOnline: boolean
-  lastSeen: string
+    lastSeen: string | null
   }[]
 }
 

@@ -23,10 +23,8 @@ export async function GET(request: NextRequest) {
     maxAge: 60 * 60 * 24 * 7, // 7 days
   })
 
-  const redirectUrl = request.nextUrl.clone()
-
-  redirectUrl.pathname = '/'
-  redirectUrl.search = ''
+  // Create a proper redirect URL without duplicating port
+  const redirectUrl = new URL('/', request.nextUrl.origin)
 
   return NextResponse.redirect(redirectUrl)
 }

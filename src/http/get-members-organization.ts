@@ -14,7 +14,9 @@ export interface Member {
     name: string | null
     email: string
     avatar_url: string | null
+    last_seen: string | null
   }
+  is_online: boolean
 }
 
 interface GetMembersOrganizationResponse {
