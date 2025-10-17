@@ -34,53 +34,90 @@ export async function UnitList() {
   }
 
   return (
-    <div className="w-full medical-section">
+    <div className="space-y-8">
       {/* Header Section Médico */}
-      <div className="medical-section">
-        <h1 className="medical-section-title">
-          Unidades Médicas
-        </h1>
-        <p className="medical-section-subtitle">
-          Acesse as unidades de saúde da organização ou crie uma nova unidade
+      <div className="text-center space-y-4">
+        <div className="flex items-center justify-center gap-3 mb-4">
+          <div className="p-3 bg-primary/10 rounded-lg">
+            <Building className="w-8 h-8 text-primary" />
+          </div>
+          <h1 className="text-4xl font-bold text-foreground">
+            Setores Médicos
+          </h1>
+        </div>
+        <p className="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+          Gerencie os setores de saúde da sua organização. Cada setor representa um departamento 
+          ou área específica da instituição médica.
         </p>
       </div>
 
       {!units || units.length === 0 ? (
-        /* Empty State Médico */
-        <div className="medical-card p-12 text-center max-w-md mx-auto">
-          <div className="w-20 h-20 bg-blue-50 rounded-full flex items-center justify-center mx-auto mb-6">
-            <Building className="w-10 h-10 text-blue-500" />
+        /* Empty State Médico Melhorado */
+        <div className="medical-card medical-fade-in p-16 text-center max-w-xl mx-auto mt-12">
+          <div className="w-24 h-24 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-8 medical-hover-lift">
+            <Building className="w-12 h-12 text-primary" />
           </div>
-          <h3 className="text-xl font-semibold text-slate-800 mb-3">
-            Nenhuma unidade encontrada
-          </h3>
-          <p className="text-slate-600 mb-6">
-            Esta organização ainda não possui unidades médicas. Crie a primeira unidade para começar.
-          </p>
-          <Link href={`/org/${currentOrg}/create-unit`}>
-            <button className="btn-medical">
-              <Building className="w-4 h-4 mr-2" />
-              Criar primeira unidade
-            </button>
-          </Link>
+          
+          <div className="space-y-4 mb-8">
+            <h2 className="text-2xl font-bold text-foreground">
+              Nenhum setor encontrado
+            </h2>
+            <p className="text-muted-foreground text-lg leading-relaxed">
+              Esta organização ainda não possui setores médicos configurados. 
+              <br />
+              <span className="font-medium">Crie o primeiro setor para começar a organizar sua equipe.</span>
+            </p>
+          </div>
+
+          <div className="space-y-4">
+            <Link href={`/org/${currentOrg}/create-unit`}>
+              <Button className="btn-medical-primary inline-flex items-center px-8 py-3 text-base font-semibold hover:shadow-lg transition-all">
+                <Building className="w-5 h-5 mr-3" />
+                Criar primeiro setor
+              </Button>
+            </Link>
+            
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4 text-sm text-muted-foreground">
+              <div className="flex items-center gap-2">
+                <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                <span>Configuração rápida</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                <span>Organização profissional</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
+                <span>Gestão centralizada</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-8 p-6 bg-muted/30 rounded-lg border border-dashed border-border">
+            <h3 className="font-semibold text-foreground mb-2">💡 Dica</h3>
+            <p className="text-sm text-muted-foreground">
+              Setores ajudam a organizar diferentes departamentos médicos como 
+              <span className="font-medium"> UTI, Emergência, Pediatria, Cardiologia</span> e mais.
+            </p>
+          </div>
         </div>
       ) : (
         <div className="space-y-6">
           {/* Search and Actions Médicos */}
           <div className="flex flex-col sm:flex-row gap-4 sm:items-center sm:justify-between">
-            <div className="flex-1 max-w-sm medical-search">
-              <Search className="search-icon" size={18} />
-              <input 
+            <div className="relative flex-1 max-w-md">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-5 h-5" />
+              <Input 
                 type="text"
-                placeholder="Buscar unidades médicas..." 
-                className="medical-input"
+                placeholder="Buscar setores médicos..." 
+                className="medical-form-input pl-12 h-12 text-base"
               />
             </div>
             <Link href={`/org/${currentOrg}/create-unit`}>
-              <button className="btn-medical-secondary">
-                <Building className="w-4 h-4 mr-2" />
-                Nova unidade
-              </button>
+              <Button className="btn-medical-primary inline-flex items-center px-6 py-3 h-12 text-base font-semibold">
+                <Building className="w-5 h-5 mr-2" />
+                Novo setor
+              </Button>
             </Link>
           </div>
 
@@ -90,47 +127,49 @@ export async function UnitList() {
               <Link 
                 key={unit.id} 
                 href={`/org/${currentOrg}/unit/${unit.slug}`}
-                className="group"
+                className="group block"
               >
-                <div className={`medical-card p-6 hover:shadow-lg transition-all duration-300 medical-fade-in ${
-                  unit.slug === currentUnitSlug ? 'border-l-4 border-l-blue-500' : ''
-                }`}
+                <div className={`medical-card-interactive p-6 ${
+                  unit.slug === currentUnitSlug 
+                    ? 'border-l-4 border-l-primary bg-primary/5' 
+                    : ''
+                } animate-slide-in-up medical-hover-lift`}
                   style={{ animationDelay: `${index * 100}ms` }}
                 >
-                  <div className="flex items-center gap-4">
+                  <div className="flex items-center gap-6">
                     {/* Icon Médico */}
                     <div className="relative">
-                      <div className="w-14 h-14 bg-blue-100 rounded-xl flex items-center justify-center ring-2 ring-blue-100 group-hover:ring-blue-200 transition-colors">
-                        <Building className="w-7 h-7 text-blue-600" />
+                      <div className="w-16 h-16 bg-primary/10 rounded-xl flex items-center justify-center ring-2 ring-primary/20 group-hover:ring-primary/30 transition-all duration-300 group-hover:scale-105">
+                        <Building className="w-8 h-8 text-primary" />
                       </div>
                       {unit.slug === currentUnitSlug && (
-                        <div className="absolute -top-1 -right-1 bg-emerald-500 rounded-full p-1">
-                          <Flag className="w-3 h-3 text-white" />
+                        <div className="absolute -top-2 -right-2 bg-green-500 rounded-full p-1.5 shadow-lg">
+                          <Flag className="w-3.5 h-3.5 text-white" />
                         </div>
                       )}
                     </div>
 
                     {/* Content Médico */}
                     <div className="flex-1 min-w-0">
-                      <div className="flex items-start justify-between gap-3">
-                        <div className="min-w-0 flex-1">
-                          <h3 className="text-lg font-semibold text-slate-800 group-hover:text-blue-600 transition-colors mb-2">
+                      <div className="flex items-start justify-between gap-4">
+                        <div className="min-w-0 flex-1 space-y-3">
+                          <h3 className="text-xl font-bold text-foreground group-hover:text-primary transition-colors">
                             {unit.name}
                           </h3>
                           
                           {/* Unit details */}
-                          <div className="space-y-1.5 mb-3">
+                          <div className="space-y-2">
                             {unit.description && (
-                              <div className="flex items-center gap-2 text-sm text-slate-600">
-                                <Flag className="w-4 h-4 flex-shrink-0 text-blue-500" />
-                                <span className="truncate">{unit.description}</span>
+                              <div className="flex items-center gap-3 text-sm text-muted-foreground">
+                                <Flag className="w-4 h-4 flex-shrink-0 text-primary" />
+                                <span>{unit.description}</span>
                               </div>
                             )}
                             
                             {unit.location && (
-                              <div className="flex items-center gap-2 text-sm text-slate-600">
-                                <MapPin className="w-4 h-4 flex-shrink-0 text-blue-500" />
-                                <span className="truncate">{unit.location}</span>
+                              <div className="flex items-center gap-3 text-sm text-muted-foreground">
+                                <MapPin className="w-4 h-4 flex-shrink-0 text-primary" />
+                                <span>{unit.location}</span>
                               </div>
                             )}
                           </div>
@@ -138,17 +177,23 @@ export async function UnitList() {
                           {/* Status badges */}
                           <div className="flex items-center gap-2">
                             {unit.slug === currentUnitSlug && (
-                              <span className="status-indicator status-progress">
-                                <Flag className="w-3 h-3" />
-                                Unidade Atual
-                              </span>
+                              <Badge className="badge-medical-success">
+                                <Flag className="w-3 h-3 mr-1" />
+                                Setor Atual
+                              </Badge>
                             )}
+                            <Badge className="badge-medical-info">
+                              <Building className="w-3 h-3 mr-1" />
+                              Setor Médico
+                            </Badge>
                           </div>
                         </div>
 
                         {/* Arrow */}
                         <div className="flex items-center">
-                          <ArrowRight className="w-5 h-5 text-slate-400 group-hover:text-blue-500 group-hover:translate-x-1 transition-all duration-200" />
+                          <div className="p-2 rounded-lg bg-primary/5 group-hover:bg-primary/10 transition-colors">
+                            <ArrowRight className="w-6 h-6 text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all duration-300" />
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -159,15 +204,21 @@ export async function UnitList() {
           </div>
 
           {/* Footer info Médico */}
-          <div className="medical-card p-4">
-            <div className="flex items-center justify-between text-sm">
-              <p className="text-slate-600">
-                {units.length} {units.length === 1 ? 'unidade' : 'unidades'} médica{units.length === 1 ? '' : 's'}
-              </p>
-              {currentUnit && (
-                <p className="text-slate-600">
-                  Unidade atual: <span className="font-medium text-slate-800">{currentUnit.name}</span>
+          <div className="medical-card p-6 bg-muted/20 border-dashed">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+              <div className="flex items-center gap-3">
+                <div className="w-3 h-3 bg-primary rounded-full"></div>
+                <p className="text-muted-foreground font-medium">
+                  {units.length} {units.length === 1 ? 'setor médico' : 'setores médicos'} cadastrado{units.length === 1 ? '' : 's'}
                 </p>
+              </div>
+              {currentUnit && (
+                <div className="flex items-center gap-2">
+                  <Badge className="badge-medical-primary">
+                    <Building className="w-3 h-3 mr-1" />
+                    Setor atual: {currentUnit.name}
+                  </Badge>
+                </div>
               )}
             </div>
           </div>

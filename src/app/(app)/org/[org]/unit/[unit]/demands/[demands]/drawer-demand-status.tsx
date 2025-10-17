@@ -2,7 +2,7 @@
 
 import { translateStatus } from '@/constants/demand-translations'
 import { useTransition } from 'react'
-import { updateDemand } from '@/http/update-demand-status'
+import { updateDemand } from '@/http/update-demand'
 import { updateConsultaction, type UpdateDemandSchema } from './actions'
 import { useFormState } from '@/hooks/use-form-state'
 import { Button } from '@/components/ui/button'

@@ -27,67 +27,106 @@ export function UnitForm({ initialData }: UnitFormProps) {
   )
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      {success === false && message && (
-        <Alert variant="destructive">
-          <AlertTriangle className="size-4" />
-          <AlertTitle>Falha ao criar unidade!</AlertTitle>
-          <AlertDescription>
-            <p>{message}</p>
-          </AlertDescription>
-        </Alert>
-      )}
+    <div className="medical-card p-8">
+      <form onSubmit={handleSubmit} className="space-y-6">
+        {success === false && message && (
+          <Alert className="medical-alert-danger">
+            <AlertTriangle className="size-4" />
+            <AlertTitle>Falha ao criar setor!</AlertTitle>
+            <AlertDescription>
+              <p>{message}</p>
+            </AlertDescription>
+          </Alert>
+        )}
 
-      {success === true && message && (
-        <Alert variant="success">
-          <AlertTriangle className="size-4" />
-          <AlertTitle>Sucesso!</AlertTitle>
-          <AlertDescription>
-            <p>{message}</p>
-          </AlertDescription>
-        </Alert>
-      )}
+        {success === true && message && (
+          <Alert className="medical-alert-success">
+            <AlertTriangle className="size-4" />
+            <AlertTitle>Sucesso!</AlertTitle>
+            <AlertDescription>
+              <p>{message}</p>
+            </AlertDescription>
+          </Alert>
+        )}
 
-      <div className="space-y-1">
-        <Label htmlFor="name">Nome da unidade</Label>
-        <Input name="name" id="name" defaultValue={initialData?.name} />
-
-        {errors?.name && (
-          <p className="text-xs font-medium text-red-500 dark:text-red-400">
-            {errors.name[0]}
+        <div className="medical-form-group">
+          <Label htmlFor="name" className="medical-form-label">
+            Nome do setor médico
+          </Label>
+          <Input 
+            name="name" 
+            id="name" 
+            defaultValue={initialData?.name} 
+            className="medical-form-input"
+            placeholder="Ex: UTI, Emergência, Cardiologia..."
+          />
+          {errors?.name && (
+            <p className="medical-form-error">
+              {errors.name[0]}
+            </p>
+          )}
+          <p className="medical-form-help">
+            Digite o nome do setor ou departamento médico
           </p>
-        )}
-      </div>
+        </div>
 
-      <div className="space-y-1">
-        <Label htmlFor="description">Descrição da unidade</Label>
-        <Input name="description" id="description" />
-
-        {errors?.description && (
-          <p className="text-xs font-medium text-red-500 dark:text-red-400">
-            {errors.description[0]}
+        <div className="medical-form-group">
+          <Label htmlFor="description" className="medical-form-label">
+            Descrição do setor
+          </Label>
+          <Input 
+            name="description" 
+            id="description" 
+            className="medical-form-input"
+            placeholder="Descreva as atividades e especialidades do setor..."
+          />
+          {errors?.description && (
+            <p className="medical-form-error">
+              {errors.description[0]}
+            </p>
+          )}
+          <p className="medical-form-help">
+            Opcional: Forneça uma breve descrição das atividades do setor
           </p>
-        )}
-      </div>
+        </div>
 
-      <div className="space-y-1">
-        <Label htmlFor="location">Endereço da unidade</Label>
-        <Input name="location" id="location" />
-
-        {errors?.location && (
-          <p className="text-xs font-medium text-red-500 dark:text-red-400">
-            {errors.location[0]}
+        <div className="medical-form-group">
+          <Label htmlFor="location" className="medical-form-label">
+            Localização do setor
+          </Label>
+          <Input 
+            name="location" 
+            id="location" 
+            className="medical-form-input"
+            placeholder="Ex: 2º andar - Ala Norte, Bloco A..."
+          />
+          {errors?.location && (
+            <p className="medical-form-error">
+              {errors.location[0]}
+            </p>
+          )}
+          <p className="medical-form-help">
+            Opcional: Informe a localização física do setor na instituição
           </p>
-        )}
-      </div>
+        </div>
 
-      <Button className="w-full" type="submit" disabled={isPending}>
-        {isPending ? (
-          <Loader2 className="size-4 animate-spin" />
-        ) : (
-          'Registrar unidade'
-        )}
-      </Button>
-    </form>
+        <div className="pt-4 border-t border-border">
+          <Button 
+            className="btn-medical-primary w-full h-12 text-base font-semibold" 
+            type="submit" 
+            disabled={isPending}
+          >
+            {isPending ? (
+              <>
+                <Loader2 className="size-5 animate-spin mr-2" />
+                Criando setor...
+              </>
+            ) : (
+              'Criar setor médico'
+            )}
+          </Button>
+        </div>
+      </form>
+    </div>
   )
 }

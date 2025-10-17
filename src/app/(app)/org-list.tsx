@@ -34,53 +34,43 @@ export async function OrgList() {
   }
 
   return (
-    <div className="w-full medical-section">
-      {/* Header Section Médico */}
-      <div className="medical-section">
-        <h1 className="medical-section-title">
-          Central de Organizações
-        </h1>
-        <p className="medical-section-subtitle">
-          Acesse suas organizações médicas ou crie uma nova unidade de saúde
-        </p>
-      </div>
-
+    <div className="space-y-8">
       {organizations.length === 0 ? (
         /* Empty State Médico */
         <div className="medical-card p-12 text-center max-w-md mx-auto">
-          <div className="w-20 h-20 bg-blue-50 rounded-full flex items-center justify-center mx-auto mb-6">
-            <Building2 className="w-10 h-10 text-blue-500" />
+          <div className="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6">
+            <Building2 className="w-10 h-10 text-primary" />
           </div>
-          <h3 className="text-xl font-semibold text-slate-800 mb-3">
+          <h3 className="text-xl font-semibold text-foreground mb-3">
             Nenhuma organização encontrada
           </h3>
-          <p className="text-slate-600 mb-6">
+          <p className="text-muted-foreground mb-6">
             Você ainda não faz parte de nenhuma organização de saúde. Crie uma nova ou aguarde um convite.
           </p>
           <Link href="/create-organization">
-            <button className="btn-medical">
+            <Button className="btn-medical-primary">
               <Building2 className="w-4 h-4 mr-2" />
               Criar primeira organização
-            </button>
+            </Button>
           </Link>
         </div>
       ) : (
         <div className="space-y-6">
           {/* Search and Actions Médicos */}
           <div className="flex flex-col sm:flex-row gap-4 sm:items-center sm:justify-between">
-            <div className="flex-1 max-w-sm medical-search">
-              <Search className="search-icon" size={18} />
-              <input 
+            <div className="relative flex-1 max-w-sm">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
+              <Input 
                 type="text"
                 placeholder="Buscar organizações de saúde..." 
-                className="medical-input"
+                className="medical-form-input pl-10"
               />
             </div>
             <Link href="/create-organization">
-              <button className="btn-medical-secondary">
+              <Button className="btn-medical-secondary inline-flex items-center">
                 <Building2 className="w-4 h-4 mr-2" />
                 Nova organização
-              </button>
+              </Button>
             </Link>
           </div>
 
@@ -90,28 +80,30 @@ export async function OrgList() {
               <Link 
                 key={organization.id} 
                 href={`org/${organization.slug}`}
-                className="group"
+                className="group block"
               >
-                <div className={`medical-card p-6 hover:shadow-lg transition-all duration-300 medical-fade-in ${
-                  organization.slug === currentOrg ? 'border-l-4 border-l-blue-500' : ''
-                }`}
+                <div className={`medical-card-interactive p-6 ${
+                  organization.slug === currentOrg 
+                    ? 'border-l-4 border-l-primary bg-primary/5' 
+                    : ''
+                } animate-slide-in-up`}
                   style={{ animationDelay: `${index * 100}ms` }}
                 >
                   <div className="flex items-center gap-4">
                     {/* Avatar Médico */}
                     <div className="relative">
-                      <Avatar className="w-14 h-14 ring-2 ring-blue-100 group-hover:ring-blue-200 transition-colors">
+                      <Avatar className="w-14 h-14 ring-2 ring-primary/20 group-hover:ring-primary/30 transition-colors">
                         {organization.avatarUrl && (
                           <AvatarImage src={organization.avatarUrl} />
                         )}
                         {organization.name && (
-                          <AvatarFallback className="bg-blue-100 text-blue-700 font-semibold text-lg">
+                          <AvatarFallback className="bg-primary/10 text-primary font-semibold text-lg">
                             {getInitials(organization.name)}
                           </AvatarFallback>
                         )}
                       </Avatar>
                       {organization.slug === currentOrg && (
-                        <div className="absolute -top-1 -right-1 bg-emerald-500 rounded-full p-1">
+                        <div className="absolute -top-1 -right-1 bg-green-500 rounded-full p-1">
                           <Flag className="w-3 h-3 text-white" />
                         </div>
                       )}
@@ -121,12 +113,12 @@ export async function OrgList() {
                     <div className="flex-1 min-w-0">
                       <div className="flex items-start justify-between gap-3">
                         <div className="min-w-0 flex-1">
-                          <h3 className="text-lg font-semibold text-slate-800 group-hover:text-blue-600 transition-colors mb-2">
+                          <h3 className="text-lg font-semibold text-foreground group-hover:text-primary transition-colors mb-2">
                             {organization.name}
                           </h3>
                           
                           {/* Organization details */}
-                          <div className="flex items-center gap-4 text-sm text-slate-500 mb-3">
+                          <div className="flex items-center gap-4 text-sm text-muted-foreground mb-3">
                             <div className="flex items-center gap-1.5">
                               <Building2 className="w-4 h-4" />
                               <span>Organização de Saúde</span>
@@ -136,17 +128,17 @@ export async function OrgList() {
                           {/* Status badges */}
                           <div className="flex items-center gap-2">
                             {organization.slug === currentOrg && (
-                              <span className="status-indicator status-progress">
-                                <Flag className="w-3 h-3" />
+                              <Badge className="badge-medical-success">
+                                <Flag className="w-3 h-3 mr-1" />
                                 Organização Atual
-                              </span>
+                              </Badge>
                             )}
                           </div>
                         </div>
 
                         {/* Arrow */}
                         <div className="flex items-center">
-                          <ArrowRight className="w-5 h-5 text-slate-400 group-hover:text-blue-500 group-hover:translate-x-1 transition-all duration-200" />
+                          <ArrowRight className="w-5 h-5 text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all duration-200" />
                         </div>
                       </div>
                     </div>
@@ -157,14 +149,14 @@ export async function OrgList() {
           </div>
 
           {/* Footer info Médico */}
-          <div className="medical-card p-4">
+          <div className="medical-card p-4 bg-muted/30">
             <div className="flex items-center justify-between text-sm">
-              <p className="text-slate-600">
+              <p className="text-muted-foreground">
                 {organizations.length} {organizations.length === 1 ? 'organização' : 'organizações'} de saúde
               </p>
               {currentOrganization && (
-                <p className="text-slate-600">
-                  Organização atual: <span className="font-medium text-slate-800">{currentOrganization.name}</span>
+                <p className="text-muted-foreground">
+                  Organização atual: <span className="font-medium text-foreground">{currentOrganization.name}</span>
                 </p>
               )}
             </div>

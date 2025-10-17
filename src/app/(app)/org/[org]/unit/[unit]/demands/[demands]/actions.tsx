@@ -5,7 +5,7 @@ import { revalidateTag } from 'next/cache'
 import { z } from 'zod'
 
 import { getCurrentDemand, getCurrentOrg, getCurrentUnit } from '@/lib/auth'
-import { updateDemand } from '@/http/update-demand-status'
+import { updateDemand } from '@/http/update-demand'
 import { demandStatusSchema } from '@/lib/auth/demand-status'
 
 const updateDemandSchema = z.object({
@@ -37,7 +37,7 @@ export async function updateConsultaction(data: FormData) {
     await updateDemand({
       organizationSlug: currentOrg!,
       unitSlug: currentUnit!,
-      demandSlug: currentDemand!,
+      demandId: currentDemand!,
       status,
     })
 

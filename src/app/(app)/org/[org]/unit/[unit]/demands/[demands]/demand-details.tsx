@@ -248,7 +248,7 @@ export async function DemandDetails() {
               <div className="p-2 rounded-lg bg-orange-100 text-orange-600 group-hover:bg-orange-500 group-hover:text-white transition-colors">
                 <Landmark className="h-5 w-5" />
               </div>
-              Unidade de Atendimento
+              Setor de Atendimento
             </CardTitle>
           </CardHeader>
           <CardContent>

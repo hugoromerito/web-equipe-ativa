@@ -15,10 +15,10 @@ const unitSchema = z.object({
   location: z
     .string()
     .min(4, {
-      message: 'Por favor, insira o endereço completo da unidade.',
+      message: 'Por favor, insira o endereço completo do setor.',
     })
     .refine((value) => value.split(' ').length > 1, {
-      message: 'Por favor, insira o endereço completo da unidade.',
+      message: 'Por favor, insira o endereço completo do setor.',
     }),
 })
 
@@ -63,7 +63,7 @@ export async function createUnitAction(data: FormData) {
 
   return {
     success: true,
-    message: 'A unidade foi criada com sucesso.',
+    message: 'O setor foi criado com sucesso.',
     errors: null,
   }
 }

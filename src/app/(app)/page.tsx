@@ -5,11 +5,17 @@ export default async function Home() {
   return (
     <>
       <Header />
-      <main className="medical-layout min-h-screen">
-        <div className="container mx-auto px-6 py-8 max-w-6xl">
-          <OrgList />
+      <div className="space-y-6">
+        <div className="text-center">
+          <h1 className="text-3xl font-bold text-foreground mb-2">
+            Dashboard Médico
+          </h1>
+          <p className="text-muted-foreground text-lg">
+            Gerencie suas organizações e setores de saúde
+          </p>
         </div>
-      </main>
+        <OrgList />
+      </div>
     </>
   )
 }

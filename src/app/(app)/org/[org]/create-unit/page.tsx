@@ -1,15 +1,32 @@
 import { Header } from '@/components/header'
 import { UnitForm } from './create-unit-form'
+import { Building } from 'lucide-react'
 
 export default function CreateUnitPage() {
   return (
     <>
       <Header />
-      <main className="mx-auto w-full max-w-[1200px] space-y-4">
-        <h1 className="text-2xl font-bold">Criar unidade</h1>
+      <div className="space-y-8">
+        {/* Header melhorado */}
+        <div className="text-center space-y-4">
+          <div className="flex items-center justify-center gap-3 mb-4">
+            <div className="p-3 bg-primary/10 rounded-lg">
+              <Building className="w-8 h-8 text-primary" />
+            </div>
+            <h1 className="text-3xl font-bold text-foreground">
+              Criar Novo Setor
+            </h1>
+          </div>
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            Configure um novo setor médico para organizar melhor sua equipe e operações.
+          </p>
+        </div>
 
-        <UnitForm />
-      </main>
+        {/* Formulário */}
+        <div className="max-w-2xl mx-auto">
+          <UnitForm />
+        </div>
+      </div>
     </>
   )
 }

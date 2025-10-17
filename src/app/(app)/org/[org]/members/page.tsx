@@ -37,7 +37,7 @@ export default function MembersPage() {
         <div>
           <h1 className="text-3xl font-bold tracking-tight">Membros</h1>
           <p className="text-muted-foreground">
-            Visualize os membros da organização e unidades
+            Visualize os membros da organização e setores
           </p>
         </div>
 
@@ -67,6 +67,7 @@ export default function MembersPage() {
                     <TableRow>
                       <TableHead>Membro</TableHead>
                       <TableHead>Email</TableHead>
+                      <TableHead>Status</TableHead>
                       <TableHead>Função</TableHead>
                     </TableRow>
                   </TableHeader>
@@ -94,6 +95,22 @@ export default function MembersPage() {
                           {member.user.email}
                         </TableCell>
                         <TableCell>
+                          <div className="flex items-center gap-2">
+                            <div
+                              className={`h-2 w-2 rounded-full ${
+                                member.is_online ? 'bg-green-500' : 'bg-gray-400'
+                              }`}
+                            />
+                            <span
+                              className={`text-sm ${
+                                member.is_online ? 'text-green-600' : 'text-muted-foreground'
+                              }`}
+                            >
+                              {member.is_online ? 'Online' : 'Offline'}
+                            </span>
+                          </div>
+                        </TableCell>
+                        <TableCell>
                           <span className="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold bg-primary/10 text-primary">
                             {ROLE_OPTIONS.find(
                               (r) => r.value === member.organization_role
@@ -105,7 +122,7 @@ export default function MembersPage() {
 
                     {orgMembersData?.members.length === 0 && (
                       <TableRow>
-                        <TableCell colSpan={3} className="text-center py-8">
+                        <TableCell colSpan={4} className="text-center py-8">
                           <p className="text-muted-foreground">
                             Nenhum membro encontrado
                           </p>

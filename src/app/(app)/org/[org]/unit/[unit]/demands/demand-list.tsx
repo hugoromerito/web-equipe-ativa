@@ -182,7 +182,7 @@ export function DemandList({
           </h1>
           
           <p className="medical-section-subtitle">
-            Gerencie e acompanhe todas as demandas médicas da unidade
+            Gerencie e acompanhe todas as demandas médicas do setor
           </p>
 
           {/* Stats Cards Médicos */}
