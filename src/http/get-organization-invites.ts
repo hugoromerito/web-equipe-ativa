@@ -1,5 +1,7 @@
 export interface GetOrganizationInvitesRequest {
   organizationSlug: string
+  page?: number
+  pageSize?: number
 }
 
 export interface OrganizationInvite {
@@ -20,16 +22,24 @@ export interface OrganizationInvite {
   } | null
 }
 
-interface GetOrganizationInvitesResponse {
+export interface GetOrganizationInvitesResponse {
   invites: OrganizationInvite[]
+  totalCount: number
 }
 
 export async function getOrganizationInvites({
   organizationSlug,
+  page,
+  pageSize,
 }: GetOrganizationInvitesRequest) {
   // Esta função só deve ser usada no client-side
   // Para server components, use getOrganizationInvitesServer()
-  const response = await fetch(`/api/invite/${encodeURIComponent(organizationSlug)}/org-invites`)
+  const params = new URLSearchParams()
+  if (page) params.append('page', page.toString())
+  if (pageSize) params.append('pageSize', pageSize.toString())
+  
+  const url = `/api/invite/${encodeURIComponent(organizationSlug)}/org-invites${params.toString() ? `?${params.toString()}` : ''}`
+  const response = await fetch(url)
 
   if (!response.ok) {
     const errorData = await response.json().catch(() => ({ message: 'Erro desconhecido' }))

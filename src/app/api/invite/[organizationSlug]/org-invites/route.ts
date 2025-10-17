@@ -3,14 +3,25 @@ import { cookies } from 'next/headers'
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { organizationSlug: string } }
+  { params }: { params: Promise<{ organizationSlug: string }> }
 ) {
   try {
+    const { organizationSlug } = await params
     const token = (await cookies()).get('token')?.value
     if (!token) return NextResponse.json({ error: 'Token não encontrado' }, { status: 401 })
 
+    // Extrai parâmetros de query da URL
+    const url = new URL(request.url)
+    const page = url.searchParams.get('page')
+    const pageSize = url.searchParams.get('pageSize')
+    
+    // Constrói a URL do backend com os parâmetros
     const apiUrl = process.env.NEXT_PUBLIC_API_URL
-    const resp = await fetch(`${apiUrl}/organizations/${params.organizationSlug}/invites`, {
+    const backendUrl = new URL(`${apiUrl}/organizations/${organizationSlug}/invites`)
+    if (page) backendUrl.searchParams.set('page', page)
+    if (pageSize) backendUrl.searchParams.set('pageSize', pageSize)
+    
+    const resp = await fetch(backendUrl.toString(), {
       headers: { Authorization: `Bearer ${token}` },
     })
 

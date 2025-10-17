@@ -43,7 +43,7 @@ export function useAcceptInvite() {
   const queryClient = useQueryClient()
 
   return useMutation({
-    mutationFn: (inviteId: string) => acceptInvite({ inviteId }),
+    mutationFn: (inviteId: string) => acceptInvite(inviteId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['invites'] })
       queryClient.invalidateQueries({ queryKey: ['organizations'] })
@@ -56,7 +56,7 @@ export function useRejectInvite() {
   const queryClient = useQueryClient()
 
   return useMutation({
-    mutationFn: (inviteId: string) => rejectInvite({ inviteId }),
+    mutationFn: (inviteId: string) => rejectInvite(inviteId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['invites'] })
     },

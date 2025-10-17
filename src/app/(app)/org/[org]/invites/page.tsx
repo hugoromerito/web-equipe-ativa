@@ -230,7 +230,7 @@ export default function InvitesPage() {
                         </TableCell>
                         <TableCell className="text-muted-foreground">
                           {format(
-                            new Date(invite.created_at),
+                            new Date(invite.createdAt),
                             "dd/MM/yyyy 'às' HH:mm",
                             { locale: ptBR }
                           )}
@@ -309,10 +309,10 @@ export default function InvitesPage() {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {pendingInvites?.map((invite) => (
+                  {pendingInvites?.invites?.map((invite) => (
                     <TableRow key={invite.id}>
                       <TableCell className="font-medium">
-                        {invite.organization.name}
+                        {invite.unit?.organization?.name || 'Organização'}
                       </TableCell>
                       <TableCell>
                         <span className="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold bg-primary/10 text-primary">
@@ -322,7 +322,7 @@ export default function InvitesPage() {
                       </TableCell>
                       <TableCell className="text-muted-foreground">
                         {format(
-                          new Date(invite.created_at),
+                          new Date(invite.createdAt),
                           "dd/MM/yyyy 'às' HH:mm",
                           { locale: ptBR }
                         )}
@@ -352,7 +352,7 @@ export default function InvitesPage() {
                     </TableRow>
                   ))}
 
-                  {pendingInvites?.length === 0 && (
+                  {pendingInvites?.invites?.length === 0 && (
                     <TableRow>
                       <TableCell colSpan={4} className="text-center py-8">
                         <p className="text-muted-foreground">

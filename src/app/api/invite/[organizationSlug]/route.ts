@@ -3,9 +3,10 @@ import { cookies } from 'next/headers'
 
 export async function POST(
   request: NextRequest,
-  { params }: { params: { organizationSlug: string } }
+  { params }: { params: Promise<{ organizationSlug: string }> }
 ) {
   try {
+    const { organizationSlug } = await params
     const body = await request.json()
     const token = (await cookies()).get('token')?.value
 
@@ -17,7 +18,7 @@ export async function POST(
     }
 
     const apiUrl = process.env.NEXT_PUBLIC_API_URL
-    const response = await fetch(`${apiUrl}/organizations/${params.organizationSlug}/invites`, {
+    const response = await fetch(`${apiUrl}/organizations/${organizationSlug}/invites`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

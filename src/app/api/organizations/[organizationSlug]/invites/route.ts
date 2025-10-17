@@ -3,9 +3,10 @@ import { cookies } from 'next/headers'
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { organizationSlug: string } }
+  { params }: { params: Promise<{ organizationSlug: string }> }
 ) {
   try {
+    const { organizationSlug } = await params
     const token = (await cookies()).get('token')?.value
 
     if (!token) {
@@ -16,7 +17,7 @@ export async function GET(
     }
 
     const apiUrl = process.env.NEXT_PUBLIC_API_URL
-    const response = await fetch(`${apiUrl}/organizations/${params.organizationSlug}/invites`, {
+    const response = await fetch(`${apiUrl}/organizations/${organizationSlug}/invites`, {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${token}`,

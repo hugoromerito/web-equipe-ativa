@@ -3,14 +3,15 @@ import { cookies } from 'next/headers'
 
 export async function POST(
   request: NextRequest,
-  { params }: { params: { organizationSlug: string; inviteId: string } }
+  { params }: { params: Promise<{ organizationSlug: string; inviteId: string }> }
 ) {
   try {
+    const { inviteId } = await params
     const token = (await cookies()).get('token')?.value
     if (!token) return NextResponse.json({ error: 'Token não encontrado' }, { status: 401 })
 
     const apiUrl = process.env.NEXT_PUBLIC_API_URL
-    const resp = await fetch(`${apiUrl}/invites/${params.inviteId}/reject`, {
+    const resp = await fetch(`${apiUrl}/invites/${inviteId}/reject`, {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${token}`,

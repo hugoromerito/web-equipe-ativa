@@ -85,11 +85,9 @@ export function AvatarUpload({
           </DialogDescription>
         </DialogHeader>
         <FileUpload
-          onUpload={handleUpload}
+          onFileSelect={handleUpload}
           accept="image/*"
-          loading={uploading}
-          label="Foto de perfil"
-          description="PNG, JPG ou GIF (máx. 5MB)"
+          label="Selecionar foto de perfil"
         />
       </DialogContent>
     </Dialog>
