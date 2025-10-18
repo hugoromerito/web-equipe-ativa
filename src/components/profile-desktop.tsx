@@ -125,7 +125,7 @@ export async function ProfileDesktop() {
 
         <DropdownMenuSeparator />
 
-        <DropdownMenuItem className="cursor-pointer" asChild>
+        <DropdownMenuItem asChild>
           <a href="/api/auth/sign-out">
             <LogOut className="mr-2 size-4" />
             Sair
