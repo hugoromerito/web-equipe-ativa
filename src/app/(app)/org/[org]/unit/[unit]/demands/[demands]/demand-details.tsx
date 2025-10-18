@@ -57,18 +57,18 @@ export async function DemandDetails() {
   }
 
   return (
-    <div className="w-full max-w-4xl mx-auto space-y-6 p-4 md:p-6">
+    <div className="w-full max-w-4xl mx-auto space-y-6 p-4 md:p-6 medical-layout">
       {/* Header Section */}
       <div className="relative">
-        <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 via-purple-500/10 to-pink-500/10 rounded-3xl blur-xl" />
-        <Card className="relative border-0 shadow-2xl bg-white/95 backdrop-blur-sm">
+        <div className="absolute inset-0 medical-gradient-primary rounded-3xl blur-xl opacity-20" />
+        <Card className="relative medical-card-elevated medical-glass">
           <CardHeader className="space-y-4 pb-6">
             <div className="flex items-start justify-between gap-4">
               <div className="space-y-2 flex-1">
-                <CardTitle className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent">
+                <CardTitle className="text-2xl md:text-3xl font-bold medical-text-gradient">
                   {demand.title}
                 </CardTitle>
-                <p className="text-gray-600 text-base md:text-lg leading-relaxed">
+                <p className="text-muted-foreground text-base md:text-lg leading-relaxed">
                   {demand.description}
                 </p>
               </div>
@@ -94,10 +94,10 @@ export async function DemandDetails() {
       <div className="grid gap-6 lg:grid-cols-2">
         {/* Address Information */}
         {(demand.zip_code || demand.street || demand.neighborhood) && (
-          <Card className="group hover:shadow-lg transition-all duration-300 border-0 shadow-md bg-gradient-to-br from-white to-gray-50/50">
+          <Card className="group medical-card medical-hover-lift">
             <CardHeader>
               <CardTitle className="flex items-center gap-3 text-lg">
-                <div className="p-2 rounded-lg bg-blue-100 text-blue-600 group-hover:bg-blue-500 group-hover:text-white transition-colors">
+                <div className="medical-icon-container bg-primary/10 text-primary group-hover:medical-accent-hover">
                   <MapPin className="h-5 w-5" />
                 </div>
                 Localização
@@ -107,32 +107,32 @@ export async function DemandDetails() {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
                 {demand.zip_code && (
                   <div className="space-y-1">
-                    <span className="font-medium text-gray-900">CEP</span>
-                    <p className="text-gray-600">{demand.zip_code}</p>
+                    <span className="font-medium text-foreground">CEP</span>
+                    <p className="text-muted-foreground">{demand.zip_code}</p>
                   </div>
                 )}
                 {demand.city && (
                   <div className="space-y-1">
-                    <span className="font-medium text-gray-900">Cidade</span>
-                    <p className="text-gray-600">{demand.city}</p>
+                    <span className="font-medium text-foreground">Cidade</span>
+                    <p className="text-muted-foreground">{demand.city}</p>
                   </div>
                 )}
                 {demand.neighborhood && (
                   <div className="space-y-1">
-                    <span className="font-medium text-gray-900">Bairro</span>
-                    <p className="text-gray-600">{demand.neighborhood}</p>
+                    <span className="font-medium text-foreground">Bairro</span>
+                    <p className="text-muted-foreground">{demand.neighborhood}</p>
                   </div>
                 )}
                 {demand.street && (
                   <div className="space-y-1">
-                    <span className="font-medium text-gray-900">Endereço</span>
-                    <p className="text-gray-600">{demand.street}, {demand.number}</p>
+                    <span className="font-medium text-foreground">Endereço</span>
+                    <p className="text-muted-foreground">{demand.street}, {demand.number}</p>
                   </div>
                 )}
                 {demand.complement && (
                   <div className="space-y-1 sm:col-span-2">
-                    <span className="font-medium text-gray-900">Complemento</span>
-                    <p className="text-gray-600">{demand.complement}</p>
+                    <span className="font-medium text-foreground">Complemento</span>
+                    <p className="text-muted-foreground">{demand.complement}</p>
                   </div>
                 )}
               </div>
@@ -141,7 +141,7 @@ export async function DemandDetails() {
                 href={mapsUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors font-medium text-sm group/link"
+                className="medical-button medical-button-primary group/link"
               >
                 <MapPin className="h-4 w-4 group-hover/link:scale-110 transition-transform" />
                 Ver no Google Maps
@@ -152,10 +152,10 @@ export async function DemandDetails() {
         )}
 
         {/* Applicant Information */}
-        <Card className="group hover:shadow-lg transition-all duration-300 border-0 shadow-md bg-gradient-to-br from-white to-green-50/30">
+        <Card className="group medical-card medical-hover-lift medical-accent-success">
           <CardHeader>
             <CardTitle className="flex items-center gap-3 text-lg">
-              <div className="p-2 rounded-lg bg-green-100 text-green-600 group-hover:bg-green-500 group-hover:text-white transition-colors">
+              <div className="medical-icon-container bg-success/10 text-success group-hover:medical-accent-hover">
                 <User className="h-5 w-5" />
               </div>
               Paciente
@@ -163,17 +163,17 @@ export async function DemandDetails() {
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="flex items-center gap-4">
-              <Avatar className="h-16 w-16 ring-4 ring-green-100 group-hover:ring-green-200 transition-all">
+              <Avatar className="h-16 w-16 medical-avatar-ring ring-success/20 group-hover:ring-success/30">
                 {demand.applicant.avatarUrl && (
                   <AvatarImage src={demand.applicant.avatarUrl} />
                 )}
-                <AvatarFallback className="bg-green-100 text-green-700 text-lg font-semibold">
+                <AvatarFallback className="bg-success/10 text-success text-lg font-semibold">
                   {demand.applicant.name?.charAt(0) || 'U'}
                 </AvatarFallback>
               </Avatar>
               <div className="space-y-2 flex-1">
-                <h3 className="font-semibold text-lg text-gray-900">{demand.applicant.name}</h3>
-                <div className="space-y-1 text-sm text-gray-600">
+                <h3 className="font-semibold text-lg text-foreground">{demand.applicant.name}</h3>
+                <div className="space-y-1 text-sm text-muted-foreground">
                   <div className="flex items-center gap-2">
                     <Calendar className="h-4 w-4" />
                     <span>
@@ -197,7 +197,7 @@ export async function DemandDetails() {
               href={whatsappLink}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg transition-colors font-medium text-sm group/whats"
+              className="medical-button medical-button-success group/whats"
             >
               <MessageCircle className="h-4 w-4 group-hover/whats:scale-110 transition-transform" />
               Entrar em contato
@@ -209,10 +209,10 @@ export async function DemandDetails() {
 
       {/* Responsible Member */}
       {demand.member && (
-        <Card className="group hover:shadow-lg transition-all duration-300 border-0 shadow-md bg-gradient-to-br from-white to-purple-50/30">
+        <Card className="group medical-card medical-hover-lift medical-accent-secondary">
           <CardHeader>
             <CardTitle className="flex items-center gap-3 text-lg">
-              <div className="p-2 rounded-lg bg-purple-100 text-purple-600 group-hover:bg-purple-500 group-hover:text-white transition-colors">
+              <div className="medical-icon-container bg-secondary/10 text-secondary group-hover:medical-accent-hover">
                 <Users className="h-5 w-5" />
               </div>
               Responsável pela Consulta
@@ -220,17 +220,17 @@ export async function DemandDetails() {
           </CardHeader>
           <CardContent>
             <div className="flex items-center gap-4">
-              <Avatar className="h-14 w-14 ring-4 ring-purple-100 group-hover:ring-purple-200 transition-all">
+              <Avatar className="h-14 w-14 medical-avatar-ring ring-secondary/20 group-hover:ring-secondary/30">
                 {demand.member.user.avatarUrl && (
                   <AvatarImage src={demand.member.user.avatarUrl} />
                 )}
-                <AvatarFallback className="bg-purple-100 text-purple-700 font-semibold">
+                <AvatarFallback className="bg-secondary/10 text-secondary font-semibold">
                   {demand.member.user.name?.charAt(0) || 'M'}
                 </AvatarFallback>
               </Avatar>
               <div className="space-y-1">
-                <h3 className="font-semibold text-gray-900">{demand.member.user.name}</h3>
-                <p className="text-sm text-gray-600 flex items-center gap-1">
+                <h3 className="font-semibold text-foreground">{demand.member.user.name}</h3>
+                <p className="text-sm text-muted-foreground flex items-center gap-1">
                   <Mail className="h-3 w-3" />
                   {demand.member.user.email}
                 </p>
@@ -242,24 +242,24 @@ export async function DemandDetails() {
 
       {/* Organization & Unit */}
       <div className="grid gap-6 md:grid-cols-2">
-        <Card className="group hover:shadow-lg transition-all duration-300 border-0 shadow-md bg-gradient-to-br from-white to-orange-50/30">
+        <Card className="group medical-card medical-hover-lift medical-accent-warning">
           <CardHeader>
             <CardTitle className="flex items-center gap-3 text-lg">
-              <div className="p-2 rounded-lg bg-orange-100 text-orange-600 group-hover:bg-orange-500 group-hover:text-white transition-colors">
+              <div className="medical-icon-container bg-warning/10 text-warning group-hover:medical-accent-hover">
                 <Landmark className="h-5 w-5" />
               </div>
               Setor de Atendimento
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="font-medium text-gray-900">{demand.unit.name}</p>
+            <p className="font-medium text-foreground">{demand.unit.name}</p>
           </CardContent>
         </Card>
 
-        <Card className="group hover:shadow-lg transition-all duration-300 border-0 shadow-md bg-gradient-to-br from-white to-indigo-50/30">
+        <Card className="group medical-card medical-hover-lift medical-accent-info">
           <CardHeader>
             <CardTitle className="flex items-center gap-3 text-lg">
-              <div className="p-2 rounded-lg bg-indigo-100 text-indigo-600 group-hover:bg-indigo-500 group-hover:text-white transition-colors">
+              <div className="medical-icon-container bg-info/10 text-info group-hover:medical-accent-hover">
                 <Building2 className="h-5 w-5" />
               </div>
               Organização
@@ -267,15 +267,15 @@ export async function DemandDetails() {
           </CardHeader>
           <CardContent>
             <div className="flex items-center gap-3">
-              <Avatar className="h-12 w-12 ring-4 ring-indigo-100 group-hover:ring-indigo-200 transition-all">
+              <Avatar className="h-12 w-12 medical-avatar-ring ring-info/20 group-hover:ring-info/30">
                 {demand.unit.organization.avatarUrl && (
                   <AvatarImage src={demand.unit.organization.avatarUrl} />
                 )}
-                <AvatarFallback className="bg-indigo-100 text-indigo-700 font-semibold">
+                <AvatarFallback className="bg-info/10 text-info font-semibold">
                   {demand.unit.organization.name?.charAt(0) || 'O'}
                 </AvatarFallback>
               </Avatar>
-              <p className="font-medium text-gray-900">{demand.unit.organization.name}</p>
+              <p className="font-medium text-foreground">{demand.unit.organization.name}</p>
             </div>
           </CardContent>
         </Card>
@@ -283,10 +283,10 @@ export async function DemandDetails() {
 
       {/* Owner Information */}
       {demand.owner && (
-        <Card className="group hover:shadow-lg transition-all duration-300 border-0 shadow-md bg-gradient-to-br from-white to-cyan-50/30">
+        <Card className="group medical-card medical-hover-lift medical-accent-accent">
           <CardHeader>
             <CardTitle className="flex items-center gap-3 text-lg">
-              <div className="p-2 rounded-lg bg-cyan-100 text-cyan-600 group-hover:bg-cyan-500 group-hover:text-white transition-colors">
+              <div className="medical-icon-container bg-accent/10 text-accent group-hover:medical-accent-hover">
                 <Eye className="h-5 w-5" />
               </div>
               Registrado por
@@ -294,17 +294,17 @@ export async function DemandDetails() {
           </CardHeader>
           <CardContent>
             <div className="flex items-center gap-4">
-              <Avatar className="h-14 w-14 ring-4 ring-cyan-100 group-hover:ring-cyan-200 transition-all">
+              <Avatar className="h-14 w-14 medical-avatar-ring ring-accent/20 group-hover:ring-accent/30">
                 {demand.owner.avatarUrl && (
                   <AvatarImage src={demand.owner.avatarUrl} />
                 )}
-                <AvatarFallback className="bg-cyan-100 text-cyan-700 font-semibold">
+                <AvatarFallback className="bg-accent/10 text-accent font-semibold">
                   {demand.owner.name?.charAt(0) || 'R'}
                 </AvatarFallback>
               </Avatar>
               <div className="space-y-1">
-                <h3 className="font-semibold text-gray-900">{demand.owner.name}</h3>
-                <p className="text-sm text-gray-600 flex items-center gap-1">
+                <h3 className="font-semibold text-foreground">{demand.owner.name}</h3>
+                <p className="text-sm text-muted-foreground flex items-center gap-1">
                   <Mail className="h-3 w-3" />
                   {demand.owner.email}
                 </p>
@@ -315,10 +315,10 @@ export async function DemandDetails() {
       )}
 
       {/* Timeline Information */}
-      <Card className="border-0 shadow-md bg-gradient-to-br from-gray-50 to-white">
+      <Card className="medical-card medical-glass">
         <CardHeader>
           <CardTitle className="flex items-center gap-3 text-lg">
-            <div className="p-2 rounded-lg bg-gray-100 text-gray-600">
+            <div className="medical-icon-container bg-muted/20 text-muted-foreground">
               <Clock className="h-5 w-5" />
             </div>
             Histórico
@@ -327,11 +327,11 @@ export async function DemandDetails() {
         <CardContent>
           <div className="grid gap-4 md:grid-cols-2">
             <div className="space-y-2">
-              <div className="flex items-center gap-2 text-sm font-medium text-gray-900">
+              <div className="flex items-center gap-2 text-sm font-medium text-foreground">
                 <Calendar className="h-4 w-4" />
                 Criado em
               </div>
-              <p className="text-gray-600 ml-6">
+              <p className="text-muted-foreground ml-6">
                 {new Date(demand.createdAt).toLocaleDateString('pt-BR', {
                   day: '2-digit',
                   month: '2-digit',
@@ -342,11 +342,11 @@ export async function DemandDetails() {
               </p>
             </div>
             <div className="space-y-2">
-              <div className="flex items-center gap-2 text-sm font-medium text-gray-900">
+              <div className="flex items-center gap-2 text-sm font-medium text-foreground">
                 <Clock className="h-4 w-4" />
                 Última atualização
               </div>
-              <p className="text-gray-600 ml-6">
+              <p className="text-muted-foreground ml-6">
                 {new Date(demand.updatedAt!).toLocaleDateString('pt-BR', {
                   day: '2-digit',
                   month: '2-digit',

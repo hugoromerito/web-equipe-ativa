@@ -72,37 +72,86 @@
 }
 
 .dark {
-  --background: oklch(0.141 0.005 285.823);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.21 0.006 285.885);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.21 0.006 285.885);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.92 0.004 286.32);
-  --primary-foreground: oklch(0.21 0.006 285.885);
-  --secondary: oklch(0.274 0.006 286.033);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.274 0.006 286.033);
-  --muted-foreground: oklch(0.705 0.015 286.067);
-  --accent: oklch(0.274 0.006 286.033);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.552 0.016 285.938);
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.21 0.006 285.885);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.274 0.006 286.033);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.552 0.016 285.938);
+  /* Dark Mode - Paleta Médica Profissional */
+  --background: oklch(8% 0.008 240);         /* Fundo escuro azulado */
+  --foreground: oklch(98% 0.005 240);        /* Texto principal claro */
+  
+  /* Cards escuros com sutil tom médico */
+  --card: oklch(12% 0.01 240);              /* Cards escuros */
+  --card-foreground: oklch(95% 0.005 240);   /* Texto em cards */
+  
+  --popover: oklch(10% 0.01 240);           /* Popovers escuros */
+  --popover-foreground: oklch(95% 0.005 240);
+  
+  /* Primary: Azul médico adaptado para dark */
+  --primary: oklch(65% 0.15 230);           /* Azul médico vibrante */
+  --primary-foreground: oklch(8% 0.008 240); /* Contraste no primary */
+  
+  /* Secondary: Tons escuros sutis */
+  --secondary: oklch(18% 0.01 240);         /* Fundo secundário */
+  --secondary-foreground: oklch(88% 0.005 240); /* Texto secundário */
+  
+  --muted: oklch(15% 0.008 240);            /* Elementos mudos */
+  --muted-foreground: oklch(65% 0.02 240);  /* Texto mudo */
+  
+  --accent: oklch(20% 0.012 240);           /* Accent escuro */
+  --accent-foreground: oklch(92% 0.005 240); /* Texto accent */
+  
+  /* Destructive: Vermelho médico para dark */
+  --destructive: oklch(62% 0.20 25);        /* Vermelho vibrante */
+  --destructive-foreground: oklch(98% 0 0);
+  
+  /* Borders e inputs escuros */
+  --border: oklch(25% 0.01 240);            /* Bordas visíveis */
+  --input: oklch(16% 0.01 240);             /* Input backgrounds */
+  --ring: oklch(65% 0.15 230);              /* Focus rings */
+  
+  /* Charts adaptados para dark mode */
+  --chart-1: oklch(65% 0.15 230);           /* Azul chart */
+  --chart-2: oklch(68% 0.18 160);           /* Verde chart */
+  --chart-3: oklch(75% 0.16 80);            /* Âmbar chart */
+  --chart-4: oklch(62% 0.22 280);           /* Roxo chart */
+  --chart-5: oklch(68% 0.20 340);           /* Rosa chart */
+  
+  /* Sidebar escura profissional */
+  --sidebar: oklch(10% 0.008 240);          /* Sidebar escura */
+  --sidebar-foreground: oklch(92% 0.005 240);
+  --sidebar-primary: oklch(65% 0.15 230);   /* Primary na sidebar */
+  --sidebar-primary-foreground: oklch(8% 0.008 240);
+  --sidebar-accent: oklch(18% 0.01 240);    /* Accent na sidebar */
+  --sidebar-accent-foreground: oklch(88% 0.005 240);
+  --sidebar-border: oklch(22% 0.01 240);    /* Bordas da sidebar */
+  --sidebar-ring: oklch(65% 0.15 230);
+  
+  /* Cores específicas do sistema médico para dark */
+  --medical-blue: oklch(65% 0.15 230);
+  --medical-blue-light: oklch(25% 0.08 230);
+  --medical-green: oklch(68% 0.18 160);
+  --medical-green-light: oklch(22% 0.08 160);
+  --medical-amber: oklch(75% 0.16 80);
+  --medical-amber-light: oklch(25% 0.08 80);
+  --medical-red: oklch(62% 0.20 25);
+  --medical-red-light: oklch(25% 0.08 25);
+  --medical-slate: oklch(75% 0.02 240);
+  --medical-slate-light: oklch(20% 0.02 240);
+  
+  /* Estados específicos para dark mode */
+  --success: oklch(68% 0.18 160);
+  --success-foreground: oklch(8% 0.008 160);
+  --warning: oklch(75% 0.16 80);
+  --warning-foreground: oklch(8% 0.008 80);
+  --info: oklch(65% 0.15 230);
+  --info-foreground: oklch(8% 0.008 230);
+  
+  /* Glass effects para dark */
+  --glass-background: oklch(15% 0.01 240 / 0.8);
+  --glass-border: oklch(35% 0.02 240 / 0.3);
+  
+  /* Shadows específicas para dark */
+  --shadow-color: oklch(0% 0 0 / 0.4);
+  --shadow-elevation-low: 0 1px 3px var(--shadow-color);
+  --shadow-elevation-medium: 0 4px 12px var(--shadow-color);
+  --shadow-elevation-high: 0 8px 32px var(--shadow-color);
 }
 
 @theme inline {
@@ -148,14 +197,34 @@
     @apply border-border outline-ring/50;
   }
   
+  /* Reset e base styles */
+  html {
+    @apply antialiased;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  
+  html.theme-transitioning,
+  html.theme-transitioning * {
+    transition: 
+      background-color 0.3s ease,
+      border-color 0.3s ease,
+      color 0.3s ease,
+      fill 0.3s ease,
+      stroke 0.3s ease,
+      box-shadow 0.3s ease !important;
+  }
+  
   body {
     @apply bg-background text-foreground font-sans antialiased;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    font-feature-settings: 'rlig' 1, 'calt' 1;
   }
   
   /* Tipografia médica profissional */
   h1, h2, h3, h4, h5, h6 {
     @apply font-semibold tracking-tight text-foreground;
+    transition: color 0.3s ease;
   }
   
   h1 { @apply text-3xl md:text-4xl; }
@@ -164,6 +233,13 @@
   h4 { @apply text-lg md:text-xl; }
   h5 { @apply text-base md:text-lg; }
   h6 { @apply text-sm md:text-base; }
+  
+  /* Redução de movimento para acessibilidade */
+  @media (prefers-reduced-motion: reduce) {
+    html, html.theme-transitioning *, body, h1, h2, h3, h4, h5, h6 {
+      transition: none !important;
+    }
+  }
 }
 
 
@@ -224,31 +300,31 @@
   
   /* Botões médicos profissionais */
   .btn-medical-primary {
-    @apply bg-primary hover:bg-primary/90 text-primary-foreground;
+    @apply cursor-pointer bg-primary hover:bg-primary/90 text-primary-foreground;
     @apply shadow-sm hover:shadow-md transition-all duration-200;
     @apply px-6 py-2.5 rounded-lg font-medium;
   }
   
   .btn-medical-secondary {
-    @apply bg-secondary hover:bg-secondary/80 text-secondary-foreground;
+    @apply cursor-pointer bg-secondary hover:bg-secondary/80 text-secondary-foreground;
     @apply border border-border shadow-sm hover:shadow-md transition-all duration-200;
     @apply px-6 py-2.5 rounded-lg font-medium;
   }
   
   .btn-medical-success {
-    @apply bg-green-600 hover:bg-green-700 text-white;
+    @apply cursor-pointer bg-green-600 hover:bg-green-700 text-white;
     @apply shadow-sm hover:shadow-md transition-all duration-200;
     @apply px-6 py-2.5 rounded-lg font-medium;
   }
   
   .btn-medical-warning {
-    @apply bg-amber-600 hover:bg-amber-700 text-white;
+    @apply cursor-pointer bg-amber-600 hover:bg-amber-700 text-white;
     @apply shadow-sm hover:shadow-md transition-all duration-200;
     @apply px-6 py-2.5 rounded-lg font-medium;
   }
   
   .btn-medical-danger {
-    @apply bg-red-600 hover:bg-red-700 text-white;
+    @apply cursor-pointer bg-red-600 hover:bg-red-700 text-white;
     @apply shadow-sm hover:shadow-md transition-all duration-200;
     @apply px-6 py-2.5 rounded-lg font-medium;
   }
@@ -287,6 +363,17 @@
   
   .badge-medical-info {
     @apply bg-slate-50 text-slate-700 border-slate-200;
+  }
+
+  /* Badge específicos para pacientes */
+  .medical-stat-badge {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-sm font-medium;
+    @apply bg-blue-50 text-blue-700 border border-blue-200;
+  }
+
+  .medical-unit-badge {
+    @apply inline-flex items-center px-2 py-1 rounded-md text-xs font-medium;
+    @apply bg-green-50 text-green-700 border border-green-200;
   }
   
   /* Header médico profissional */
@@ -722,19 +809,214 @@
   }
 }
 
-/* Dark mode adaptations */
+/* ===== DARK MODE - ADAPTAÇÕES COMPLETAS ===== */
 .dark {
+  /* Layout escuro médico profissional */
   .medical-layout {
-    @apply bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900;
+    @apply bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950;
+    background-image: 
+      radial-gradient(at 40% 20%, oklch(15% 0.02 240) 0, transparent 50%),
+      radial-gradient(at 80% 0%, oklch(12% 0.02 260) 0, transparent 50%),
+      radial-gradient(at 0% 50%, oklch(10% 0.01 220) 0, transparent 50%);
   }
   
-  .medical-card {
-    @apply bg-slate-800/90 border-slate-700/60;
+  /* Cards escuros com bordas e sombras aprimoradas */
+  .medical-card,
+  .medical-card-elevated,
+  .medical-card-interactive {
+    @apply bg-card/95 border-border/80 backdrop-blur-sm;
+    box-shadow: 0 4px 16px oklch(0% 0 0 / 0.3);
   }
   
+  .medical-card-elevated {
+    @apply shadow-2xl border-border/60;
+    box-shadow: 0 8px 32px oklch(0% 0 0 / 0.4);
+  }
+  
+  .medical-card-interactive {
+    @apply hover:border-primary/40 hover:bg-card/98;
+    box-shadow: 0 4px 16px oklch(0% 0 0 / 0.3);
+  }
+  
+  .medical-card-interactive:hover {
+    box-shadow: 0 8px 32px oklch(0% 0 0 / 0.4);
+  }
+  
+  /* Estatísticas médicas escuras */
+  .medical-stat {
+    @apply bg-gradient-to-br from-card via-secondary/30 to-card;
+    border: 1px solid oklch(25% 0.01 240 / 0.6);
+  }
+  
+  /* Status indicators escuros */
+  .medical-status-critical {
+    @apply bg-red-950/50 border-red-800/60 text-red-300;
+  }
+  
+  .medical-status-warning {
+    @apply bg-amber-950/50 border-amber-800/60 text-amber-300;
+  }
+  
+  .medical-status-stable {
+    @apply bg-green-950/50 border-green-800/60 text-green-300;
+  }
+  
+  .medical-status-info {
+    @apply bg-blue-950/50 border-blue-800/60 text-blue-300;
+  }
+  
+  /* Botões médicos escuros */
+  .btn-medical-primary {
+    @apply cursor-pointer bg-primary hover:bg-primary/90 text-primary-foreground;
+    box-shadow: 0 2px 8px oklch(0% 0 0 / 0.3);
+  }
+  
+  .btn-medical-primary:hover {
+    @apply cursor-pointer;
+    box-shadow: 0 4px 16px oklch(65% 0.15 230 / 0.3);
+    
+  }
+  
+  .btn-medical-secondary {
+    @apply cursor-pointer bg-secondary/80 hover:bg-secondary text-secondary-foreground;
+    @apply border-border/60;
+    box-shadow: 0 2px 8px oklch(0% 0 0 / 0.2);
+  }
+  
+  /* Inputs escuros */
+  .input-medical {
+    @apply border-border/60 bg-background/80 focus:border-primary/60 focus:ring-primary/30;
+    @apply backdrop-blur-sm;
+  }
+  
+  /* Badges escuros */
+  .badge-medical-primary {
+    @apply bg-blue-950/60 text-blue-300 border-blue-800/50;
+  }
+  
+  .badge-medical-success {
+    @apply bg-green-950/60 text-green-300 border-green-800/50;
+  }
+  
+  .badge-medical-warning {
+    @apply bg-amber-950/60 text-amber-300 border-amber-800/50;
+  }
+  
+  .badge-medical-danger {
+    @apply bg-red-950/60 text-red-300 border-red-800/50;
+  }
+  
+  .badge-medical-info {
+    @apply bg-slate-800/60 text-slate-300 border-slate-700/50;
+  }
+  
+  /* Header escuro profissional */
+  .medical-header {
+    @apply bg-background/95 backdrop-blur-md border-border/40;
+    box-shadow: 0 2px 16px oklch(0% 0 0 / 0.3);
+  }
+  
+  /* Navigation escura */
+  .medical-nav {
+    @apply bg-secondary/30 border border-border/40;
+  }
+  
+  .medical-nav-item {
+    @apply hover:bg-background/80 hover:text-foreground text-muted-foreground;
+  }
+  
+  .medical-nav-item-active {
+    @apply bg-background/90 text-primary border-border/60;
+    box-shadow: 0 1px 4px oklch(0% 0 0 / 0.2);
+  }
+  
+  /* Tabelas escuras */
+  .medical-table {
+    @apply bg-card/80 border border-border/40;
+    box-shadow: 0 4px 16px oklch(0% 0 0 / 0.3);
+  }
+  
+  .medical-table th {
+    @apply bg-secondary/40 text-muted-foreground border-border/40;
+  }
+  
+  .medical-table td {
+    @apply text-foreground border-border/20;
+  }
+  
+  .medical-table tbody tr:hover {
+    @apply bg-secondary/20;
+  }
+  
+  /* Formulários escuros */
+  .medical-form-label {
+    @apply text-foreground;
+  }
+  
+  .medical-form-input {
+    @apply border-border/60 bg-background/60 focus:border-primary/60 focus:ring-primary/20;
+    @apply backdrop-blur-sm;
+  }
+  
+  /* Modais escuros */
+  .medical-modal-backdrop {
+    @apply bg-black/60 backdrop-blur-sm;
+  }
+  
+  .medical-modal-content {
+    @apply bg-card/95 border border-border/40 backdrop-blur-md;
+    box-shadow: 0 16px 64px oklch(0% 0 0 / 0.5);
+  }
+  
+  /* Alertas escuros */
+  .medical-alert-success {
+    @apply bg-green-950/40 border-green-800/50 text-green-300;
+  }
+  
+  .medical-alert-warning {
+    @apply bg-amber-950/40 border-amber-800/50 text-amber-300;
+  }
+  
+  .medical-alert-danger {
+    @apply bg-red-950/40 border-red-800/50 text-red-300;
+  }
+  
+  .medical-alert-info {
+    @apply bg-blue-950/40 border-blue-800/50 text-blue-300;
+  }
+  
+  /* Glass effect escuro aprimorado */
   .medical-glass {
-    background: rgba(15, 23, 42, 0.8);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: var(--glass-background);
+    backdrop-filter: blur(16px) saturate(180%);
+    border: 1px solid var(--glass-border);
+  }
+  
+  /* Skeleton loaders escuros */
+  .medical-skeleton,
+  .medical-skeleton-text,
+  .medical-skeleton-title,
+  .medical-skeleton-card {
+    @apply bg-secondary/40;
+  }
+  
+  /* Scrollbar escura customizada */
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: oklch(15% 0.01 240);
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, 
+      oklch(35% 0.08 230) 0%, 
+      oklch(45% 0.10 240) 100%
+    );
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, 
+      oklch(45% 0.10 230) 0%, 
+      oklch(55% 0.12 240) 100%
+    );
   }
 }
 
@@ -764,6 +1046,74 @@
   }
 }
 
+/* Background Pattern */
+.bg-grid-pattern {
+  background-image: 
+    linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px),
+    linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+.dark .bg-grid-pattern {
+  background-image: 
+    linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px),
+    linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px);
+}
+
+/* Status indicators aprimorados */
+.status-online {
+  @apply relative;
+}
+
+.status-online::before {
+  content: '';
+  @apply absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full border-2 border-background;
+  box-shadow: 0 0 0 1px rgba(34, 197, 94, 0.3);
+}
+
+.status-offline {
+  @apply relative;
+}
+
+.status-offline::before {
+  content: '';
+  @apply absolute -top-1 -right-1 w-3 h-3 bg-gray-400 rounded-full border-2 border-background;
+}
+
+.status-badge-online {
+  @apply inline-flex items-center gap-1.5 px-2 py-1 rounded-full text-xs font-medium;
+  @apply bg-green-100 text-green-800 border border-green-200;
+}
+
+.status-badge-offline {
+  @apply inline-flex items-center gap-1.5 px-2 py-1 rounded-full text-xs font-medium;
+  @apply bg-gray-100 text-gray-700 border border-gray-200;
+}
+
+.dark .status-badge-online {
+  @apply bg-green-950/60 text-green-300 border-green-800/50;
+}
+
+.dark .status-badge-offline {
+  @apply bg-gray-800/60 text-gray-300 border-gray-700/50;
+}
+
+/* Melhorias para avatar */
+.avatar-container {
+  @apply relative inline-block;
+}
+
+.avatar-online .avatar-container::after {
+  content: '';
+  @apply absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-background;
+  box-shadow: 0 0 0 1px rgba(34, 197, 94, 0.3);
+}
+
+.avatar-offline .avatar-container::after {
+  content: '';
+  @apply absolute bottom-0 right-0 w-3 h-3 bg-gray-400 rounded-full border-2 border-background;
+}
+
 /* Print styles */
 @media print {
   .no-print {
@@ -781,5 +1131,16 @@
   .medical-card {
     box-shadow: none !important;
     border: 1px solid #e2e8f0 !important;
+  }
+  
+  .bg-grid-pattern {
+    display: none !important;
+  }
+  
+  .status-online::before,
+  .status-offline::before,
+  .avatar-online .avatar-container::after,
+  .avatar-offline .avatar-container::after {
+    display: none !important;
   }
 }

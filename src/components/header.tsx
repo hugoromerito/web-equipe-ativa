@@ -24,11 +24,11 @@ export async function Header() {
             {/* Logo e navegação principal */}
             <div className="flex items-center space-x-6">
               <Link href="/" className="flex items-center space-x-2 group">
-                <div className="p-2 rounded-lg bg-primary/5 group-hover:bg-primary/10 transition-colors">
+                <div className="p-2 rounded-lg">
                   <Image
                     src={eaLogo}
                     alt="Equipe Ativa"
-                    className="h-20 w-20 md:h-20 md:w-20"
+                    className="w-25 md:w-30"
                   />
                 </div>
                 {/* <div className="hidden md:block">
@@ -38,19 +38,21 @@ export async function Header() {
               </Link>
 
               {/* Separador visual */}
-              <div className="hidden md:block h-8 w-px bg-border"></div>
+              {/* <div className="hidden md:block h-8 w-px bg-border"></div> */}
 
               {/* Seletores de organização e setor */}
-              <div className="hidden md:flex items-center space-x-4">
+              {/* <div className="hidden md:flex items-center space-x-4">
                 <OrganizationSwitcher />
                 <div className="h-4 w-px bg-border"></div>
                 <UnitSwitcher />
-              </div>
+              </div> */}
             </div>
 
             {/* Ações do usuário */}
             <div className="flex items-center space-x-3">
+              <div className="hidden md:block">
               <PendingInvites />
+              </div>
               <div className="hidden md:block">
                 <ThemeSwitcher />
               </div>
@@ -65,11 +67,11 @@ export async function Header() {
           </div>
 
           {/* Seletores mobile */}
-          <div className="flex md:hidden items-center space-x-4 pt-2 border-t border-border/50">
+          {/* <div className="flex md:hidden items-center space-x-4 pt-2 border-t border-border/50">
             <OrganizationSwitcher />
             <div className="h-4 w-px bg-border"></div>
             <UnitSwitcher />
-          </div>
+          </div> */}
 
           {/* Navegação por abas */}
           <div className="hidden md:block pt-2 border-t border-border/50">

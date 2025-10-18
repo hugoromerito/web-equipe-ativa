@@ -18,11 +18,32 @@ import { Badge } from '@/components/ui/badge'
 
 export async function OrgList() {
   const currentOrg = await getCurrentOrg()
-  const { organizations } = await getOrganizations()
-
-  const currentOrganization = organizations.find(
-    (org) => org.slug === currentOrg,
-  )
+  
+  let organizations: any[] = []
+  let currentOrganization: any = null
+  
+  try {
+    const response = await getOrganizations()
+    organizations = response.organizations
+    currentOrganization = organizations.find(
+      (org) => org.slug === currentOrg,
+    )
+  } catch (error) {
+    // Se não há autenticação, exibe mensagem de login
+    console.log('No organizations available (user not authenticated)')
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[400px] space-y-4">
+        <Building2 className="h-16 w-16 text-muted-foreground" />
+        <div className="text-center">
+          <h2 className="text-xl font-semibold">Acesso necessário</h2>
+          <p className="text-muted-foreground">Faça login para ver suas organizações</p>
+        </div>
+        <Link href="/auth/sign-in">
+          <Button>Fazer Login</Button>
+        </Link>
+      </div>
+    )
+  }
 
   function getInitials(name: string): string {
     const initials = name

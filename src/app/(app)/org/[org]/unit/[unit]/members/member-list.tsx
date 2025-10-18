@@ -126,7 +126,7 @@ export async function MemberList() {
                 </div>
                 <div className="p-3 bg-green-100 rounded-lg">
                   <div className="h-8 w-8 rounded-full bg-green-500 flex items-center justify-center">
-                    <div className="h-4 w-4 rounded-full bg-white"></div>
+                    <div className="h-4 w-4 rounded-full bg-background"></div>
                   </div>
                 </div>
               </div>

@@ -30,7 +30,7 @@ export default function CreateDemandPage() {
             </div>
 
             {/* Card com informações do paciente */}
-            <div className="bg-white dark:bg-slate-800 rounded-lg border p-4 shadow-sm">
+            <div className="medical-card p-4">
               <div className="flex items-center gap-2 mb-2">
                 <div className="w-2 h-2 bg-green-500 rounded-full"></div>
                 <span className="text-sm font-medium text-muted-foreground uppercase tracking-wide">

@@ -186,7 +186,7 @@ export function DemandList({
           </p>
 
           {/* Stats Cards Médicos */}
-          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 my-6">
             <div className="medical-card medical-stat">
               <div className="text-xs text-slate-500 mb-1">Total de Demandas</div>
               <div className="medical-stat-value text-blue-600">{pagination.total}</div>
@@ -247,13 +247,13 @@ export function DemandList({
               </select>
 
               {/* View Mode Médico */}
-              <div className="flex rounded-xl border border-slate-200 overflow-hidden bg-white">
+              <div className="flex rounded-xl border medical-border overflow-hidden bg-card">
                 <button
                   onClick={() => setViewMode('grid')}
                   className={`p-3 transition-all duration-200 ${
                     viewMode === 'grid' 
-                      ? 'bg-blue-500 text-white' 
-                      : 'text-slate-600 hover:bg-slate-50'
+                      ? 'bg-primary text-primary-foreground' 
+                      : 'text-muted-foreground hover:bg-muted/20'
                   }`}
                 >
                   <Grid size={20} />
@@ -275,8 +275,8 @@ export function DemandList({
                 onClick={() => setShowFilters(!showFilters)}
                 className={`flex items-center gap-2 px-4 py-3 rounded-xl border transition-all duration-200 ${
                   showFilters 
-                    ? 'bg-blue-500 text-white border-blue-500' 
-                    : 'border-slate-200 text-slate-600 hover:bg-slate-50 bg-white'
+                    ? 'bg-primary text-primary-foreground border-primary' 
+                    : 'medical-border text-muted-foreground hover:bg-muted/20 bg-card'
                 }`}
               >
                 <Filter size={20} />
@@ -436,7 +436,7 @@ export function DemandList({
                     </div>
 
                     {/* Location Médica */}
-                    <div className="flex items-center gap-2 text-slate-500 text-xs mb-4 p-2 bg-slate-50 rounded-lg">
+                    <div className="flex items-center gap-2 text-slate-500 text-xs mb-4 p-2 bg-slate-50  rounded-lg">
                       <MapPin size={14} className="text-blue-500 flex-shrink-0" />
                       <span className="truncate">{demand.location}</span>
                     </div>
@@ -470,8 +470,8 @@ export function DemandList({
                   disabled={!pagination.has_prev}
                   className={`flex items-center gap-2 px-4 py-2 rounded-lg border transition-all duration-200 ${
                     pagination.has_prev
-                      ? 'border-blue-500 text-blue-600 hover:bg-blue-50 bg-white'
-                      : 'border-slate-200 text-slate-400 cursor-not-allowed bg-slate-50'
+                      ? 'border-primary text-primary hover:bg-primary/10 bg-card'
+                      : 'medical-border text-muted-foreground cursor-not-allowed bg-muted/20'
                   }`}
                 >
                   <ChevronLeft size={18} />
@@ -501,8 +501,8 @@ export function DemandList({
                         onClick={() => handlePageChange(pageNum)}
                         className={`w-10 h-10 rounded-lg border font-medium transition-all duration-200 ${
                           isCurrentPage
-                            ? 'bg-blue-500 text-white border-blue-500'
-                            : 'border-slate-200 text-slate-600 hover:bg-slate-50 bg-white'
+                            ? 'bg-primary text-primary-foreground border-primary'
+                            : 'medical-border text-muted-foreground hover:bg-muted/20 bg-card'
                         }`}
                       >
                         {pageNum}
@@ -517,8 +517,8 @@ export function DemandList({
                   disabled={!pagination.has_next}
                   className={`flex items-center gap-2 px-4 py-2 rounded-lg border transition-all duration-200 ${
                     pagination.has_next
-                      ? 'border-blue-500 text-blue-600 hover:bg-blue-50 bg-white'
-                      : 'border-slate-200 text-slate-400 cursor-not-allowed bg-slate-50'
+                      ? 'border-primary text-primary hover:bg-primary/10 bg-card'
+                      : 'medical-border text-muted-foreground cursor-not-allowed bg-muted/20'
                   }`}
                 >
                   <span>Próxima</span>

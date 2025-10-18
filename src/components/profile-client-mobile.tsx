@@ -1,4 +1,4 @@
-import { Building2, ChevronDown, Eye, FileText, LogOut, Users } from 'lucide-react'
+import { Building2, ChevronDown, Eye, FileText, LogOut, Users, UserCheck, UserPlus2 } from 'lucide-react'
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar'
 import {
   DropdownMenu,
@@ -9,7 +9,7 @@ import {
 } from './ui/dropdown-menu'
 // import { useTheme } from 'next-themes'
 import Link from 'next/link'
-import { getCurrentOrg, getCurrentUnit } from '@/lib/auth'
+import { getCurrentOrg, getCurrentUnit, getCurrentPendingInvites } from '@/lib/auth'
 
 function getInitials(name: string): string {
   return name
@@ -31,6 +31,15 @@ export async function ProfileClientMobile({ user }: ProfileClientProps) {
   // const { setTheme } = useTheme()
     const currentOrg = await getCurrentOrg()
     const currentUnit = await getCurrentUnit()
+    
+    let pendingInvites: Awaited<ReturnType<typeof getCurrentPendingInvites>> = []
+    
+    try {
+      pendingInvites = await getCurrentPendingInvites()
+    } catch (error) {
+      // Se não há autenticação, apenas retorna lista vazia
+      console.log('No pending invites available (user not authenticated)')
+    }
 
   return (
     <DropdownMenu>
@@ -48,32 +57,78 @@ export async function ProfileClientMobile({ user }: ProfileClientProps) {
         <ChevronDown className="text-muted-foreground size-4" />
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-56">
-                    <DropdownMenuItem asChild>
-                <Link href={`/org/${currentOrg}`} className="flex items-center gap-2">
-                  <Building2 className="size-4" />
-                  Setores
-                </Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <Link href={`/org/${currentOrg}/unit/${currentUnit}/applicant`} className="flex items-center gap-2">
-                  <FileText className="size-4" />
-                  Registrar Consultas
-                </Link>
-              </DropdownMenuItem>
-              
-              <DropdownMenuItem asChild>
-                <Link href={`/org/${currentOrg}/unit/${currentUnit}/demands`} className="flex items-center gap-2">
-                  <Eye className="size-4" />
-                  Visualizar Consultas
-                </Link>
-              </DropdownMenuItem>
-              
-              <DropdownMenuItem asChild>
-                <Link href={`/org/${currentOrg}/unit/${currentUnit}/members`} className="flex items-center gap-2">
-                  <Users className="size-4" />
-                  Visualizar Membros
-                </Link>
-              </DropdownMenuItem>
+        {/* Convites pendentes - sempre disponível */}
+        <DropdownMenuItem asChild>
+          <Link 
+            href={currentOrg ? `/org/${currentOrg}/invites` : '/invites'} 
+            className="flex items-center gap-2"
+          >
+            <div className="relative">
+              <UserPlus2 className="size-4" />
+              {pendingInvites.length > 0 && (
+                <span className="absolute -top-1 -right-1 flex h-3 w-3 items-center justify-center rounded-full bg-red-500 text-[8px] text-white">
+                  {pendingInvites.length}
+                </span>
+              )}
+            </div>
+            Convites
+            {pendingInvites.length > 0 && (
+              <span className="ml-auto text-xs text-muted-foreground">
+                ({pendingInvites.length})
+              </span>
+            )}
+          </Link>
+        </DropdownMenuItem>
+
+        {/* Separador se houver convites ou organização */}
+        {(pendingInvites.length > 0 || currentOrg) && <DropdownMenuSeparator />}
+        
+        {/* Opções disponíveis quando há organização selecionada */}
+        {currentOrg && (
+          <>
+            <DropdownMenuItem asChild>
+              <Link href={`/org/${currentOrg}`} className="flex items-center gap-2">
+                <Building2 className="size-4" />
+                Setores
+              </Link>
+            </DropdownMenuItem>
+            
+            <DropdownMenuItem asChild>
+              <Link href={`/org/${currentOrg}/patients`} className="flex items-center gap-2">
+                <UserCheck className="size-4" />
+                Pacientes
+              </Link>
+            </DropdownMenuItem>
+          </>
+        )}
+
+        {/* Opções disponíveis quando há organização E unidade selecionadas */}
+        {currentOrg && currentUnit && (
+          <>
+            <DropdownMenuSeparator />
+            
+            <DropdownMenuItem asChild>
+              <Link href={`/org/${currentOrg}/unit/${currentUnit}/applicant`} className="flex items-center gap-2">
+                <FileText className="size-4" />
+                Registrar Consultas
+              </Link>
+            </DropdownMenuItem>
+            
+            <DropdownMenuItem asChild>
+              <Link href={`/org/${currentOrg}/unit/${currentUnit}/demands`} className="flex items-center gap-2">
+                <Eye className="size-4" />
+                Visualizar Consultas
+              </Link>
+            </DropdownMenuItem>
+            
+            <DropdownMenuItem asChild>
+              <Link href={`/org/${currentOrg}/unit/${currentUnit}/members`} className="flex items-center gap-2">
+                <Users className="size-4" />
+                Visualizar Membros
+              </Link>
+            </DropdownMenuItem>
+          </>
+        )}
       
               {/* <DropdownMenuSeparator />
       

@@ -6,7 +6,7 @@ export default async function MembersPage() {
   const permissions = await ability()
 
   return (
-    <div className="min-h-screen bg-gray-50/50">
+    <div className="min-h-screen medical-layout">
       <Header />
       <main className="container mx-auto px-4 py-8">
         <div className="w-full">

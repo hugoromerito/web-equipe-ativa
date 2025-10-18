@@ -70,26 +70,26 @@ export function DrawerDemandStatus() {
           <div className="flex justify-center">
             <Button 
               size="lg" 
-              className="group relative overflow-hidden bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-3 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+              className="group medical-button medical-button-primary medical-hover-lift px-8 py-3"
             >
-              <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-10 transition-opacity duration-300" />
+              <div className="absolute inset-0 bg-background/10 opacity-0 group-hover:opacity-10 transition-opacity duration-300" />
               <Edit className="h-5 w-5 mr-2 group-hover:rotate-12 transition-transform duration-300" />
               <span className="relative z-10 font-semibold">Atualizar Status da Consulta</span>
               <ArrowRight className="h-4 w-4 ml-2 group-hover:translate-x-1 transition-transform duration-300" />
             </Button>
           </div>
         </DialogTrigger>
-        <DialogContent className="sm:max-w-[500px] border-0 shadow-2xl bg-white/95 backdrop-blur-sm">
-          <div className="absolute inset-0 bg-gradient-to-br from-blue-50/50 via-purple-50/50 to-pink-50/50 rounded-lg" />
+        <DialogContent className="sm:max-w-[500px] medical-card-elevated medical-glass">
+          <div className="absolute inset-0 medical-gradient-primary rounded-lg opacity-10" />
           <div className="relative z-10">
             <DialogHeader className="space-y-4">
-              <DialogTitle className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent flex items-center gap-3">
-                <div className="p-2 rounded-lg bg-gradient-to-r from-blue-100 to-purple-100">
-                  <Edit className="h-6 w-6 text-blue-600" />
+              <DialogTitle className="text-2xl font-bold medical-text-gradient flex items-center gap-3">
+                <div className="medical-icon-container bg-primary/10 text-primary">
+                  <Edit className="h-6 w-6" />
                 </div>
                 Atualizar Consulta
               </DialogTitle>
-              <DialogDescription className="text-gray-600 text-base leading-relaxed">
+              <DialogDescription className="text-muted-foreground text-base leading-relaxed">
                 Dê andamento à consulta alterando seu status atual. Esta ação será registrada no histórico da consulta.
               </DialogDescription>
             </DialogHeader>
@@ -106,28 +106,28 @@ export function DrawerDemandStatus() {
         <div className="flex justify-center px-4">
           <Button 
             size="lg" 
-            className="group relative overflow-hidden bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-6 py-3 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 w-full max-w-md"
+            className="group medical-button medical-button-primary medical-hover-lift px-6 py-3 w-full max-w-md"
           >
-            <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-10 transition-opacity duration-300" />
+            <div className="absolute inset-0 bg-background/10 opacity-0 group-hover:opacity-10 transition-opacity duration-300" />
             <Edit className="h-5 w-5 mr-2 group-hover:rotate-12 transition-transform duration-300" />
             <span className="relative z-10 font-semibold">Atualizar Status</span>
             <ArrowRight className="h-4 w-4 ml-2 group-hover:translate-x-1 transition-transform duration-300" />
           </Button>
         </div>
       </DrawerTrigger>
-      <DrawerContent className="border-0 bg-white/95 backdrop-blur-sm">
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-50/30 via-purple-50/30 to-pink-50/30" />
+      <DrawerContent className="medical-card medical-glass">
+        <div className="absolute inset-0 medical-gradient-primary opacity-10" />
         <div className="relative z-10">
           <DrawerHeader className="text-center space-y-4 pb-6">
             <div className="flex justify-center">
-              <div className="p-3 rounded-full bg-gradient-to-r from-blue-100 to-purple-100">
-                <Edit className="h-8 w-8 text-blue-600" />
+              <div className="medical-icon-container bg-primary/10 text-primary p-3">
+                <Edit className="h-8 w-8" />
               </div>
             </div>
-            <DrawerTitle className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+            <DrawerTitle className="text-2xl font-bold medical-text-gradient">
               Atualizar Consulta
             </DrawerTitle>
-            <DrawerDescription className="text-gray-600 text-base leading-relaxed px-4">
+            <DrawerDescription className="text-muted-foreground text-base leading-relaxed px-4">
               Dê andamento à consulta alterando seu status atual. Esta ação será registrada no histórico da consulta.
             </DrawerDescription>
           </DrawerHeader>
@@ -136,7 +136,7 @@ export function DrawerDemandStatus() {
             <DrawerClose asChild>
               <Button 
                 variant="outline" 
-                className="border-2 border-gray-200 hover:border-gray-300 hover:bg-gray-50 text-gray-700 font-medium py-3"
+                className="medical-button medical-button-outline py-3"
               >
                 Cancelar
               </Button>
@@ -192,7 +192,7 @@ function ProfileForm({
       )}
 
       <div className="space-y-3">
-        <Label htmlFor="status" className="text-base font-semibold text-gray-900">
+        <Label htmlFor="status" className="text-base font-semibold text-foreground">
           Novo Status da Consulta
         </Label>
         <div className="relative">

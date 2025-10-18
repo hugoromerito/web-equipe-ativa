@@ -37,7 +37,7 @@ export default function MembersPage() {
         <div>
           <h1 className="text-3xl font-bold tracking-tight">Membros</h1>
           <p className="text-muted-foreground">
-            Visualize os membros da organização e setores
+            Visualize os membros da organização e unidades
           </p>
         </div>
 
@@ -76,16 +76,22 @@ export default function MembersPage() {
                       <TableRow key={member.id}>
                         <TableCell>
                           <div className="flex items-center gap-3">
-                            <Avatar className="h-8 w-8">
-                              <AvatarImage src={member.user.avatar_url || ''} />
-                              <AvatarFallback>
-                                {member.user.name
-                                  ?.split(' ')
-                                  .map((n) => n[0])
-                                  .join('')
-                                  .toUpperCase() || 'U'}
-                              </AvatarFallback>
-                            </Avatar>
+                            <div 
+                              className={`avatar-container ${
+                                member.is_online ? 'avatar-online' : 'avatar-offline'
+                              }`}
+                            >
+                              <Avatar className="h-8 w-8">
+                                <AvatarImage src={member.user.avatar_url || ''} />
+                                <AvatarFallback>
+                                  {member.user.name
+                                    ?.split(' ')
+                                    .map((n) => n[0])
+                                    .join('')
+                                    .toUpperCase() || 'U'}
+                                </AvatarFallback>
+                              </Avatar>
+                            </div>
                             <span className="font-medium">
                               {member.user.name || 'Sem nome'}
                             </span>
@@ -95,20 +101,20 @@ export default function MembersPage() {
                           {member.user.email}
                         </TableCell>
                         <TableCell>
-                          <div className="flex items-center gap-2">
+                          <span
+                            className={
+                              member.is_online 
+                                ? 'status-badge-online' 
+                                : 'status-badge-offline'
+                            }
+                          >
                             <div
                               className={`h-2 w-2 rounded-full ${
                                 member.is_online ? 'bg-green-500' : 'bg-gray-400'
                               }`}
                             />
-                            <span
-                              className={`text-sm ${
-                                member.is_online ? 'text-green-600' : 'text-muted-foreground'
-                              }`}
-                            >
-                              {member.is_online ? 'Online' : 'Offline'}
-                            </span>
-                          </div>
+                            {member.is_online ? 'Online' : 'Offline'}
+                          </span>
                         </TableCell>
                         <TableCell>
                           <span className="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold bg-primary/10 text-primary">

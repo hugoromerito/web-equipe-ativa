@@ -39,10 +39,10 @@ export default function SignUpForm() {
             alt="EA Beta Logo" 
           />
         </div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+        <h1 className="text-2xl font-bold text-foreground">
           Criar sua conta
         </h1>
-        <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">
+        <p className="text-sm text-muted-foreground mt-2">
           Junte-se a nós e comece sua jornada
         </p>
       </div>
@@ -52,7 +52,7 @@ export default function SignUpForm() {
         <form action={signInWithGoogle}>
           <Button 
             type="submit" 
-            className="w-full h-11 bg-white hover:bg-gray-50 border border-gray-300 text-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700 dark:border-gray-600 dark:text-gray-200 transition-colors"
+            className="w-full h-11 medical-button medical-button-outline"
             variant="outline"
           >
             <Image src={googleIcon} className="mr-3 size-5" alt="" />
@@ -66,7 +66,7 @@ export default function SignUpForm() {
             <Separator className="w-full" />
           </div>
           <div className="relative flex justify-center text-xs uppercase">
-            <span className="bg-white dark:bg-gray-900 px-2 text-gray-500 dark:text-gray-400">
+            <span className="bg-background px-2 text-muted-foreground">
               ou cadastre-se com e-mail
             </span>
           </div>

@@ -46,28 +46,28 @@ export default function ForgotPassword() {
   if (isSuccess) {
     return (
       <div className="w-full max-w-md mx-auto">
-        <Card className="shadow-lg border-0 bg-white/80 backdrop-blur-sm">
+        <Card className="medical-card-elevated medical-glass">
           <CardHeader className="text-center space-y-4">
-            <div className="mx-auto w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
-              <CheckCircle className="w-6 h-6 text-green-600" />
+            <div className="mx-auto w-12 h-12 bg-success/10 rounded-full flex items-center justify-center">
+              <CheckCircle className="w-6 h-6 text-success" />
             </div>
             <div>
-              <CardTitle className="text-2xl font-semibold text-gray-900">
+              <CardTitle className="text-2xl font-semibold text-foreground">
                 E-mail Enviado!
               </CardTitle>
-              <CardDescription className="text-gray-600 mt-2">
+              <CardDescription className="text-muted-foreground mt-2">
                 Verifique sua caixa de entrada para continuar
               </CardDescription>
             </div>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div className="text-center text-sm text-gray-600 bg-gray-50 rounded-lg p-4">
-              <Mail className="w-5 h-5 text-gray-400 mx-auto mb-2" />
+            <div className="text-center text-sm text-muted-foreground bg-muted/20 rounded-lg p-4">
+              <Mail className="w-5 h-5 text-muted-foreground mx-auto mb-2" />
               <p>
                 Enviamos as instruções de recuperação para{' '}
-                <span className="font-medium text-gray-900">{email}</span>
+                <span className="font-medium text-foreground">{email}</span>
               </p>
-              <p className="mt-1 text-xs text-gray-500">
+              <p className="mt-1 text-xs text-muted-foreground">
                 Não esqueça de verificar a pasta de spam
               </p>
             </div>
@@ -86,12 +86,12 @@ export default function ForgotPassword() {
 
   return (
     <div className="w-full max-w-md mx-auto">
-      <Card className="shadow-lg border-0 bg-white/80 backdrop-blur-sm">
+      <Card className="medical-card-elevated medical-glass">
         <CardHeader className="text-center">
-          <CardTitle className="text-2xl font-semibold text-gray-900">
+          <CardTitle className="text-2xl font-semibold text-foreground">
             Esqueceu sua senha?
           </CardTitle>
-          <CardDescription className="text-gray-600">
+          <CardDescription className="text-muted-foreground">
             Digite seu e-mail e enviaremos instruções para redefinir sua senha
           </CardDescription>
         </CardHeader>
@@ -148,12 +148,12 @@ export default function ForgotPassword() {
                 <div className="w-full border-t border-gray-200"></div>
               </div>
               <div className="relative flex justify-center text-sm">
-                <span className="px-2 bg-white text-gray-500">ou</span>
+                <span className="px-2 bg-background text-muted-foreground">ou</span>
               </div>
             </div>
 
             <Button variant="ghost" className="w-full" asChild>
-              <Link href="/auth/sign-in" className="inline-flex items-center gap-2 text-gray-600 hover:text-gray-900">
+              <Link href="/auth/sign-in" className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground">
                 <ArrowLeft className="w-4 h-4" />
                 Voltar para o login
               </Link>

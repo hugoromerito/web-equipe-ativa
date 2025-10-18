@@ -27,7 +27,7 @@ export async function getPendingInvitesServer(): Promise<GetPendingInvitesRespon
   const token = cookieStore.get('token')?.value
   
   if (!token) {
-    throw new Error('Token não encontrado')
+    return { invites: [] }
   }
   
   const apiUrl = process.env.NEXT_PUBLIC_API_URL

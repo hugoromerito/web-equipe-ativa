@@ -42,6 +42,9 @@ export * from './get-applicant'
 export * from './get-check-applicant-slug'
 export * from './get-applicant-demands'
 
+// Patients
+export * from './get-patients'
+
 // Demands
 export * from './create-demand'
 export * from './get-demand'

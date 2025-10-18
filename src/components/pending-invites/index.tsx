@@ -15,7 +15,14 @@ import Link from 'next/link'
 dayjs.extend(relativeTime).locale('pt-br')
 
 export async function PendingInvites() {
-  const invites = await getCurrentPendingInvites()
+  let invites: Awaited<ReturnType<typeof getCurrentPendingInvites>> = []
+  
+  try {
+    invites = await getCurrentPendingInvites()
+  } catch (error) {
+    // Se não há autenticação, apenas retorna lista vazia
+    console.log('No pending invites available (user not authenticated)')
+  }
 
   return (
     <DropdownMenu>

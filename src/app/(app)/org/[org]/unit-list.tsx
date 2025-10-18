@@ -105,14 +105,14 @@ export async function UnitList() {
         <div className="space-y-6">
           {/* Search and Actions Médicos */}
           <div className="flex flex-col sm:flex-row gap-4 sm:items-center sm:justify-between">
-            <div className="relative flex-1 max-w-md">
+            {/* <div className="relative flex-1 max-w-md">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-5 h-5" />
               <Input 
                 type="text"
                 placeholder="Buscar setores médicos..." 
                 className="medical-form-input pl-12 h-12 text-base"
               />
-            </div>
+            </div> */}
             <Link href={`/org/${currentOrg}/create-unit`}>
               <Button className="btn-medical-primary inline-flex items-center px-6 py-3 h-12 text-base font-semibold">
                 <Building className="w-5 h-5 mr-2" />

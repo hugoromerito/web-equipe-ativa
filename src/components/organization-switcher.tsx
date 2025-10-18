@@ -15,11 +15,25 @@ import { getCurrentOrg } from '@/lib/auth'
 
 export async function OrganizationSwitcher() {
   const currentOrg = await getCurrentOrg()
-  const { organizations } = await getOrganizations()
-
-  const currentOrganization = organizations.find(
-    (org) => org.slug === currentOrg,
-  )
+  
+  let organizations: any[] = []
+  let currentOrganization: any = null
+  
+  try {
+    const response = await getOrganizations()
+    organizations = response.organizations
+    currentOrganization = organizations.find(
+      (org) => org.slug === currentOrg,
+    )
+  } catch (error) {
+    // Se não há autenticação, exibe componente vazio ou de fallback
+    console.log('No organizations available (user not authenticated)')
+    return (
+      <div className="flex items-center gap-2 text-sm text-muted-foreground">
+        <span>Faça login para ver suas organizações</span>
+      </div>
+    )
+  }
   function getInitials(name: string): string {
     const initials = name
       .split(' ')

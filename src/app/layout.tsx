@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import './globals.css'
 import WhatsappButton from '@/components/whatsapp-button'
+import { Footer } from '@/components/footer'
 // import { ThemeProvider } from 'next-themes'
 import { Providers } from './provider'
 
@@ -23,15 +24,27 @@ export default function RootLayout({
           href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" 
           rel="stylesheet" 
         />
+        <meta name="theme-color" content="#3b82f6" media="(prefers-color-scheme: light)" />
+        <meta name="theme-color" content="#1e293b" media="(prefers-color-scheme: dark)" />
       </head>
-      <body suppressHydrationWarning className="min-h-screen medical-layout">
+      <body 
+        suppressHydrationWarning 
+        className="min-h-screen medical-layout antialiased overflow-x-hidden"
+      >
         <Providers>
-          <div className="min-h-screen flex flex-col">
-            <main className="flex-1 mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 py-6">
-              <div className="space-y-6">
+          <div className="min-h-screen flex flex-col relative">
+            {/* Background Pattern - apenas visível no dark mode */}
+            <div className="fixed inset-0 -z-10 dark:opacity-40 opacity-0 transition-opacity duration-500">
+              <div className="absolute inset-0 bg-grid-pattern opacity-20"></div>
+              <div className="absolute inset-0 bg-gradient-to-br from-background via-transparent to-background"></div>
+            </div>
+            
+            <main className="flex-1 mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 py-4 relative">
+              <div className="space-y-4 backdrop-blur-[0.5px]">
                 {children}
               </div>
             </main>
+            <Footer />
           </div>
           <WhatsappButton />
         </Providers>

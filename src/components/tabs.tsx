@@ -12,6 +12,7 @@ export async function Tabs() {
   const canCreateDemands = permissions?.can('create', 'Demand')
   const canGetDemands = permissions?.can('get', 'Demand')
   const canGetMembers = permissions?.can('get', 'Applicant')
+  const canGetPatients = permissions?.can('get', 'Applicant') // Usar a mesma permissão de applicants
   const canGetUnits = permissions?.can('get', 'Unit')
 
   return (
@@ -40,6 +41,15 @@ export async function Tabs() {
           className="medical-nav-item data-[current=true]:medical-nav-item-active"
         >
           Visualizar consultas
+        </NavLink>
+      )}
+
+      {canGetPatients && (
+        <NavLink 
+          href={`/org/${currentOrg}/patients`}
+          className="medical-nav-item data-[current=true]:medical-nav-item-active"
+        >
+          Pacientes
         </NavLink>
       )}
       
