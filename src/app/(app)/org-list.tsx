@@ -79,14 +79,14 @@ export async function OrgList() {
         <div className="space-y-6">
           {/* Search and Actions Médicos */}
           <div className="flex flex-col sm:flex-row gap-4 sm:items-center sm:justify-between">
-            <div className="relative flex-1 max-w-sm">
+            {/* <div className="relative flex-1 max-w-sm">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
               <Input 
                 type="text"
                 placeholder="Buscar organizações de saúde..." 
                 className="medical-form-input pl-10"
               />
-            </div>
+            </div> */}
             <Link href="/create-organization">
               <Button className="btn-medical-secondary inline-flex items-center">
                 <Building2 className="w-4 h-4 mr-2" />
