@@ -1,7 +1,6 @@
 'use client'
 
-import { AlertTriangle, Loader2, FileText, MapPin, Search, CheckCircle2, XCircle, Map, Building, Hash } from 'lucide-react'
-import cepPromise from 'cep-promise'
+import { Loader2, FileText, CheckCircle2, XCircle } from 'lucide-react'
 
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
@@ -9,13 +8,16 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
-import { Badge } from '@/components/ui/badge'
 
 import { useFormState } from '@/hooks/use-form-state'
 import { createConsultaction, type DemandSchema } from './actions'
 import { Textarea } from '@/components/ui/textarea'
 import { useEffect, useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { useRouter, useParams } from 'next/navigation'
+import { useJobTitles } from '@/hooks/use-job-titles'
+import { useAvailability } from '@/hooks/use-availability'
+import { JobTitleSelector } from '@/components/job-title-selector'
+import { TimeSlotGrid } from '@/components/time-slot-grid'
 
 interface DemandFormProps {
   initialData?: DemandSchema
@@ -23,18 +25,29 @@ interface DemandFormProps {
 
 export function DemandForm({ initialData }: DemandFormProps) {
   const router = useRouter()
-  const [zipCodeInput, setZipCodeInput] = useState('')
+  const params = useParams<{ org: string; unit: string }>()
+  const organizationSlug = params.org
+  const unitSlug = params.unit
+
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
-  const [isLoadingZipCode, setIsLoadingZipCode] = useState(false)
-  const [zipCodeError, setZipCodeError] = useState('')
+  const [selectedJobTitleId, setSelectedJobTitleId] = useState<string | null>(null)
+  const [selectedSlot, setSelectedSlot] = useState<{
+    memberId: string
+    date: string
+    startTime: string
+    endTime: string
+  } | null>(null)
 
-  // Estado para armazenar os dados do endereço
-  const [address, setAddress] = useState({
-    state: '',
-    city: '',
-    street: '',
-    neighborhood: '',
+  // Buscar cargos
+  const { jobTitles, isLoading: isLoadingJobTitles } = useJobTitles(organizationSlug)
+
+  // Buscar disponibilidade quando um cargo for selecionado
+  const { data: availabilityData, isLoading: isLoadingAvailability } = useAvailability({
+    organizationSlug,
+    unitSlug,
+    jobTitleId: selectedJobTitleId,
+    enabled: !!selectedJobTitleId,
   })
 
   const formAction = createConsultaction
@@ -44,67 +57,21 @@ export function DemandForm({ initialData }: DemandFormProps) {
     () => {},
   )
 
-  function strip(value: string): string {
-    return value.replace(/\D/g, '') // remove tudo que não for dígito
-  }
-
-  function formatZipCode(value: string) {
-    const digits = strip(value).slice(0, 8)
-    return digits.replace(/(\d{5})(\d{1,3})/, '$1-$2')
-  }
-
-  // useEffect que dispara a busca pelo ZipCode quando ele tiver 8 dígitos
-  useEffect(() => {
-    if (zipCodeInput.length === 8) {
-      setIsLoadingZipCode(true)
-      setZipCodeError('')
-      
-      cepPromise(zipCodeInput)
-        .then((result) => {
-          setAddress({
-            state: result.state || '',
-            city: result.city || '',
-            neighborhood: result.neighborhood || '',
-            street: result.street || '',
-          })
-          setIsLoadingZipCode(false)
-        })
-        .catch((err) => {
-          console.error('Erro ao buscar CEP:', err)
-          setZipCodeError('CEP não encontrado')
-          setAddress({
-            state: '',
-            city: '',
-            street: '',
-            neighborhood: '',
-          })
-          setIsLoadingZipCode(false)
-        })
-    } else {
-      setZipCodeError('')
-      setAddress({
-        state: '',
-        city: '',
-        street: '',
-        neighborhood: '',
-      })
-    }
-  }, [zipCodeInput])
-
   useEffect(() => {
     if (success) {
       const timeout = setTimeout(() => {
         router.back()
-      }, 1000) // tempo para mostrar o alerta de sucesso
-
+      }, 1000)
       return () => clearTimeout(timeout)
     }
-  }, [success])
+  }, [success, router])
 
-  const hasAddressData = address.state || address.city || address.neighborhood || address.street
+  const handleSlotSelect = (memberId: string, date: string, startTime: string, endTime: string) => {
+    setSelectedSlot({ memberId, date, startTime, endTime })
+  }
 
   return (
-    <div className="max-w-3xl mx-auto space-y-6">
+    <div className="max-w-4xl mx-auto space-y-6">
       <Card>
         <CardHeader>
           <div className="flex items-center gap-3">
@@ -114,7 +81,7 @@ export function DemandForm({ initialData }: DemandFormProps) {
             <div>
               <CardTitle>Registrar Nova Consulta</CardTitle>
               <CardDescription>
-                Preencha os dados da solicitação e endereço
+                Preencha os dados da solicitação e selecione um horário
               </CardDescription>
             </div>
           </div>
@@ -204,181 +171,18 @@ export function DemandForm({ initialData }: DemandFormProps) {
 
             <Separator />
 
-            {/* Endereço */}
-            <div className="space-y-4">
-              <div className="flex items-center gap-2 mb-4">
-                <MapPin className="w-4 h-4 text-muted-foreground" />
-                <h3 className="font-medium text-sm text-muted-foreground uppercase tracking-wide">Endereço da Consulta</h3>
-              </div>
-
-              {/* ZipCode com indicador de loading */}
-              <div className="space-y-2">
-                <Label htmlFor="zip_code" className="flex items-center gap-2">
-                  <Search className="w-3 h-3" />
-                  CEP *
-                </Label>
-                <div className="relative">
-                  <Input
-                    name="zip_code"
-                    id="zip_code"
-                    value={formatZipCode(zipCodeInput)}
-                    onChange={(e) => {
-                      const value = strip(e.target.value).slice(0, 8)
-                      setZipCodeInput(value)
-                    }}
-                    placeholder="00000-000"
-                    className={`${errors?.zip_code || zipCodeError ? 'border-red-500 focus-visible:ring-red-500' : ''} ${isLoadingZipCode ? 'pr-10' : ''}`}
-                  />
-                  {isLoadingZipCode && (
-                    <div className="absolute right-3 top-3">
-                      <Loader2 className="w-4 h-4 animate-spin text-muted-foreground" />
-                    </div>
-                  )}
-                  {hasAddressData && !isLoadingZipCode && (
-                    <div className="absolute right-3 top-3">
-                      <CheckCircle2 className="w-4 h-4 text-green-500" />
-                    </div>
-                  )}
-                </div>
-                <input type="hidden" name="zip_code" value={strip(zipCodeInput)} />
-                {(errors?.zip_code || zipCodeError) && (
-                  <p className="text-xs text-red-500 flex items-center gap-1">
-                    <XCircle className="w-3 h-3" />
-                    {errors?.zip_code?.[0] || zipCodeError}
-                  </p>
-                )}
-                {hasAddressData && (
-                  <div className="flex items-center gap-1">
-                    <Badge variant="secondary" className="text-xs">
-                      <CheckCircle2 className="w-3 h-3 mr-1" />
-                      Endereço encontrado
-                    </Badge>
-                  </div>
-                )}
-              </div>
-
-              {/* Grid de endereço */}
-              <div className="grid gap-4 sm:grid-cols-2">
-                <div className="space-y-2">
-                  <Label htmlFor="state" className="flex items-center gap-2">
-                    <Map className="w-3 h-3" />
-                    Estado *
-                  </Label>
-                  <Input
-                    name="state"
-                    id="state"
-                    value={address.state}
-                    onChange={(e) => setAddress({ ...address, state: e.target.value })}
-                    placeholder="Ex: RJ"
-                    className={errors?.state ? 'border-red-500 focus-visible:ring-red-500' : ''}
-                  />
-                  {errors?.state && (
-                    <p className="text-xs text-red-500 flex items-center gap-1">
-                      <XCircle className="w-3 h-3" />
-                      {errors.state[0]}
-                    </p>
-                  )}
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="city" className="flex items-center gap-2">
-                    <Building className="w-3 h-3" />
-                    Cidade *
-                  </Label>
-                  <Input
-                    name="city"
-                    id="city"
-                    value={address.city}
-                    onChange={(e) => setAddress({ ...address, city: e.target.value })}
-                    placeholder="Ex: Rio de Janeiro"
-                    className={errors?.city ? 'border-red-500 focus-visible:ring-red-500' : ''}
-                  />
-                  {errors?.city && (
-                    <p className="text-xs text-red-500 flex items-center gap-1">
-                      <XCircle className="w-3 h-3" />
-                      {errors.city[0]}
-                    </p>
-                  )}
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="neighborhood">Bairro *</Label>
-                  <Input
-                    name="neighborhood"
-                    id="neighborhood"
-                    value={address.neighborhood}
-                    onChange={(e) =>
-                      setAddress({ ...address, neighborhood: e.target.value })
-                    }
-                    placeholder="Ex: Centro"
-                    className={errors?.neighborhood ? 'border-red-500 focus-visible:ring-red-500' : ''}
-                  />
-                  {errors?.neighborhood && (
-                    <p className="text-xs text-red-500 flex items-center gap-1">
-                      <XCircle className="w-3 h-3" />
-                      {errors.neighborhood[0]}
-                    </p>
-                  )}
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="street">Logradouro *</Label>
-                  <Input
-                    name="street"
-                    id="street"
-                    value={address.street}
-                    onChange={(e) => setAddress({ ...address, street: e.target.value })}
-                    placeholder="Ex: Rua das Flores"
-                    className={errors?.street ? 'border-red-500 focus-visible:ring-red-500' : ''}
-                  />
-                  {errors?.street && (
-                    <p className="text-xs text-red-500 flex items-center gap-1">
-                      <XCircle className="w-3 h-3" />
-                      {errors.street[0]}
-                    </p>
-                  )}
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="number" className="flex items-center gap-2">
-                    <Hash className="w-3 h-3" />
-                    Número
-                  </Label>
-                  <Input 
-                    name="number" 
-                    type="number" 
-                    id="number" 
-                    placeholder="123"
-                    className={errors?.number ? 'border-red-500 focus-visible:ring-red-500' : ''}
-                  />
-                  {errors?.number && (
-                    <p className="text-xs text-red-500 flex items-center gap-1">
-                      <XCircle className="w-3 h-3" />
-                      {errors.number[0]}
-                    </p>
-                  )}
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="complement">Complemento</Label>
-                  <Input 
-                    name="complement" 
-                    id="complement" 
-                    placeholder="Apt 101, Bloco A..."
-                    className={errors?.complement ? 'border-red-500 focus-visible:ring-red-500' : ''}
-                  />
-                  {errors?.complement && (
-                    <p className="text-xs text-red-500 flex items-center gap-1">
-                      <XCircle className="w-3 h-3" />
-                      {errors.complement[0]}
-                    </p>
-                  )}
-                </div>
-              </div>
-            </div>
+            {/* Hidden fields para agendamento */}
+            {selectedSlot && (
+              <>
+                <input type="hidden" name="memberId" value={selectedSlot.memberId} />
+                <input type="hidden" name="date" value={selectedSlot.date} />
+                <input type="hidden" name="startTime" value={selectedSlot.startTime} />
+                <input type="hidden" name="endTime" value={selectedSlot.endTime} />
+              </>
+            )}
 
             <div className="pt-4">
-              <Button className="w-full h-11" type="submit" disabled={isPending}>
+              <Button className="w-full h-11" type="submit" disabled={isPending || !selectedSlot}>
                 {isPending ? (
                   <>
                     <Loader2 className="w-4 h-4 animate-spin mr-2" />
@@ -387,7 +191,7 @@ export function DemandForm({ initialData }: DemandFormProps) {
                 ) : (
                   <>
                     <CheckCircle2 className="w-4 h-4 mr-2" />
-                    Registrar Consulta
+                    {selectedSlot ? 'Registrar Consulta' : 'Selecione um horário para continuar'}
                   </>
                 )}
               </Button>
@@ -395,6 +199,24 @@ export function DemandForm({ initialData }: DemandFormProps) {
           </form>
         </CardContent>
       </Card>
+
+      {/* Seleção de Cargo */}
+      <JobTitleSelector
+        jobTitles={jobTitles}
+        selectedJobTitleId={selectedJobTitleId}
+        onJobTitleSelect={setSelectedJobTitleId}
+        isLoading={isLoadingJobTitles}
+      />
+
+      {/* Agenda de Disponibilidade */}
+      {selectedJobTitleId && (
+        <TimeSlotGrid
+          availability={availabilityData?.members || []}
+          isLoading={isLoadingAvailability}
+          onSlotSelect={handleSlotSelect}
+          selectedSlot={selectedSlot}
+        />
+      )}
     </div>
   )
 }

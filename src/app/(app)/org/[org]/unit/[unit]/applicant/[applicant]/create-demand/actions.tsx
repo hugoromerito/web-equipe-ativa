@@ -20,13 +20,19 @@ const demandSchema = z.object({
   description: z
     .string()
     .min(10, { message: 'Por favor, detalhe a solicitação.' }),
-  street: z.string().nullable(),
-  complement: z.string().nullable(),
-  number: z.string().nullable(),
-  neighborhood: z.string().nullable(),
-  zip_code: z.string().nullable(),
-  state: z.string().nullable(),
-  city: z.string().nullable(),
+  // Dados de agendamento (novos campos)
+  memberId: z.string().optional(),
+  date: z.string().optional(), // yyyy-MM-dd
+  startTime: z.string().optional(), // HH:mm
+  endTime: z.string().optional(), // HH:mm
+  // Campos de endereço (opcionais/removidos)
+  street: z.string().nullable().optional(),
+  complement: z.string().nullable().optional(),
+  number: z.string().nullable().optional(),
+  neighborhood: z.string().nullable().optional(),
+  zip_code: z.string().nullable().optional(),
+  state: z.string().nullable().optional(),
+  city: z.string().nullable().optional(),
 })
 
 export type DemandSchema = z.infer<typeof demandSchema>
@@ -46,6 +52,10 @@ export async function createConsultaction(data: FormData) {
   const {
     title,
     description,
+    memberId,
+    date,
+    startTime,
+    endTime,
     street,
     complement,
     number,
@@ -62,13 +72,18 @@ export async function createConsultaction(data: FormData) {
       applicantSlug: currentApplicant!,
       title,
       description,
-      street,
-      complement,
-      number,
-      neighborhood,
-      zip_code,
-      state,
-      city,
+      // Dados de agendamento (se fornecidos)
+      ...(memberId && { responsibleId: memberId }),
+      ...(date && { scheduledDate: date }),
+      ...(startTime && { scheduledTime: startTime }),
+      // Dados de endereço (se fornecidos)
+      street: street || null,
+      complement: complement || null,
+      number: number || null,
+      neighborhood: neighborhood || null,
+      zip_code: zip_code || null,
+      state: state || null,
+      city: city || null,
     })
 
     revalidateTag('demands')
