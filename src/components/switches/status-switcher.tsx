@@ -27,9 +27,9 @@ type Status = {
 
 const statusOptions: Status[] = [
   // { value: 'PENDING', label: 'Aguardando atendimento' },
-  { value: 'IN_PROGRESS', label: 'Em andamento' },
-  { value: 'RESOLVED', label: 'Resolvida' },
-  { value: 'REJECTED', label: 'Rejeitada' },
+  { value: 'IN_PROGRESS', label: '🔵 Em andamento' },
+  { value: 'RESOLVED', label: '✅ Resolvida' },
+  { value: 'REJECTED', label: '❌ Rejeitada' },
 ]
 
 export function ComboBoxStatus({ id, name }: { id: string; name: string }) {
@@ -51,15 +51,30 @@ export function ComboBoxStatus({ id, name }: { id: string; name: string }) {
       {isDesktop ? (
         <Popover open={open} onOpenChange={setOpen}>
           <PopoverTrigger asChild>
-            <Button variant="outline" className="w-80 justify-center truncate">
-              {selectedStatus ? (
-                <>{selectedStatus.label}</>
-              ) : (
-                <>Selecionar status</>
-              )}
+            <Button 
+              variant="outline" 
+              className="w-full justify-between h-12 px-4 bg-gradient-to-br from-slate-50 to-slate-100/50 border-slate-200 hover:border-primary/50 hover:from-white hover:to-white transition-all duration-200"
+            >
+              <span className={selectedStatus ? 'text-slate-700 font-medium' : 'text-slate-400'}>
+                {selectedStatus ? selectedStatus.label : 'Selecionar status'}
+              </span>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="text-slate-400"
+              >
+                <polyline points="6 9 12 15 18 9" />
+              </svg>
             </Button>
           </PopoverTrigger>
-          <PopoverContent className="w-80 p-0" align="center">
+          <PopoverContent className="w-[--radix-popover-trigger-width] p-0" align="center">
             <StatusList
               setOpen={setOpen}
               setSelectedStatus={setSelectedStatus}
@@ -70,12 +85,27 @@ export function ComboBoxStatus({ id, name }: { id: string; name: string }) {
         <Drawer open={open} onOpenChange={setOpen}>
           <DialogTitle hidden>Status</DialogTitle>
           <DrawerTrigger asChild>
-            <Button variant="outline" className="w-80 justify-center truncate">
-              {selectedStatus ? (
-                <>{selectedStatus.label}</>
-              ) : (
-                <>Selecionar status</>
-              )}
+            <Button 
+              variant="outline" 
+              className="w-full justify-between h-12 px-4 bg-gradient-to-br from-slate-50 to-slate-100/50 border-slate-200 hover:border-primary/50 hover:from-white hover:to-white transition-all duration-200"
+            >
+              <span className={selectedStatus ? 'text-slate-700 font-medium' : 'text-slate-400'}>
+                {selectedStatus ? selectedStatus.label : 'Selecionar status'}
+              </span>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="text-slate-400"
+              >
+                <polyline points="6 9 12 15 18 9" />
+              </svg>
             </Button>
           </DrawerTrigger>
           <DrawerContent>
@@ -100,24 +130,28 @@ function StatusList({
   setSelectedStatus: (status: Status | null) => void
 }) {
   return (
-    <Command>
-      <CommandInput placeholder="Filtrar categoria..." />
-      <CommandList>
-        <CommandEmpty>Nenhum resultado encontrado.</CommandEmpty>
-        <CommandGroup>
+    <Command className="rounded-lg border-0 shadow-md" shouldFilter={true}>
+      <CommandInput 
+        placeholder="Buscar status..." 
+        className="h-12 border-b"
+      />
+      <CommandList className="max-h-[300px]">
+        <CommandEmpty className="py-6 text-center text-sm text-slate-500">
+          Nenhum status encontrado.
+        </CommandEmpty>
+        <CommandGroup className="p-2">
           {statusOptions.map((status) => (
             <CommandItem
               key={status.value}
-              value={status.value}
-              onSelect={(value) => {
-                setSelectedStatus(
-                  statusOptions.find((status) => status.value === value) ||
-                    null,
-                )
+              value={status.label}
+              keywords={[status.value]}
+              onSelect={() => {
+                setSelectedStatus(status)
                 setOpen(false)
               }}
+              className="flex items-center gap-3 px-3 py-3 cursor-pointer rounded-lg hover:bg-slate-100 aria-selected:bg-primary/10 aria-selected:text-primary transition-colors"
             >
-              {status.label}
+              <span className="text-base">{status.label}</span>
             </CommandItem>
           ))}
         </CommandGroup>
