@@ -9,18 +9,20 @@ interface GetDemandsResponse {
     status: DemandStatus
     priority: DemandPriority
     category: DemandCategory
-    zip_code: string | null
-    state: string | null
-    city: string | null
-    neighborhood: string | null
-    street: string | null
-    complement: string | null
-    number: string | null
+    scheduled_date: string | null
+    scheduled_time: string | null
+    responsible_id: string | null
     created_at: string
     updated_at: string | null
     author: string | null
-    created_by_member_name: string
     applicant_name: string | null
+    created_by_member_name: string | null
+    responsible: {
+      id: string
+      name: string
+      email: string
+      job_title: string
+    } | null
   }[]
   pagination: {
     page: number

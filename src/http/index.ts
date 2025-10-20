@@ -26,6 +26,7 @@ export * from './get-users'
 export * from './get-members'
 export * from './get-members-organization'
 export * from './get-members-unit'
+export * from './get-member-availability'
 
 // Invites
 export * from './accept-invite'
@@ -62,3 +63,13 @@ export * from './upload-organization-document'
 export * from './get-attachments'
 export * from './download-attachment'
 export * from './delete-attachment'
+
+// Job Titles
+export * from './get-job-titles'
+export * from './create-job-title'
+export * from './update-job-title'
+export * from './delete-job-title'
+export * from './assign-job-title'
+export * from './remove-job-title'
+export * from './update-member-job-title'
+export * from './update-member-working-days'

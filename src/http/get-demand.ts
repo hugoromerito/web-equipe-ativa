@@ -9,15 +9,11 @@ interface GetDemandResponse {
     status: DemandStatus
     priority: DemandPriority
     category: DemandCategory
-    zip_code: string | null
-    state: string | null
-    city: string | null
-    neighborhood: string | null
-    street: string | null
-    complement: string | null
-    number: string | null
+    scheduledDate: string | null
+    scheduledTime: string | null
+    responsibleId: string | null
     createdAt: Date
-    updatedAt: Date | null
+    updatedAt: string | null
     owner: {
       id: string
       name: string | null
