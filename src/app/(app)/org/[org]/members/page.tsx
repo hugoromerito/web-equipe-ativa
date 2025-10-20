@@ -14,8 +14,10 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { useMembersOrganization, useMembersUnit } from '@/hooks/use-members'
 import { ROLE_OPTIONS } from '@/constants/role-translations'
-import { Loader2, Users } from 'lucide-react'
+import { Loader2, Users, ExternalLink } from 'lucide-react'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { AssignJobTitleDialog } from '@/components/assign-job-title-dialog'
+import Link from 'next/link'
 
 export default function MembersPage() {
   const params = useParams<{ org: string }>()
@@ -69,6 +71,7 @@ export default function MembersPage() {
                       <TableHead>Email</TableHead>
                       <TableHead>Status</TableHead>
                       <TableHead>Função</TableHead>
+                      <TableHead className="text-right">Ações</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
@@ -123,12 +126,28 @@ export default function MembersPage() {
                             )?.label || member.organization_role}
                           </span>
                         </TableCell>
+                        <TableCell className="text-right">
+                          <div className="flex items-center justify-end gap-2">
+                            <AssignJobTitleDialog
+                              organizationSlug={organizationSlug}
+                              memberId={member.id}
+                              memberName={member.user.name || member.user.email}
+                            />
+                            <Link
+                              href={`/org/${organizationSlug}/members/${member.id}/assign-job-title`}
+                            >
+                              <Button variant="ghost" size="sm" title="Página dedicada">
+                                <ExternalLink className="h-4 w-4" />
+                              </Button>
+                            </Link>
+                          </div>
+                        </TableCell>
                       </TableRow>
                     ))}
 
                     {orgMembersData?.members.length === 0 && (
                       <TableRow>
-                        <TableCell colSpan={4} className="text-center py-8">
+                        <TableCell colSpan={5} className="text-center py-8">
                           <p className="text-muted-foreground">
                             Nenhum membro encontrado
                           </p>
