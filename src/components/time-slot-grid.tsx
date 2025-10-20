@@ -10,6 +10,7 @@ import { cn } from '@/lib/utils'
 import type { MemberAvailability } from '@/http/get-member-availability'
 import { format, addDays, startOfWeek } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
+import { parseLocalDate } from '@/utils/date-utils'
 import {
   Dialog,
   DialogContent,
@@ -412,7 +413,7 @@ export function TimeSlotGrid({
                 <>
                   {memberSelectionDialog.members.length} profissionais disponíveis para {' '}
                   {memberSelectionDialog.time} em {' '}
-                  {memberSelectionDialog.date && format(new Date(memberSelectionDialog.date), "dd 'de' MMMM", { locale: ptBR })}
+                  {memberSelectionDialog.date && format(parseLocalDate(memberSelectionDialog.date) || new Date(), "dd 'de' MMMM", { locale: ptBR })}
                 </>
               )}
             </DialogDescription>
