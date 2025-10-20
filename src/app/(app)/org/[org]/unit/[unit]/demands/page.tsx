@@ -34,6 +34,14 @@ interface Demand {
   author: string
   location: string
   urgency: number
+  scheduledDate: string | null
+  scheduledTime: string | null
+  responsible: {
+    id: string
+    name: string
+    email: string
+    jobTitle: string
+  } | null
 }
 
 export default async function DemandsPage({ params, searchParams }: PageProps) {
@@ -83,16 +91,16 @@ export default async function DemandsPage({ params, searchParams }: PageProps) {
       category: demand.category,
       createdAt: demand.created_at,
       author: demand.author || demand.created_by_member_name,
-      location: [
-        demand.street,
-        demand.number,
-        demand.neighborhood,
-        demand.city,
-        demand.state,
-      ]
-        .filter(Boolean)
-        .join(', ') || 'Localização não informada',
+      location: demand.applicant_name || 'Paciente não identificado',
       urgency: calculateUrgency(demand),
+      scheduledDate: demand.scheduled_date,
+      scheduledTime: demand.scheduled_time,
+      responsible: demand.responsible ? {
+        id: demand.responsible.id,
+        name: demand.responsible.name,
+        email: demand.responsible.email,
+        jobTitle: demand.responsible.job_title,
+      } : null,
     }))
 
     pagination = response.pagination
