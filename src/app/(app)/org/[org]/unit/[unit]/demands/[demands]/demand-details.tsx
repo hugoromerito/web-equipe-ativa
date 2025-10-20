@@ -6,6 +6,7 @@ import {
   translateStatus,
 } from '@/constants/demand-translations'
 import { getDemand } from '@/http/get-demand'
+import { formatLocalDate, formatTime, formatTimestamp } from '@/utils/date-utils'
 import Link from 'next/link'
 import {
   User,
@@ -99,7 +100,7 @@ export async function DemandDetails() {
               <div className="flex items-center gap-4 text-sm text-slate-600">
                 <span className="flex items-center gap-1.5">
                   <Calendar className="h-3.5 w-3.5 text-slate-400" />
-                  {new Date(demand.applicant.birthdate).toLocaleDateString('pt-BR')}
+                  {formatLocalDate(demand.applicant.birthdate)}
                 </span>
                 <span className="text-slate-300">•</span>
                 <span className="flex items-center gap-1.5 font-medium">
@@ -160,14 +161,14 @@ export async function DemandDetails() {
                   <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Agendamento</span>
                 </div>
                 <h3 className="font-bold text-lg text-slate-900">
-                  {new Date(demand.scheduledDate).toLocaleDateString('pt-BR', {
+                  {formatLocalDate(demand.scheduledDate, {
                     day: '2-digit',
                     month: '2-digit',
                     year: 'numeric',
                   })}
                   {demand.scheduledTime && (
                     <span className="ml-3 text-purple-600 font-bold">
-                      {demand.scheduledTime.substring(0, 5)}
+                      {formatTime(demand.scheduledTime)}
                     </span>
                   )}
                 </h3>
@@ -255,26 +256,20 @@ export async function DemandDetails() {
             <div className="bg-white rounded-xl p-4 border border-slate-200 shadow-sm">
               <span className="text-xs font-medium text-slate-500 uppercase tracking-wide block mb-2">Criado em</span>
               <p className="font-bold text-base text-slate-900">
-                {new Date(demand.createdAt).toLocaleDateString('pt-BR', {
-                  day: '2-digit',
-                  month: '2-digit',
-                  year: 'numeric',
-                  hour: '2-digit',
-                  minute: '2-digit',
-                })}
+                {formatTimestamp(demand.createdAt)}
               </p>
             </div>
             <div className="bg-white rounded-xl p-4 border border-slate-200 shadow-sm">
               <span className="text-xs font-medium text-slate-500 uppercase tracking-wide block mb-2">Atualizado em</span>
-              <p className="font-bold text-base text-slate-900">
-                {new Date(demand.updatedAt!).toLocaleDateString('pt-BR', {
-                  day: '2-digit',
-                  month: '2-digit',
-                  year: 'numeric',
-                  hour: '2-digit',
-                  minute: '2-digit',
-                })}
-              </p>
+              {demand.updatedAt ? (
+                <p className="font-bold text-base text-slate-900">
+                  {formatTimestamp(demand.updatedAt)}
+                </p>
+              ) : (
+                <p className="text-sm text-slate-500 italic">
+                  Ainda não foi atualizada
+                </p>
+              )}
             </div>
           </div>
         </div>

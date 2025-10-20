@@ -13,6 +13,7 @@ import {
   STATUS_OPTIONS 
 } from '@/constants/demand-translations'
 import { BadgeDemand } from '@/components/badge-demand'
+import { formatLocalDate, formatTime } from '@/utils/date-utils'
 import Link from 'next/link'
 
 // Types
@@ -143,13 +144,10 @@ export function DemandList({
     updateURL({ page: page.toString() })
   }
 
-  const formatDate = (date: string) => {
-    return new Date(date).toLocaleDateString('pt-BR', {
-      day: '2-digit',
-      month: 'short',
-      year: 'numeric'
-    })
-  }
+  // Remove a função formatDate antiga - agora usa formatLocalDate do utils
+  // const formatDate = (date: string) => {
+  //   return new Date(date).toLocaleDateString('pt-BR', ...)
+  // }
 
   const getUrgencyColor = (urgency: number) => {
     if (urgency >= 90) return 'text-red-500'
@@ -564,7 +562,7 @@ export function DemandList({
                                       <p className="text-[10px] text-purple-600 font-semibold uppercase tracking-wider">Agendamento</p>
                                       <div className="flex items-center gap-2">
                                         <span className="text-sm font-bold text-purple-900">
-                                          {new Date(demand.scheduledDate).toLocaleDateString('pt-BR', {
+                                          {formatLocalDate(demand.scheduledDate, {
                                             day: '2-digit',
                                             month: 'short'
                                           })}
@@ -572,7 +570,7 @@ export function DemandList({
                                         {demand.scheduledTime && (
                                           <>
                                             <span className="text-purple-400">•</span>
-                                            <span className="text-sm font-bold text-purple-900">{demand.scheduledTime.substring(0, 5)}</span>
+                                            <span className="text-sm font-bold text-purple-900">{formatTime(demand.scheduledTime)}</span>
                                           </>
                                         )}
                                       </div>
@@ -623,7 +621,7 @@ export function DemandList({
                                 </div>
                                 <div className="flex items-center gap-1.5 mt-1">
                                   <Calendar size={11} />
-                                  <span>{formatDate(demand.createdAt)}</span>
+                                  <span>{formatLocalDate(demand.createdAt, { day: '2-digit', month: 'short', year: 'numeric' })}</span>
                                 </div>
                               </div>
                             </div>
@@ -741,7 +739,7 @@ export function DemandList({
                                   <p className="text-[10px] text-emerald-600 font-medium uppercase tracking-wide">Agendamento</p>
                                   <div className="flex items-center gap-2 text-emerald-700">
                                     <span className="text-xs font-bold">
-                                      {new Date(demand.scheduledDate).toLocaleDateString('pt-BR', {
+                                      {formatLocalDate(demand.scheduledDate, {
                                         day: '2-digit',
                                         month: 'short'
                                       })}
@@ -749,7 +747,7 @@ export function DemandList({
                                     {demand.scheduledTime && (
                                       <>
                                         <span className="text-emerald-400">•</span>
-                                        <span className="text-xs font-bold">{demand.scheduledTime.substring(0, 5)}</span>
+                                        <span className="text-xs font-bold">{formatTime(demand.scheduledTime)}</span>
                                       </>
                                     )}
                                   </div>
@@ -768,7 +766,7 @@ export function DemandList({
                             </span>
                             <span className="flex items-center gap-1.5">
                               <Calendar size={12} />
-                              <span>{formatDate(demand.createdAt)}</span>
+                              <span>{formatLocalDate(demand.createdAt, { day: '2-digit', month: 'short', year: 'numeric' })}</span>
                             </span>
                           </div>
                         </div>
