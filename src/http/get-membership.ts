@@ -12,9 +12,19 @@ interface GetMembershipResponse {
 }
 
 export async function getMembership(org: string) {
-  const result = await api
-    .get(`organizations/${org}/membership`)
-    .json<GetMembershipResponse>()
+  try {
+    const result = await api
+      .get(`organizations/${org}/membership`)
+      .json<GetMembershipResponse>()
 
-  return result
+    return result
+  } catch (error) {
+    console.error('❌ Error fetching membership:', {
+      org,
+      error: error instanceof Error ? error.message : 'Unknown error',
+      cause: error instanceof Error ? error.cause : undefined
+    })
+    
+    throw error
+  }
 }

@@ -11,9 +11,20 @@ interface GetUnitsResponse {
 }
 
 export async function getUnits(org: string) {
-  const result = await api
-    .get(`organizations/${org}/units`)
-    .json<GetUnitsResponse>()
+  try {
+    const result = await api
+      .get(`organizations/${org}/units`)
+      .json<GetUnitsResponse>()
 
-  return result
+    return result
+  } catch (error) {
+    console.error('❌ Error fetching units:', {
+      org,
+      error: error instanceof Error ? error.message : 'Unknown error',
+      cause: error instanceof Error ? error.cause : undefined
+    })
+    
+    // Re-throw para o componente tratar
+    throw error
+  }
 }

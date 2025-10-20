@@ -4,11 +4,17 @@ import { env } from '@/config/env'
 
 export const api = ky.create({
   prefixUrl: env.NEXT_PUBLIC_API_URL,
-  timeout: 30000, // 30 segundos
+  timeout: 60000, // 60 segundos (aumentado)
   retry: {
-    limit: 2,
+    limit: 3, // Aumentado para 3 tentativas
     methods: ['get', 'post', 'put', 'delete'],
     statusCodes: [408, 413, 429, 500, 502, 503, 504],
+    // Adiciona delay entre retries
+    delay: (attemptCount) => 0.3 * (2 ** (attemptCount - 1)) * 1000,
+  },
+  headers: {
+    'Content-Type': 'application/json',
+    'Accept': 'application/json',
   },
   hooks: {
     beforeRequest: [
@@ -52,7 +58,8 @@ export const api = ky.create({
           status: error.response?.status,
           statusText: error.response?.statusText,
           url: error.request?.url,
-          message: error.message
+          message: error.message,
+          cause: error.cause
         })
 
         // Log específico para erros de auth
@@ -60,7 +67,25 @@ export const api = ky.create({
           console.error('🔒 Authentication failed! Token may be missing or expired.')
         }
 
+        // Log específico para erros de conexão
+        if (error.message?.includes('fetch failed') || error.cause) {
+          console.error('🔌 Connection error - API may be down or unreachable')
+        }
+
         return error
+      }
+    ],
+    afterResponse: [
+      async (request, options, response) => {
+        // Log de sucesso para debug
+        if (response.ok) {
+          console.log('✅ API Success:', {
+            url: request.url,
+            status: response.status,
+            method: request.method
+          })
+        }
+        return response
       }
     ]
   },
