@@ -8,24 +8,17 @@ import {
 import { getDemand } from '@/http/get-demand'
 import Link from 'next/link'
 import {
-  MapPin,
   User,
   Users,
   Landmark,
   Building2,
-  Mail,
   MessageCircle,
   Calendar,
   Clock,
-  Phone,
-  ExternalLink,
-  Info,
   Eye,
 } from 'lucide-react'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { DrawerDemandStatus } from './drawer-demand-status'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Separator } from '@/components/ui/separator'
 
 export async function DemandDetails() {
   const currentOrg = await getCurrentOrg()
@@ -37,9 +30,6 @@ export async function DemandDetails() {
     unitSlug: currentUnit!,
     demandSlug: currentDemand!,
   })
-
-  const address = `${demand.street}, ${demand.number}, ${demand.neighborhood}, ${demand.city}, ${demand.state}, ${demand.zip_code}`
-  const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`
 
   const phone = demand.applicant.phone
   const whatsappLink = `https://api.whatsapp.com/send/?phone=55${phone}&text&type=phone_number&app_absent=0`
@@ -57,281 +47,214 @@ export async function DemandDetails() {
   }
 
   return (
-    <div className="w-full max-w-4xl mx-auto space-y-6 p-4 md:p-6 medical-layout">
-      {/* Header Section */}
-      <div className="relative">
-        <div className="absolute inset-0 medical-gradient-primary rounded-3xl blur-xl opacity-20" />
-        <Card className="relative medical-card-elevated medical-glass">
-          <CardHeader className="space-y-4 pb-6">
-            <div className="flex items-start justify-between gap-4">
-              <div className="space-y-2 flex-1">
-                <CardTitle className="text-2xl md:text-3xl font-bold medical-text-gradient">
-                  {demand.title}
-                </CardTitle>
-                <p className="text-muted-foreground text-base md:text-lg leading-relaxed">
-                  {demand.description}
-                </p>
-              </div>
-            </div>
-
-            {/* Status Badges */}
-            <div className="flex flex-wrap gap-3">
-              <BadgeDemand priority={demand.priority} size="lg" animated>
-                {translatePriority(demand.priority).label}
-              </BadgeDemand>
-              <BadgeDemand status={demand.status} size="lg" animated>
-                {translateStatus(demand.status).label}
-              </BadgeDemand>
-              <BadgeDemand category={demand.category} variant="secondary" size="lg">
-                {translateCategory(demand.category).label}
-              </BadgeDemand>
-            </div>
-          </CardHeader>
-        </Card>
+    <div className="w-full max-w-5xl mx-auto p-4 md:p-8 space-y-6">
+      {/* Header - Elegante */}
+      <div className="bg-white rounded-2xl border border-slate-200/80 shadow-sm p-8 space-y-5">
+        <div className="flex items-start justify-between gap-6">
+          <div className="flex-1 space-y-3">
+            <h1 className="text-3xl font-bold text-slate-900 tracking-tight leading-tight">
+              {demand.title}
+            </h1>
+            <p className="text-slate-600 text-base leading-relaxed">
+              {demand.description}
+            </p>
+          </div>
+          <div className="flex flex-wrap gap-2 justify-end">
+            <BadgeDemand priority={demand.priority} size="sm">
+              {translatePriority(demand.priority).label}
+            </BadgeDemand>
+            <BadgeDemand status={demand.status} size="sm">
+              {translateStatus(demand.status).label}
+            </BadgeDemand>
+          </div>
+        </div>
+        <div className="pt-4 border-t border-slate-100">
+          <BadgeDemand category={demand.category} variant="secondary" size="sm">
+            {translateCategory(demand.category).label}
+          </BadgeDemand>
+        </div>
       </div>
 
-      {/* Main Content Grid */}
-      <div className="grid gap-6 lg:grid-cols-2">
-        {/* Address Information */}
-        {(demand.zip_code || demand.street || demand.neighborhood) && (
-          <Card className="group medical-card medical-hover-lift">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-3 text-lg">
-                <div className="medical-icon-container bg-primary/10 text-primary group-hover:medical-accent-hover">
-                  <MapPin className="h-5 w-5" />
+      {/* Lista de Informações - Profissional & Elegante */}
+      <div className="bg-white rounded-2xl border border-slate-200/80 shadow-sm divide-y divide-slate-100 overflow-hidden">
+        {/* Paciente */}
+        <div className="p-6 hover:bg-slate-50/50 transition-all duration-200">
+          <div className="flex items-center gap-5">
+            <Avatar className="h-16 w-16 border-2 border-slate-200 shadow-sm">
+              {demand.applicant.avatarUrl && (
+                <AvatarImage src={demand.applicant.avatarUrl} />
+              )}
+              <AvatarFallback className="bg-gradient-to-br from-slate-100 to-slate-200 text-slate-700 font-bold text-lg">
+                {demand.applicant.name?.charAt(0) || 'U'}
+              </AvatarFallback>
+            </Avatar>
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center gap-2 mb-2">
+                <div className="p-1.5 rounded-md bg-emerald-50">
+                  <User className="h-3.5 w-3.5 text-emerald-600" />
                 </div>
-                Localização
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
-                {demand.zip_code && (
-                  <div className="space-y-1">
-                    <span className="font-medium text-foreground">CEP</span>
-                    <p className="text-muted-foreground">{demand.zip_code}</p>
-                  </div>
-                )}
-                {demand.city && (
-                  <div className="space-y-1">
-                    <span className="font-medium text-foreground">Cidade</span>
-                    <p className="text-muted-foreground">{demand.city}</p>
-                  </div>
-                )}
-                {demand.neighborhood && (
-                  <div className="space-y-1">
-                    <span className="font-medium text-foreground">Bairro</span>
-                    <p className="text-muted-foreground">{demand.neighborhood}</p>
-                  </div>
-                )}
-                {demand.street && (
-                  <div className="space-y-1">
-                    <span className="font-medium text-foreground">Endereço</span>
-                    <p className="text-muted-foreground">{demand.street}, {demand.number}</p>
-                  </div>
-                )}
-                {demand.complement && (
-                  <div className="space-y-1 sm:col-span-2">
-                    <span className="font-medium text-foreground">Complemento</span>
-                    <p className="text-muted-foreground">{demand.complement}</p>
-                  </div>
-                )}
+                <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Paciente</span>
               </div>
-              
-              <Link
-                href={mapsUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="medical-button medical-button-primary group/link"
-              >
-                <MapPin className="h-4 w-4 group-hover/link:scale-110 transition-transform" />
-                Ver no Google Maps
-                <ExternalLink className="h-3 w-3 opacity-70" />
-              </Link>
-            </CardContent>
-          </Card>
-        )}
-
-        {/* Applicant Information */}
-        <Card className="group medical-card medical-hover-lift medical-accent-success">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-3 text-lg">
-              <div className="medical-icon-container bg-success/10 text-success group-hover:medical-accent-hover">
-                <User className="h-5 w-5" />
-              </div>
-              Paciente
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="flex items-center gap-4">
-              <Avatar className="h-16 w-16 medical-avatar-ring ring-success/20 group-hover:ring-success/30">
-                {demand.applicant.avatarUrl && (
-                  <AvatarImage src={demand.applicant.avatarUrl} />
-                )}
-                <AvatarFallback className="bg-success/10 text-success text-lg font-semibold">
-                  {demand.applicant.name?.charAt(0) || 'U'}
-                </AvatarFallback>
-              </Avatar>
-              <div className="space-y-2 flex-1">
-                <h3 className="font-semibold text-lg text-foreground">{demand.applicant.name}</h3>
-                <div className="space-y-1 text-sm text-muted-foreground">
-                  <div className="flex items-center gap-2">
-                    <Calendar className="h-4 w-4" />
-                    <span>
-                      {new Date(demand.applicant.birthdate)
-                        .toISOString()
-                        .slice(0, 10)
-                        .split('-')
-                        .reverse()
-                        .join('/')}
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Phone className="h-4 w-4" />
-                    <span>{formatPhone(demand.applicant.phone)}</span>
-                  </div>
-                </div>
+              <h3 className="font-bold text-lg text-slate-900 mb-1 truncate">{demand.applicant.name}</h3>
+              <div className="flex items-center gap-4 text-sm text-slate-600">
+                <span className="flex items-center gap-1.5">
+                  <Calendar className="h-3.5 w-3.5 text-slate-400" />
+                  {new Date(demand.applicant.birthdate).toLocaleDateString('pt-BR')}
+                </span>
+                <span className="text-slate-300">•</span>
+                <span className="flex items-center gap-1.5 font-medium">
+                  {formatPhone(demand.applicant.phone)}
+                </span>
               </div>
             </div>
-
             <Link
               href={whatsappLink}
               target="_blank"
               rel="noopener noreferrer"
-              className="medical-button medical-button-success group/whats"
+              className="flex items-center gap-2.5 px-5 py-2.5 bg-emerald-500 text-white rounded-xl text-sm font-semibold hover:bg-emerald-600 hover:shadow-lg hover:shadow-emerald-500/20 transition-all duration-200 flex-shrink-0"
             >
-              <MessageCircle className="h-4 w-4 group-hover/whats:scale-110 transition-transform" />
-              Entrar em contato
-              <ExternalLink className="h-3 w-3 opacity-70" />
+              <MessageCircle className="h-4 w-4" />
+              <span className="hidden sm:inline">WhatsApp</span>
             </Link>
-          </CardContent>
-        </Card>
-      </div>
+          </div>
+        </div>
 
-      {/* Responsible Member */}
-      {demand.member && (
-        <Card className="group medical-card medical-hover-lift medical-accent-secondary">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-3 text-lg">
-              <div className="medical-icon-container bg-secondary/10 text-secondary group-hover:medical-accent-hover">
-                <Users className="h-5 w-5" />
-              </div>
-              Responsável pela Consulta
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="flex items-center gap-4">
-              <Avatar className="h-14 w-14 medical-avatar-ring ring-secondary/20 group-hover:ring-secondary/30">
+        {/* Profissional Responsável */}
+        {demand.member && (
+          <div className="p-6 hover:bg-slate-50/50 transition-all duration-200">
+            <div className="flex items-center gap-5">
+              <Avatar className="h-16 w-16 border-2 border-slate-200 shadow-sm">
                 {demand.member.user.avatarUrl && (
                   <AvatarImage src={demand.member.user.avatarUrl} />
                 )}
-                <AvatarFallback className="bg-secondary/10 text-secondary font-semibold">
+                <AvatarFallback className="bg-gradient-to-br from-blue-100 to-blue-200 text-blue-700 font-bold text-lg">
                   {demand.member.user.name?.charAt(0) || 'M'}
                 </AvatarFallback>
               </Avatar>
-              <div className="space-y-1">
-                <h3 className="font-semibold text-foreground">{demand.member.user.name}</h3>
-                <p className="text-sm text-muted-foreground flex items-center gap-1">
-                  <Mail className="h-3 w-3" />
-                  {demand.member.user.email}
-                </p>
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-2 mb-2">
+                  <div className="p-1.5 rounded-md bg-blue-50">
+                    <Users className="h-3.5 w-3.5 text-blue-600" />
+                  </div>
+                  <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Profissional Responsável</span>
+                </div>
+                <h3 className="font-bold text-lg text-slate-900 mb-1 truncate">{demand.member.user.name}</h3>
+                <p className="text-sm text-slate-600 truncate">{demand.member.user.email}</p>
               </div>
             </div>
-          </CardContent>
-        </Card>
-      )}
+          </div>
+        )}
 
-      {/* Organization & Unit */}
-      <div className="grid gap-6 md:grid-cols-2">
-        <Card className="group medical-card medical-hover-lift medical-accent-warning">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-3 text-lg">
-              <div className="medical-icon-container bg-warning/10 text-warning group-hover:medical-accent-hover">
-                <Landmark className="h-5 w-5" />
+        {/* Agendamento */}
+        {demand.scheduledDate && (
+          <div className="p-6 hover:bg-slate-50/50 transition-all duration-200">
+            <div className="flex items-center gap-5">
+              <div className="h-16 w-16 rounded-xl bg-gradient-to-br from-purple-50 to-purple-100 border border-purple-100 flex items-center justify-center shadow-sm flex-shrink-0">
+                <Calendar className="h-7 w-7 text-purple-600" />
               </div>
-              Setor de Atendimento
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="font-medium text-foreground">{demand.unit.name}</p>
-          </CardContent>
-        </Card>
-
-        <Card className="group medical-card medical-hover-lift medical-accent-info">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-3 text-lg">
-              <div className="medical-icon-container bg-info/10 text-info group-hover:medical-accent-hover">
-                <Building2 className="h-5 w-5" />
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-2 mb-2">
+                  <div className="p-1.5 rounded-md bg-purple-50">
+                    <Clock className="h-3.5 w-3.5 text-purple-600" />
+                  </div>
+                  <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Agendamento</span>
+                </div>
+                <h3 className="font-bold text-lg text-slate-900">
+                  {new Date(demand.scheduledDate).toLocaleDateString('pt-BR', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric',
+                  })}
+                  {demand.scheduledTime && (
+                    <span className="ml-3 text-purple-600 font-bold">
+                      {demand.scheduledTime.substring(0, 5)}
+                    </span>
+                  )}
+                </h3>
               </div>
-              Organização
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="flex items-center gap-3">
-              <Avatar className="h-12 w-12 medical-avatar-ring ring-info/20 group-hover:ring-info/30">
-                {demand.unit.organization.avatarUrl && (
-                  <AvatarImage src={demand.unit.organization.avatarUrl} />
-                )}
-                <AvatarFallback className="bg-info/10 text-info font-semibold">
-                  {demand.unit.organization.name?.charAt(0) || 'O'}
-                </AvatarFallback>
-              </Avatar>
-              <p className="font-medium text-foreground">{demand.unit.organization.name}</p>
             </div>
-          </CardContent>
-        </Card>
-      </div>
+          </div>
+        )}
 
-      {/* Owner Information */}
-      {demand.owner && (
-        <Card className="group medical-card medical-hover-lift medical-accent-accent">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-3 text-lg">
-              <div className="medical-icon-container bg-accent/10 text-accent group-hover:medical-accent-hover">
-                <Eye className="h-5 w-5" />
+        {/* Setor */}
+        <div className="p-6 hover:bg-slate-50/50 transition-all duration-200">
+          <div className="flex items-center gap-5">
+            <div className="h-16 w-16 rounded-xl bg-gradient-to-br from-amber-50 to-amber-100 border border-amber-100 flex items-center justify-center shadow-sm flex-shrink-0">
+              <Building2 className="h-7 w-7 text-amber-600" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center gap-2 mb-2">
+                <div className="p-1.5 rounded-md bg-amber-50">
+                  <Landmark className="h-3.5 w-3.5 text-amber-600" />
+                </div>
+                <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Setor de Atendimento</span>
               </div>
-              Registrado por
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="flex items-center gap-4">
-              <Avatar className="h-14 w-14 medical-avatar-ring ring-accent/20 group-hover:ring-accent/30">
+              <h3 className="font-bold text-lg text-slate-900 truncate">{demand.unit.name}</h3>
+            </div>
+          </div>
+        </div>
+
+        {/* Organização */}
+        <div className="p-6 hover:bg-slate-50/50 transition-all duration-200">
+          <div className="flex items-center gap-5">
+            <Avatar className="h-16 w-16 border-2 border-slate-200 shadow-sm">
+              {demand.unit.organization.avatarUrl && (
+                <AvatarImage src={demand.unit.organization.avatarUrl} />
+              )}
+              <AvatarFallback className="bg-gradient-to-br from-cyan-100 to-cyan-200 text-cyan-700 font-bold text-lg">
+                {demand.unit.organization.name?.charAt(0) || 'O'}
+              </AvatarFallback>
+            </Avatar>
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center gap-2 mb-2">
+                <div className="p-1.5 rounded-md bg-cyan-50">
+                  <Building2 className="h-3.5 w-3.5 text-cyan-600" />
+                </div>
+                <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Organização</span>
+              </div>
+              <h3 className="font-bold text-lg text-slate-900 truncate">{demand.unit.organization.name}</h3>
+            </div>
+          </div>
+        </div>
+
+        {/* Registrado por */}
+        {demand.owner && (
+          <div className="p-6 hover:bg-slate-50/50 transition-all duration-200">
+            <div className="flex items-center gap-5">
+              <Avatar className="h-16 w-16 border-2 border-slate-200 shadow-sm">
                 {demand.owner.avatarUrl && (
                   <AvatarImage src={demand.owner.avatarUrl} />
                 )}
-                <AvatarFallback className="bg-accent/10 text-accent font-semibold">
+                <AvatarFallback className="bg-gradient-to-br from-indigo-100 to-indigo-200 text-indigo-700 font-bold text-lg">
                   {demand.owner.name?.charAt(0) || 'R'}
                 </AvatarFallback>
               </Avatar>
-              <div className="space-y-1">
-                <h3 className="font-semibold text-foreground">{demand.owner.name}</h3>
-                <p className="text-sm text-muted-foreground flex items-center gap-1">
-                  <Mail className="h-3 w-3" />
-                  {demand.owner.email}
-                </p>
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-2 mb-2">
+                  <div className="p-1.5 rounded-md bg-indigo-50">
+                    <Eye className="h-3.5 w-3.5 text-indigo-600" />
+                  </div>
+                  <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Registrado por</span>
+                </div>
+                <h3 className="font-bold text-lg text-slate-900 mb-1 truncate">{demand.owner.name}</h3>
+                <p className="text-sm text-slate-600 truncate">{demand.owner.email}</p>
               </div>
             </div>
-          </CardContent>
-        </Card>
-      )}
+          </div>
+        )}
 
-      {/* Timeline Information */}
-      <Card className="medical-card medical-glass">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-lg">
-            <div className="medical-icon-container bg-muted/20 text-muted-foreground">
-              <Clock className="h-5 w-5" />
+        {/* Histórico */}
+        <div className="p-6 bg-gradient-to-br from-slate-50 to-slate-100/50">
+          <div className="flex items-center gap-2 mb-4">
+            <div className="p-1.5 rounded-md bg-slate-200">
+              <Clock className="h-3.5 w-3.5 text-slate-600" />
             </div>
-            Histórico
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="grid gap-4 md:grid-cols-2">
-            <div className="space-y-2">
-              <div className="flex items-center gap-2 text-sm font-medium text-foreground">
-                <Calendar className="h-4 w-4" />
-                Criado em
-              </div>
-              <p className="text-muted-foreground ml-6">
+            <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Histórico da Demanda</span>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <div className="bg-white rounded-xl p-4 border border-slate-200 shadow-sm">
+              <span className="text-xs font-medium text-slate-500 uppercase tracking-wide block mb-2">Criado em</span>
+              <p className="font-bold text-base text-slate-900">
                 {new Date(demand.createdAt).toLocaleDateString('pt-BR', {
                   day: '2-digit',
                   month: '2-digit',
@@ -341,12 +264,9 @@ export async function DemandDetails() {
                 })}
               </p>
             </div>
-            <div className="space-y-2">
-              <div className="flex items-center gap-2 text-sm font-medium text-foreground">
-                <Clock className="h-4 w-4" />
-                Última atualização
-              </div>
-              <p className="text-muted-foreground ml-6">
+            <div className="bg-white rounded-xl p-4 border border-slate-200 shadow-sm">
+              <span className="text-xs font-medium text-slate-500 uppercase tracking-wide block mb-2">Atualizado em</span>
+              <p className="font-bold text-base text-slate-900">
                 {new Date(demand.updatedAt!).toLocaleDateString('pt-BR', {
                   day: '2-digit',
                   month: '2-digit',
@@ -357,8 +277,8 @@ export async function DemandDetails() {
               </p>
             </div>
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
 
       {/* Action Button */}
       {!['resolved', 'rejected'].includes(demand.status.toLowerCase()) && (
