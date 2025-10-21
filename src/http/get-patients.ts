@@ -7,6 +7,7 @@ export interface GetPatientsRequest {
 
 export interface Patient {
   id: string
+  slug: string
   name: string
   phone: string | null
   cpf: string | null

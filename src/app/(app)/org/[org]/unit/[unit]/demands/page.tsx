@@ -63,8 +63,10 @@ export default async function DemandsPage({ params, searchParams }: PageProps) {
     status: search.status || undefined, 
     priority: search.priority || undefined,
     search: search.search || undefined,
-    sort_by: search.sort_by || 'created_at',
-    sort_order: search.sort_order || 'desc',
+    // ✅ Não enviar sort_by e sort_order se não estiverem na URL
+    // Deixar a API usar sua ordenação padrão
+    sort_by: search.sort_by || undefined,
+    sort_order: search.sort_order || undefined,
     created_at: search.created_at ? new Date(search.created_at) : undefined,
     updated_at: search.updated_at ? new Date(search.updated_at) : undefined,
   }
@@ -81,6 +83,18 @@ export default async function DemandsPage({ params, searchParams }: PageProps) {
 
   try {    
     const response = await getDemands(processedParams)
+
+    // 🐛 DEBUG: Log para verificar ordenação
+    console.log('🔍 DEBUG - Ordenação recebida do servidor:', {
+      sort_by: processedParams.sort_by,
+      sort_order: processedParams.sort_order,
+      total_demands: response.demands.length,
+      first_3_created_at: response.demands.slice(0, 3).map(d => ({
+        id: d.id.substring(0, 8),
+        title: d.title.substring(0, 30),
+        created_at: d.created_at,
+      })),
+    })
 
     demands = response.demands.map((demand: any) => ({
       id: demand.id,

@@ -1,6 +1,5 @@
 import { ability, getCurrentOrg, getCurrentUnit } from '@/lib/auth'
 
-import { Button } from './ui/button'
 import { NavLink } from './nav-link'
 
 export async function Tabs() {
@@ -14,6 +13,7 @@ export async function Tabs() {
   const canGetMembers = permissions?.can('get', 'Applicant')
   const canGetPatients = permissions?.can('get', 'Applicant') // Usar a mesma permissão de applicants
   const canGetUnits = permissions?.can('get', 'Unit')
+  const canGetJobTitles = permissions?.can('get', 'Applicant')
 
   return (
     <nav className="medical-nav">
@@ -52,6 +52,24 @@ export async function Tabs() {
           Pacientes
         </NavLink>
       )}
+
+        {canGetMembers && (
+          <NavLink 
+            href={`/org/${currentOrg}/members`}
+            className="medical-nav-item data-[current=true]:medical-nav-item-active"
+          >
+            Definir cargo
+          </NavLink>
+        )}
+
+        {canGetJobTitles && (
+          <NavLink 
+            href={`/org/${currentOrg}/job-titles`}
+            className="medical-nav-item data-[current=true]:medical-nav-item-active"
+          >
+            Cargos
+          </NavLink>
+        )}
       
       {canGetMembers && currentUnit && (
         <NavLink 

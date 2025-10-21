@@ -72,11 +72,12 @@ export function DemandList({
   const [filterPriority, setFilterPriority] = useState(initialSearchParams.priority || '')
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('list')
   const [showFilters, setShowFilters] = useState(false)
-  const [sortBy, setSortBy] = useState<'created_at' | 'updated_at' | 'priority' | 'status'>(
-    initialSearchParams.sort_by as any || 'created_at'
+  // ✅ Não definir valores padrão - deixar a API usar sua ordenação padrão
+  const [sortBy, setSortBy] = useState<'created_at' | 'updated_at' | 'priority' | 'status' | undefined>(
+    initialSearchParams.sort_by as any
   )
-  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>(
-    initialSearchParams.sort_order as any || 'desc'
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc' | undefined>(
+    initialSearchParams.sort_order as any
   )
   const [isLoading, setIsLoading] = useState(false)
 
@@ -136,7 +137,7 @@ export function DemandList({
     }
     updateURL({ 
       sort_by, 
-      sort_order: sort_order || sortOrder 
+      sort_order: sort_order || sortOrder || undefined
     })
   }
 

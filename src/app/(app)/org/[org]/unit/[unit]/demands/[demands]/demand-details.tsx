@@ -108,15 +108,24 @@ export async function DemandDetails() {
                 </span>
               </div>
             </div>
-            <Link
-              href={whatsappLink}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-2.5 px-5 py-2.5 bg-emerald-500 text-white rounded-xl text-sm font-semibold hover:bg-emerald-600 hover:shadow-lg hover:shadow-emerald-500/20 transition-all duration-200 flex-shrink-0"
-            >
-              <MessageCircle className="h-4 w-4" />
-              <span className="hidden sm:inline">WhatsApp</span>
-            </Link>
+            <div className="flex items-center gap-2 flex-shrink-0">
+              <Link
+                href={`/org/${currentOrg}/unit/${currentUnit}/applicant/${demand.applicant.id}/info`}
+                className="flex items-center gap-2 px-4 py-2.5 bg-blue-50 text-blue-700 rounded-xl text-sm font-semibold hover:bg-blue-100 hover:shadow-md transition-all duration-200"
+              >
+                <Eye className="h-4 w-4" />
+                <span className="hidden sm:inline">Ver perfil</span>
+              </Link>
+              <Link
+                href={whatsappLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2.5 px-5 py-2.5 bg-emerald-500 text-white rounded-xl text-sm font-semibold hover:bg-emerald-600 hover:shadow-lg hover:shadow-emerald-500/20 transition-all duration-200"
+              >
+                <MessageCircle className="h-4 w-4" />
+                <span className="hidden sm:inline">WhatsApp</span>
+              </Link>
+            </div>
           </div>
         </div>
 

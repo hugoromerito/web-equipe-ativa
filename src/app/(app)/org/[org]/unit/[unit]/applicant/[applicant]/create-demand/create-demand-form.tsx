@@ -10,7 +10,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Separator } from '@/components/ui/separator'
 
 import { useFormState } from '@/hooks/use-form-state'
-import { createConsultaction, type DemandSchema } from './actions'
+import { createConsultaction, type DemandSchema, type SlotResult } from './actions'
 import { Textarea } from '@/components/ui/textarea'
 import { useEffect, useState } from 'react'
 import { useRouter, useParams } from 'next/navigation'
@@ -37,7 +37,15 @@ export function DemandForm({ initialData }: DemandFormProps) {
     date: string
     startTime: string
     endTime: string
+    memberName?: string
   } | null>(null)
+  const [selectedSlots, setSelectedSlots] = useState<{
+    memberId: string
+    date: string
+    startTime: string
+    endTime: string
+    memberName?: string
+  }[]>([])
 
   // Buscar cargos
   const { jobTitles, isLoading: isLoadingJobTitles } = useJobTitles(organizationSlug)
@@ -50,28 +58,89 @@ export function DemandForm({ initialData }: DemandFormProps) {
     enabled: !!selectedJobTitleId,
   })
 
+  // Criar mapa de membros para buscar nomes
+  const memberMap = new Map(
+    (availabilityData?.members || []).map(m => [m.memberId, m.memberName])
+  )
+
   const formAction = createConsultaction
 
-  const [{ errors, message, success }, handleSubmit, isPending] = useFormState(
+  const [formState, handleSubmit, isPending] = useFormState(
     formAction,
     () => {},
   )
 
-  useEffect(() => {
-    if (success) {
-      const timeout = setTimeout(() => {
-        router.back()
-      }, 1000)
-      return () => clearTimeout(timeout)
-    }
-  }, [success, router])
+  const { errors, message, success } = formState
+
+  // Removido redirecionamento automático após sucesso
 
   const handleSlotSelect = (memberId: string, date: string, startTime: string, endTime: string) => {
+    // Compatibilidade: quando usado em modo single-select
     setSelectedSlot({ memberId, date, startTime, endTime })
+  }
+
+  const handleSelectionChange = (slots: { memberId: string; date: string; startTime: string; endTime: string }[]) => {
+    // Enriquecer slots com memberName
+    const enrichedSlots = slots.map(s => ({
+      ...s,
+      memberName: memberMap.get(s.memberId) || 'Profissional'
+    }))
+    setSelectedSlots(enrichedSlots)
+    // keep first as selectedSlot for backward compatibility
+    setSelectedSlot(enrichedSlots.length > 0 ? enrichedSlots[0] : null)
   }
 
   return (
     <div className="max-w-4xl mx-auto space-y-6">
+      {/* Modal de sucesso centralizado com detalhes */}
+      {success === true && message && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
+          <div className="bg-white dark:bg-slate-900 rounded-xl shadow-xl p-8 flex flex-col items-center gap-6 max-w-lg w-full">
+            <CheckCircle2 className="h-12 w-12 text-green-600" />
+            <h2 className="text-2xl font-bold text-green-800 dark:text-green-200">Demanda registrada!</h2>
+            <p className="text-green-700 dark:text-green-300 text-center text-lg font-medium">{message}</p>
+            {/* Detalhes dos slots */}
+            {'results' in formState && Array.isArray(formState.results) && formState.results.length > 0 && (
+              <div className="w-full space-y-2">
+                <h4 className="text-sm font-semibold text-muted-foreground text-center">Detalhes dos horários:</h4>
+                <div className="space-y-2">
+                  {(formState.results as SlotResult[]).map((result, idx) => (
+                    <div
+                      key={idx}
+                      className={`flex items-start gap-3 p-3 rounded-lg border justify-center ${
+                        result.success
+                          ? 'bg-green-50 dark:bg-green-950/20 border-green-200 dark:border-green-800'
+                          : 'bg-red-50 dark:bg-red-950/20 border-red-200 dark:border-red-800'
+                      }`}
+                    >
+                      {result.success ? (
+                        <CheckCircle2 className="w-5 h-5 text-green-600 dark:text-green-400 flex-shrink-0 mt-0.5" />
+                      ) : (
+                        <XCircle className="w-5 h-5 text-red-600 dark:text-red-400 flex-shrink-0 mt-0.5" />
+                      )}
+                      <div className="flex-1 min-w-0">
+                        <div className={`text-sm font-medium ${
+                          result.success 
+                            ? 'text-green-900 dark:text-green-100' 
+                            : 'text-red-900 dark:text-red-100'
+                        }`}>
+                          {result.slot}
+                        </div>
+                        {!result.success && result.error && (
+                          <div className="text-xs text-red-700 dark:text-red-300 mt-1">
+                            {result.error}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+            <Button onClick={() => window.location.reload()} className="mt-4">Registrar nova demanda</Button>
+          </div>
+        </div>
+      )}
       <Card>
         <CardHeader>
           <div className="flex items-center gap-3">
@@ -96,13 +165,44 @@ export function DemandForm({ initialData }: DemandFormProps) {
                 <AlertDescription>{message}</AlertDescription>
               </Alert>
             )}
-            
-            {success === true && message && (
-              <Alert className="border-green-200 bg-green-50 dark:bg-green-900/10">
-                <CheckCircle2 className="h-4 w-4 text-green-600" />
-                <AlertTitle className="text-green-800 dark:text-green-200">Sucesso!</AlertTitle>
-                <AlertDescription className="text-green-700 dark:text-green-300">{message}</AlertDescription>
-              </Alert>
+
+            {/* Resultados detalhados por slot */}
+            {'results' in formState && Array.isArray(formState.results) && formState.results.length > 0 && (
+              <div className="space-y-2 mt-4">
+                <h4 className="text-sm font-semibold text-muted-foreground">Detalhes:</h4>
+                <div className="space-y-2">
+                  {(formState.results as SlotResult[]).map((result, idx) => (
+                    <div
+                      key={idx}
+                      className={`flex items-start gap-3 p-3 rounded-lg border ${
+                        result.success
+                          ? 'bg-green-50 dark:bg-green-950/20 border-green-200 dark:border-green-800'
+                          : 'bg-red-50 dark:bg-red-950/20 border-red-200 dark:border-red-800'
+                      }`}
+                    >
+                      {result.success ? (
+                        <CheckCircle2 className="w-5 h-5 text-green-600 dark:text-green-400 flex-shrink-0 mt-0.5" />
+                      ) : (
+                        <XCircle className="w-5 h-5 text-red-600 dark:text-red-400 flex-shrink-0 mt-0.5" />
+                      )}
+                      <div className="flex-1 min-w-0">
+                        <div className={`text-sm font-medium ${
+                          result.success 
+                            ? 'text-green-900 dark:text-green-100' 
+                            : 'text-red-900 dark:text-red-100'
+                        }`}>
+                          {result.slot}
+                        </div>
+                        {!result.success && result.error && (
+                          <div className="text-xs text-red-700 dark:text-red-300 mt-1">
+                            {result.error}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
             )}
 
             {/* Dados da Consulta */}
@@ -171,14 +271,58 @@ export function DemandForm({ initialData }: DemandFormProps) {
 
             <Separator />
 
-            {/* Hidden fields para agendamento */}
-            {selectedSlot && (
+            {/* Hidden fields para agendamento (suporta múltiplos slots) */}
+            {selectedSlots.length > 0 ? (
+              selectedSlots.map((s, idx) => (
+                <div key={`${s.memberId}-${s.date}-${s.startTime}`}>
+                  <input type="hidden" name={`slots[${idx}][memberId]`} value={s.memberId} />
+                  <input type="hidden" name={`slots[${idx}][date]`} value={s.date} />
+                  <input type="hidden" name={`slots[${idx}][startTime]`} value={s.startTime} />
+                  <input type="hidden" name={`slots[${idx}][endTime]`} value={s.endTime} />
+                  <input type="hidden" name={`slots[${idx}][memberName]`} value={s.memberName || ''} />
+                </div>
+              ))
+            ) : selectedSlot ? (
               <>
                 <input type="hidden" name="memberId" value={selectedSlot.memberId} />
                 <input type="hidden" name="date" value={selectedSlot.date} />
                 <input type="hidden" name="startTime" value={selectedSlot.startTime} />
                 <input type="hidden" name="endTime" value={selectedSlot.endTime} />
               </>
+            ) : null}
+
+            {/* Preview dos slots selecionados */}
+            {selectedSlots.length > 0 && (
+              <div className="space-y-2">
+                <h4 className="text-sm font-medium">Horários selecionados ({selectedSlots.length})</h4>
+                <div className="grid grid-cols-1 gap-2">
+                  {selectedSlots.map((s) => {
+                    const formattedDate = new Date(s.date + 'T00:00:00').toLocaleDateString('pt-BR')
+                    return (
+                      <div key={`${s.memberId}-${s.date}-${s.startTime}`} className="p-3 border rounded-lg flex items-center justify-between bg-blue-50 dark:bg-blue-950/20 border-blue-200 dark:border-blue-800">
+                        <div>
+                          <div className="text-sm font-semibold text-blue-900 dark:text-blue-100">
+                            {formattedDate} às {s.startTime}
+                          </div>
+                          <div className="text-xs text-blue-700 dark:text-blue-300">
+                            {s.memberName || 'Profissional'}
+                          </div>
+                        </div>
+                        <button 
+                          type="button" 
+                          className="text-red-500 hover:text-red-700 text-sm font-medium px-2 py-1 rounded hover:bg-red-50 dark:hover:bg-red-950/20 transition-colors" 
+                          onClick={() => {
+                            const next = selectedSlots.filter(x => !(x.memberId === s.memberId && x.date === s.date && x.startTime === s.startTime))
+                            setSelectedSlots(next)
+                          }}
+                        >
+                          Remover
+                        </button>
+                      </div>
+                    )
+                  })}
+                </div>
+              </div>
             )}
 
             <div className="pt-4">
@@ -215,6 +359,9 @@ export function DemandForm({ initialData }: DemandFormProps) {
           isLoading={isLoadingAvailability}
           onSlotSelect={handleSlotSelect}
           selectedSlot={selectedSlot}
+          multiSelect={true}
+          onSelectionChange={handleSelectionChange}
+          selectedSlots={selectedSlots}
         />
       )}
     </div>

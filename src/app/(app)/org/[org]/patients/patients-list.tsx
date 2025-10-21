@@ -3,7 +3,8 @@
 import { useState } from 'react'
 import { format } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
-import { Search, Users, Phone, Calendar, FileText, Loader2 } from 'lucide-react'
+import { Search, Users, Phone, Calendar, FileText, Loader2, Eye } from 'lucide-react'
+import Link from 'next/link'
 
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -143,9 +144,10 @@ export function PatientsList({ organizationSlug }: PatientsListProps) {
                       <TableHead className="font-semibold text-slate-900">Nome</TableHead>
                       <TableHead className="font-semibold text-slate-900">CPF</TableHead>
                       <TableHead className="font-semibold text-slate-900">Idade</TableHead>
-                      <TableHead className="font-semibold text-slate-900">Responsáveis</TableHead>
+                      <TableHead className="font-semibold text-slate-900">Contato</TableHead>
                       <TableHead className="font-semibold text-slate-900">Observações</TableHead>
-                      <TableHead className="font-semibold text-slate-900">Cadastro</TableHead>
+                      <TableHead className="font-semibold text-slate-900">Cadastrado em</TableHead>
+                      <TableHead className="font-semibold text-slate-900 text-center">Ações</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
@@ -224,12 +226,22 @@ export function PatientsList({ organizationSlug }: PatientsListProps) {
                             {formatDate(patient.created_at)}
                           </span>
                         </TableCell>
+                        
+                        <TableCell className="text-center">
+                          <Link
+                            href={`/org/${organizationSlug}/unit/default/applicant/${patient.id}/info`}
+                            className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-blue-50 text-blue-700 rounded-lg text-sm font-medium hover:bg-blue-100 hover:shadow-sm transition-all duration-200"
+                          >
+                            <Eye className="h-3.5 w-3.5" />
+                            Ver detalhes
+                          </Link>
+                        </TableCell>
                       </TableRow>
                     ))}
 
                     {patientsData?.applicants.length === 0 && (
                       <TableRow>
-                        <TableCell colSpan={6} className="text-center py-8">
+                        <TableCell colSpan={7} className="text-center py-8">
                           <div className="flex flex-col items-center gap-2">
                             <Users className="h-8 w-8 text-muted-foreground" />
                             <p className="text-muted-foreground">

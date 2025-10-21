@@ -19,16 +19,23 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog'
 
+interface SelectedSlot {
+  memberId: string
+  date: string // yyyy-MM-dd
+  startTime: string // HH:mm
+  endTime: string // HH:mm
+}
+
 interface TimeSlotGridProps {
   availability: MemberAvailability[]
   isLoading?: boolean
+  // Backwards compatible single select
   onSlotSelect?: (memberId: string, date: string, startTime: string, endTime: string) => void
-  selectedSlot?: {
-    memberId: string
-    date: string
-    startTime: string
-    endTime: string
-  } | null
+  selectedSlot?: SelectedSlot | null
+  // New multi-select support
+  multiSelect?: boolean
+  onSelectionChange?: (slots: SelectedSlot[]) => void
+  selectedSlots?: SelectedSlot[]
 }
 
 // Gera slots de 30 minutos das 8h às 18h
@@ -47,6 +54,9 @@ export function TimeSlotGrid({
   isLoading = false,
   onSlotSelect,
   selectedSlot,
+  multiSelect = false,
+  onSelectionChange,
+  selectedSlots,
 }: TimeSlotGridProps) {
   const [currentWeekStart, setCurrentWeekStart] = useState(() => 
     startOfWeek(new Date(), { weekStartsOn: 0 }) // Domingo
@@ -58,12 +68,17 @@ export function TimeSlotGrid({
     members: MemberAvailability[]
     date: string
     time: string
-  }>({
-    open: false,
-    members: [],
-    date: '',
-    time: '',
-  })
+  }>(
+    {
+      open: false,
+      members: [],
+      date: '',
+      time: '',
+    }
+  )
+
+  // Estado interno para seleção múltipla (quando multiSelect=true)
+  const [internalSelectedSlots, setInternalSelectedSlots] = useState<SelectedSlot[]>(selectedSlots || [])
 
   // Gera os 7 dias da semana atual
   const weekDays = useMemo(() => {
@@ -133,41 +148,71 @@ export function TimeSlotGrid({
   }
 
   const isSlotSelected = (date: Date, time: string): boolean => {
-    if (!selectedSlot) return false
     const dateStr = format(date, 'yyyy-MM-dd')
+    if (multiSelect) {
+      const effective = selectedSlots ?? internalSelectedSlots
+      return effective.some((s) => s.date === dateStr && s.startTime === time)
+    }
+
+    if (!selectedSlot) return false
     return selectedSlot.date === dateStr && selectedSlot.startTime === time
   }
 
   // Função para lidar com o clique em um slot
   const handleSlotClick = (date: Date, time: string, members: MemberAvailability[]) => {
-    if (!onSlotSelect || members.length === 0) return
+    if (members.length === 0) return
 
     const dateStr = format(date, 'yyyy-MM-dd')
 
-    // Se houver apenas 1 profissional, seleciona direto
+    // Single-professional fast path
     if (members.length === 1) {
-      onSlotSelect(members[0].memberId, dateStr, time, time)
-    } else {
-      // Se houver mais de 1, abre o modal para escolha
-      setMemberSelectionDialog({
-        open: true,
-        members,
+      const slot: SelectedSlot = {
+        memberId: members[0].memberId,
         date: dateStr,
-        time,
-      })
+        startTime: time,
+        endTime: time,
+      }
+
+      if (multiSelect) {
+        // toggle in internal selection
+        const exists = internalSelectedSlots.some((s) => s.memberId === slot.memberId && s.date === slot.date && s.startTime === slot.startTime)
+        const next = exists ? internalSelectedSlots.filter((s) => !(s.memberId === slot.memberId && s.date === slot.date && s.startTime === slot.startTime)) : [...internalSelectedSlots, slot]
+        setInternalSelectedSlots(next)
+        onSelectionChange?.(next)
+      } else {
+        onSlotSelect?.(slot.memberId, slot.date, slot.startTime, slot.endTime)
+      }
+
+      return
     }
+
+    // multiple professionals -> open modal to pick one
+    setMemberSelectionDialog({
+      open: true,
+      members,
+      date: dateStr,
+      time,
+    })
   }
 
   // Função para selecionar um profissional no modal
   const handleMemberSelect = (memberId: string) => {
-    if (onSlotSelect) {
-      onSlotSelect(
-        memberId,
-        memberSelectionDialog.date,
-        memberSelectionDialog.time,
-        memberSelectionDialog.time
-      )
+    const slot: SelectedSlot = {
+      memberId,
+      date: memberSelectionDialog.date,
+      startTime: memberSelectionDialog.time,
+      endTime: memberSelectionDialog.time,
     }
+
+    if (multiSelect) {
+      const exists = internalSelectedSlots.some((s) => s.memberId === slot.memberId && s.date === slot.date && s.startTime === slot.startTime)
+      const next = exists ? internalSelectedSlots.filter((s) => !(s.memberId === slot.memberId && s.date === slot.date && s.startTime === slot.startTime)) : [...internalSelectedSlots, slot]
+      setInternalSelectedSlots(next)
+      onSelectionChange?.(next)
+    } else {
+      onSlotSelect?.(slot.memberId, slot.date, slot.startTime, slot.endTime)
+    }
+
     setMemberSelectionDialog({ open: false, members: [], date: '', time: '' })
   }
 

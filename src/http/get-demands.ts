@@ -60,8 +60,8 @@ export async function getDemands({
   created_at,
   updated_at,
   search,
-  sort_by = 'created_at',
-  sort_order = 'desc',
+  sort_by,
+  sort_order,
 }: GetDemandsRequest): Promise<GetDemandsResponse> {
   try {
     // Validate required parameters
@@ -76,8 +76,15 @@ export async function getDemands({
     const searchParams: Record<string, string | number> = {
       page,
       limit,
-      sort_by,
-      sort_order,
+    }
+
+    // ✅ Adicionar sort_by e sort_order APENAS se forem fornecidos explicitamente
+    // Caso contrário, a API usa sua ordenação padrão
+    if (sort_by) {
+      searchParams.sort_by = sort_by
+    }
+    if (sort_order) {
+      searchParams.sort_order = sort_order
     }
 
     // Add optional filters only if they have meaningful values
