@@ -29,6 +29,12 @@ export async function getMembersOrganization({
   page = 1,
   pageSize = 10,
 }: GetMembersOrganizationRequest) {
+  console.log('🔍 [getMembersOrganization] Chamando API:', {
+    url: `organizations/${organizationSlug}/members`,
+    page,
+    pageSize,
+  })
+
   const result = await api
     .get(`organizations/${organizationSlug}/members`, {
       searchParams: {
@@ -37,6 +43,11 @@ export async function getMembersOrganization({
       },
     })
     .json<GetMembersOrganizationResponse>()
+
+  console.log('✅ [getMembersOrganization] Resposta recebida:', {
+    membersCount: result.members.length,
+    totalCount: result.totalCount,
+  })
 
   return result
 }

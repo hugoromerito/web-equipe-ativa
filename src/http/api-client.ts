@@ -49,12 +49,14 @@ export const api = ky.create({
 
         if (token) {
           request.headers.set('Authorization', `Bearer ${token}`)
-          console.log('✅ Authorization header set')
+          console.log('✅ Authorization header set for:', request.url)
         } else {
           console.warn('⚠️ No auth token found!', {
             environment: typeof window === 'undefined' ? 'server' : 'client',
             url: request.url,
-            cookies: typeof window !== 'undefined' ? document.cookie : 'server-side'
+            fullUrl: request.url,
+            cookies: typeof window !== 'undefined' ? document.cookie : 'server-side',
+            headers: Object.fromEntries(request.headers.entries())
           })
         }
       },
