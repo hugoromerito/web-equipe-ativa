@@ -9,7 +9,7 @@ import { AlertTriangle, Loader2, Eye, EyeOff, Mail, Lock } from 'lucide-react'
 import { useState, useEffect } from 'react'
 
 import googleIcon from '@/assets/google-icon.svg'
-import eaLogo from '@/assets/eabeta-logo.svg'
+import eaLogo from '@/assets/ea-logo.svg'
 import Image from 'next/image'
 import { signInWithEmailAndPassword } from './actions'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'

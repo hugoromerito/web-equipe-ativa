@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import eaLogo from '@/assets/eabeta-logo.svg'
+import eaLogo from '@/assets/ea-logo.svg'
 import { Slash } from 'lucide-react'
 import { OrganizationSwitcher } from './organization-switcher'
 import { UnitSwitcher } from './unit-switcher'

@@ -24,11 +24,24 @@ export async function MemberList() {
   const currentUnit = await getCurrentUnit()
   const permissions = await ability()
 
-  const [{ membership }, { members }, { organization }] = await Promise.all([
+  const [{ membership }, { members: rawMembers }, { organization }] = await Promise.all([
     getMembership(currentOrg!),
     await getMembers({ organizationSlug: currentOrg!, unitSlug: currentUnit! }),
     getOrganization(currentOrg!),
   ])
+
+  // Adaptar estrutura dos membros para o formato esperado pelo componente
+  const members = rawMembers.map((m: any) => ({
+    id: m.id,
+    unitRole: m.unit_role,
+    organizationRole: m.organization_role,
+    name: m.user?.name,
+    email: m.user?.email,
+    avatarUrl: m.user?.avatar_url,
+    lastSeen: m.user?.last_seen,
+    userId: m.user?.id,
+    isOnline: m.is_online,
+  }))
 
   const authOrganization = organizationSchema.parse(organization)
 
