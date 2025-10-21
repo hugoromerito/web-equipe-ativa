@@ -1,5 +1,4 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { getCookie } from 'cookies-next'
 import { 
   getJobTitles, 
   type JobTitle 
@@ -57,14 +56,13 @@ function generateMockJobTitles(): { jobTitles: JobTitle[] } {
 export function useJobTitles(organizationSlug: string) {
   const queryClient = useQueryClient()
 
-  // Verificar se o token está disponível antes de fazer a requisição
-  const hasToken = typeof window !== 'undefined' && !!getCookie('token')
-
   // ✅ PRODUÇÃO: Usando API real
   const { data, isLoading, error } = useQuery({
     queryKey: ['job-titles', organizationSlug],
     queryFn: () => getJobTitles(organizationSlug),
-    enabled: !!organizationSlug && hasToken,
+    enabled: !!organizationSlug,
+    retry: 1,
+    retryDelay: 1000,
   })
 
   // DESENVOLVIMENTO: Descomentar para usar dados mockados

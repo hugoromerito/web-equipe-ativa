@@ -1,5 +1,4 @@
 import { useQuery } from '@tanstack/react-query'
-import { getCookie } from 'cookies-next'
 import {
   getMembersOrganization,
   type GetMembersOrganizationRequest,
@@ -13,9 +12,6 @@ export function useMembersOrganization(
     pageSize?: number
   }
 ) {
-  // Verificar se o token está disponível antes de fazer a requisição
-  const hasToken = typeof window !== 'undefined' && !!getCookie('token')
-  
   return useQuery({
     queryKey: ['members', 'organization', params.organizationSlug, params],
     queryFn: () =>
@@ -24,7 +20,9 @@ export function useMembersOrganization(
         page: params.page ?? 1,
         pageSize: params.pageSize ?? 10,
       }),
-    enabled: !!params.organizationSlug && hasToken,
+    enabled: !!params.organizationSlug,
+    retry: 1,
+    retryDelay: 1000,
   })
 }
 
