@@ -5,6 +5,7 @@ import { env } from '@/config/env'
 export const api = ky.create({
   prefixUrl: env.NEXT_PUBLIC_API_URL,
   timeout: 60000, // 60 segundos (aumentado)
+  credentials: 'include', // Envia cookies automaticamente em requisições cross-origin
   retry: {
     limit: 3, // Aumentado para 3 tentativas
     methods: ['get', 'post', 'put', 'delete'],
@@ -26,6 +27,7 @@ export const api = ky.create({
           const { cookies } = await import('next/headers')
           const serverCookies = cookies()
           token = (await serverCookies).get('token')?.value
+          console.log('🔐 [SERVER] Token from cookies:', token ? `${token.substring(0, 20)}...` : 'NOT FOUND')
         } else {
           // Código do cliente (browser)
           token = getCookie('token') as string | undefined
@@ -39,10 +41,15 @@ export const api = ky.create({
             
             token = cookieValue;
           }
+
+          console.log('🔐 [CLIENT] Token from cookies:', token ? `${token.substring(0, 20)}...` : 'NOT FOUND')
+          console.log('🍪 [CLIENT] All cookies:', document.cookie)
+          console.log('🌍 [CLIENT] Request URL:', request.url)
         }
 
         if (token) {
           request.headers.set('Authorization', `Bearer ${token}`)
+          console.log('✅ Authorization header set')
         } else {
           console.warn('⚠️ No auth token found!', {
             environment: typeof window === 'undefined' ? 'server' : 'client',
