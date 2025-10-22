@@ -36,7 +36,7 @@ Tempo de Desenvolvimento: ~2h
 - ✅ Membership
 - ✅ Shutdown
 
-### 🏛️ Setores
+### 🏛️ Unidades
 ```
 ██████████ 100% (2/2)
 ```
@@ -56,7 +56,7 @@ Tempo de Desenvolvimento: ~2h
 ```
 - ✅ Listar Geral
 - ✅ Listar por Organização
-- ✅ Listar por Setor
+- ✅ Listar por Unidade
 
 ### ✉️ Convites
 ```

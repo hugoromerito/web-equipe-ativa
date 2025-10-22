@@ -11,7 +11,7 @@ export default async function Home() {
             Dashboard Médico
           </h1>
           <p className="text-muted-foreground text-lg">
-            Gerencie suas organizações e setores de saúde
+            Gerencie suas organizações e unidades de saúde
           </p>
         </div>
         <OrgList />

@@ -92,7 +92,7 @@ export async function MemberList() {
           </h1>
         </div>
         <p className="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-          Gerencie os membros da sua equipe médica, controle permissões e convide novos profissionais para o setor.
+          Gerencie os membros da sua equipe médica, controle permissões e convide novos profissionais para a unidade.
         </p>
       </div>
 
@@ -245,7 +245,7 @@ export async function MemberList() {
                     </DropdownMenuItem>
                     <DropdownMenuItem className="medical-dropdown-item">
                       <ArrowLeftRight className="h-4 w-4 mr-2" />
-                      Alterar Setor
+                      Alterar Unidade
                     </DropdownMenuItem>
                     <DropdownMenuItem className="medical-dropdown-item text-red-600 hover:bg-red-50 hover:text-red-700">
                       <UserMinus className="h-4 w-4 mr-2" />
@@ -330,7 +330,7 @@ export async function MemberList() {
             <div className="space-y-3">
               <h3 className="text-2xl font-bold text-foreground">Nenhum membro encontrado</h3>
               <p className="text-muted-foreground text-lg max-w-md mx-auto">
-                Este setor ainda não possui membros cadastrados. 
+                Este unidade ainda não possui membros cadastrados. 
                 Comece convidando profissionais para sua equipe médica.
               </p>
             </div>

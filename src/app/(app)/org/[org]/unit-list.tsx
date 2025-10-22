@@ -42,11 +42,11 @@ export async function UnitList() {
             <Building className="w-8 h-8 text-primary" />
           </div>
           <h1 className="text-4xl font-bold text-foreground">
-            Setores Médicos
+            Unidades Médicas
           </h1>
         </div>
         <p className="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-          Gerencie os setores de saúde da sua organização. Cada setor representa um departamento 
+          Gerencie as unidades de saúde da sua organização. Cada unidade representa um departamento 
           ou área específica da instituição médica.
         </p>
       </div>
@@ -60,12 +60,12 @@ export async function UnitList() {
           
           <div className="space-y-4 mb-8">
             <h2 className="text-2xl font-bold text-foreground">
-              Nenhum setor encontrado
+              Nenhuma unidade encontrada
             </h2>
             <p className="text-muted-foreground text-lg leading-relaxed">
-              Esta organização ainda não possui setores médicos configurados. 
+              Esta organização ainda não possui unidades médicas configuradas. 
               <br />
-              <span className="font-medium">Crie o primeiro setor para começar a organizar sua equipe.</span>
+              <span className="font-medium">Crie a primeira unidade para começar a organizar sua equipe.</span>
             </p>
           </div>
 
@@ -73,7 +73,7 @@ export async function UnitList() {
             <Link href={`/org/${currentOrg}/create-unit`}>
               <Button className="btn-medical-primary inline-flex items-center px-8 py-3 text-base font-semibold hover:shadow-lg transition-all">
                 <Building className="w-5 h-5 mr-3" />
-                Criar primeiro setor
+                Criar primeira unidade
               </Button>
             </Link>
             
@@ -96,8 +96,8 @@ export async function UnitList() {
           <div className="mt-8 p-6 bg-muted/30 rounded-lg border border-dashed border-border">
             <h3 className="font-semibold text-foreground mb-2">💡 Dica</h3>
             <p className="text-sm text-muted-foreground">
-              Setores ajudam a organizar diferentes departamentos médicos como 
-              <span className="font-medium"> UTI, Emergência, Pediatria, Cardiologia</span> e mais.
+              Unidades ajudam a organizar diferentes escritórios regionais como 
+              <span className="font-medium"> Matriz, Filiais, Laboratório</span> e mais.
             </p>
           </div>
         </div>
@@ -109,14 +109,14 @@ export async function UnitList() {
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-5 h-5" />
               <Input 
                 type="text"
-                placeholder="Buscar setores médicos..." 
+                placeholder="Buscar unidades médicas..." 
                 className="medical-form-input pl-12 h-12 text-base"
               />
             </div> */}
             <Link href={`/org/${currentOrg}/create-unit`}>
               <Button className="btn-medical-primary inline-flex items-center px-6 py-3 h-12 text-base font-semibold">
                 <Building className="w-5 h-5 mr-2" />
-                Novo setor
+                Nova unidade
               </Button>
             </Link>
           </div>
@@ -179,12 +179,12 @@ export async function UnitList() {
                             {unit.slug === currentUnitSlug && (
                               <Badge className="badge-medical-success">
                                 <Flag className="w-3 h-3 mr-1" />
-                                Setor Atual
+                                Unidade Atual
                               </Badge>
                             )}
                             <Badge className="badge-medical-info">
                               <Building className="w-3 h-3 mr-1" />
-                              Setor Médico
+                              Unidade Médica
                             </Badge>
                           </div>
                         </div>
@@ -209,14 +209,14 @@ export async function UnitList() {
               <div className="flex items-center gap-3">
                 <div className="w-3 h-3 bg-primary rounded-full"></div>
                 <p className="text-muted-foreground font-medium">
-                  {units.length} {units.length === 1 ? 'setor médico' : 'setores médicos'} cadastrado{units.length === 1 ? '' : 's'}
+                  {units.length} {units.length === 1 ? 'unidade médica' : 'unidades médicas'} cadastrada{units.length === 1 ? '' : 's'}
                 </p>
               </div>
               {currentUnit && (
                 <div className="flex items-center gap-2">
                   <Badge className="badge-medical-primary">
                     <Building className="w-3 h-3 mr-1" />
-                    Setor atual: {currentUnit.name}
+                    Unidade atual: {currentUnit.name}
                   </Badge>
                 </div>
               )}

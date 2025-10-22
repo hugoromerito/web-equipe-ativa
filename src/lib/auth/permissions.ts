@@ -21,7 +21,7 @@ export const permissions: Record<Role, PermissionsByRole> = {
   MANAGER: (_, { can, cannot }) => {
     can('create', 'Applicant') // Pode criar consultas
     can('create', 'Demand') // Pode criar consultas
-    can('get', 'Demand') // Pode listar consultas do setor a qual pertence
+    can('get', 'Demand') // Pode listar consultas da unidade a qual pertence
     can('manage', 'User') // Pode gerenciar usuários
     cannot('delete', 'User') // Não pode deletar um usuário
   },

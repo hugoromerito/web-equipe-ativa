@@ -30,7 +30,7 @@ export default function OrganizationSettingsPage() {
   
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
-  const [organization, setOrganization] = useState<OrganizationData | null>(null)
+  const [organization, unidadeganization] = useState<OrganizationData | null>(null)
   
   const [name, setName] = useState('')
   const [description, setDescription] = useState('')
@@ -44,7 +44,7 @@ export default function OrganizationSettingsPage() {
   async function loadOrganization() {
     try {
       const { organization: org } = await getOrganization(orgSlug)
-      setOrganization(org)
+      unidadeganization(org)
       setName(org.name)
       setDescription('')
       setDomain(org.domain || '')
@@ -65,7 +65,7 @@ export default function OrganizationSettingsPage() {
         file 
       })
       
-      setOrganization((prev) => prev ? { ...prev, avatarUrl: url } : null)
+      unidadeganization((prev) => prev ? { ...prev, avatarUrl: url } : null)
       
       toast.success('Logo da organização atualizado com sucesso.')
     } catch (error) {

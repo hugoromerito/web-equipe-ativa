@@ -40,7 +40,7 @@ export async function Header() {
               {/* Separador visual */}
               {/* <div className="hidden md:block h-8 w-px bg-border"></div> */}
 
-              {/* Seletores de organização e setor */}
+              {/* Seletores de organização e unidade */}
               {/* <div className="hidden md:flex items-center space-x-4">
                 <OrganizationSwitcher />
                 <div className="h-4 w-px bg-border"></div>

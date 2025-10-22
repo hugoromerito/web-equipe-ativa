@@ -14,11 +14,11 @@ export default function CreateUnitPage() {
               <Building className="w-8 h-8 text-primary" />
             </div>
             <h1 className="text-3xl font-bold text-foreground">
-              Criar Novo Setor
+              Criar Nova unidade
             </h1>
           </div>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Configure um novo setor médico para organizar melhor sua equipe e operações.
+            Configure uma nova unidade médico para organizar melhor sua equipe e operações.
           </p>
         </div>
 

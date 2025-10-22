@@ -99,7 +99,7 @@ export async function ProfileClientMobile({ user }: ProfileClientProps) {
             <DropdownMenuItem asChild>
               <Link href={`/org/${currentOrg}`} className="flex items-center gap-2">
                 <Building2 className="size-4" />
-                Setores
+                Unidades
               </Link>
             </DropdownMenuItem>
             

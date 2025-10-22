@@ -299,7 +299,7 @@ max-w-5xl mx-auto p-4 md:p-8 space-y-6
 | **Paciente** | Emerald | `from-slate-100 to-slate-200` | `text-emerald-600` |
 | **Profissional** | Blue | `from-blue-100 to-blue-200` | `text-blue-600/700` |
 | **Agendamento** | Purple | `from-purple-50 to-purple-100` | `text-purple-600` |
-| **Setor** | Amber | `from-amber-50 to-amber-100` | `text-amber-600` |
+| **Unidade** | Amber | `from-amber-50 to-amber-100` | `text-amber-600` |
 | **Organização** | Cyan | `from-cyan-100 to-cyan-200` | `text-cyan-600/700` |
 | **Registrado** | Indigo | `from-indigo-100 to-indigo-200` | `text-indigo-600/700` |
 | **Histórico** | Slate | `from-slate-50 to-slate-100/50` | `text-slate-600` |
@@ -403,7 +403,7 @@ hover:bg-emerald-600 hover:shadow-lg hover:shadow-emerald-500/20 transition-all 
 │  │   └─ Botão WhatsApp (premium, shadow)    │
 │  ├─ PROFISSIONAL (p-6, avatar 16x16)        │
 │  ├─ AGENDAMENTO (p-6, ícone 16x16, hora roxo)│
-│  ├─ SETOR (p-6, ícone 16x16 gradiente)      │
+│  ├─ UNIDADE (p-6, ícone 16x16 gradiente)      │
 │  ├─ ORGANIZAÇÃO (p-6, avatar 16x16)         │
 │  ├─ REGISTRADO (p-6, avatar 16x16)          │
 │  └─ HISTÓRICO (fundo gradiente, cards internos)│

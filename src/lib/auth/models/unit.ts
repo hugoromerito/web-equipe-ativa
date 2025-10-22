@@ -1,8 +1,8 @@
 import { z } from 'zod'
 
 /*
-  Setores de Atendimento
-  ownerId - Identificador único do dono do setor
+  Unidades de Atendimento
+  ownerId - Identificador único do dono da unidade
 */
 export const unitSchema = z.object({
   __typename: z.literal('Unit').default('Unit'),

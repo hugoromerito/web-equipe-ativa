@@ -6,7 +6,7 @@ Este documento contém exemplos práticos de como usar as funções HTTP impleme
 
 - [Autenticação](#autenticação)
 - [Organizações](#organizações)
-- [Setores](#setores)
+- [Unidades](#unidades)
 - [Usuários](#usuários)
 - [Membros](#membros)
 - [Convites](#convites)
@@ -108,7 +108,7 @@ async function handleCreateUser(orgSlug: string) {
       email: 'joao@example.com',
       password: 'senha123',
       role: 'CLERK',
-      unitSlug: 'setor-central', // Opcional
+      unitSlug: 'unidade-central', // Opcional
     })
 
     console.log('Usuário criado:', result.userId)
@@ -146,7 +146,7 @@ async function loadOrgMembers(orgSlug: string) {
 }
 ```
 
-### Listar Membros da Setor
+### Listar Membros da Unidade
 
 ```typescript
 import { getMembersUnit } from '@/http'
@@ -164,7 +164,7 @@ async function loadUnitMembers(orgSlug: string, unitSlug: string) {
       console.log(`${member.user.name} - ${member.unit_role || 'Sem role'}`)
     })
   } catch (error) {
-    console.error('Erro ao carregar membros da setor:', error)
+    console.error('Erro ao carregar membros da unidade:', error)
   }
 }
 ```
@@ -184,7 +184,7 @@ async function handleCreateInvite(orgSlug: string) {
       organizationSlug: orgSlug,
       email: 'novomembro@example.com',
       role: 'CLERK',
-      unitSlug: 'setor-sul', // Opcional
+      unitSlug: 'unidade-sul', // Opcional
     })
 
     console.log('Convite criado:', result.inviteId)
@@ -206,7 +206,7 @@ async function loadPendingInvites() {
     result.invites.forEach((invite) => {
       console.log(`Convite de ${invite.author?.name} para ${invite.role}`)
       if (invite.unit) {
-        console.log(`Setor: ${invite.unit.name}`)
+        console.log(`Unidade: ${invite.unit.name}`)
       }
     })
   } catch (error) {

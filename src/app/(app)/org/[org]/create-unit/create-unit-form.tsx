@@ -32,7 +32,7 @@ export function UnitForm({ initialData }: UnitFormProps) {
         {success === false && message && (
           <Alert className="medical-alert-danger">
             <AlertTriangle className="size-4" />
-            <AlertTitle>Falha ao criar setor!</AlertTitle>
+            <AlertTitle>Falha ao criar unidade!</AlertTitle>
             <AlertDescription>
               <p>{message}</p>
             </AlertDescription>
@@ -51,7 +51,7 @@ export function UnitForm({ initialData }: UnitFormProps) {
 
         <div className="medical-form-group">
           <Label htmlFor="name" className="medical-form-label">
-            Nome do setor médico
+            Nome da unidade médico
           </Label>
           <Input 
             name="name" 
@@ -66,19 +66,19 @@ export function UnitForm({ initialData }: UnitFormProps) {
             </p>
           )}
           <p className="medical-form-help">
-            Digite o nome do setor ou departamento médico
+            Digite o nome da unidade ou departamento médico
           </p>
         </div>
 
         <div className="medical-form-group">
           <Label htmlFor="description" className="medical-form-label">
-            Descrição do setor
+            Descrição da unidade
           </Label>
           <Input 
             name="description" 
             id="description" 
             className="medical-form-input"
-            placeholder="Descreva as atividades e especialidades do setor..."
+            placeholder="Descreva as atividades e especialidades da unidade..."
           />
           {errors?.description && (
             <p className="medical-form-error">
@@ -86,13 +86,13 @@ export function UnitForm({ initialData }: UnitFormProps) {
             </p>
           )}
           <p className="medical-form-help">
-            Opcional: Forneça uma breve descrição das atividades do setor
+            Opcional: Forneça uma breve descrição das atividades da unidade
           </p>
         </div>
 
         <div className="medical-form-group">
           <Label htmlFor="location" className="medical-form-label">
-            Localização do setor
+            Localização da unidade
           </Label>
           <Input 
             name="location" 
@@ -106,7 +106,7 @@ export function UnitForm({ initialData }: UnitFormProps) {
             </p>
           )}
           <p className="medical-form-help">
-            Opcional: Informe a localização física do setor na instituição
+            Opcional: Informe a localização física da unidade na instituição
           </p>
         </div>
 
@@ -119,10 +119,10 @@ export function UnitForm({ initialData }: UnitFormProps) {
             {isPending ? (
               <>
                 <Loader2 className="size-5 animate-spin mr-2" />
-                Criando setor...
+                Crianda unidade...
               </>
             ) : (
-              'Criar setor médico'
+              'Criar unidade médica'
             )}
           </Button>
         </div>

@@ -179,7 +179,7 @@ export function CreateInviteDialog({
                 name="unitSlug"
                 render={({ field }) => (
                   <FormItem className="medical-form-group">
-                    <FormLabel className="medical-form-label">Setor Específico (Opcional)</FormLabel>
+                    <FormLabel className="medical-form-label">Unidade Específico (Opcional)</FormLabel>
                     <FormControl>
                       <Input 
                         placeholder="Ex: uti, emergencia, cardiologia" 
@@ -189,7 +189,7 @@ export function CreateInviteDialog({
                     </FormControl>
                     <FormMessage className="medical-form-error" />
                     <p className="medical-form-help">
-                      Deixe em branco para acesso geral ou especifique o setor
+                      Deixe em branco para acesso geral ou especifique a unidade
                     </p>
                   </FormItem>
                 )}

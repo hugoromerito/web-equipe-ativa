@@ -58,13 +58,13 @@
 - `PUT /organizations/:slug` - Atualizar organização
 - `DELETE /organizations/:slug` - Encerrar organização
 
-### Setores
-- `GET /organizations/:organizationSlug/units` - Listar setores
-- `POST /organizations/:organizationSlug/units` - Criar setor
+### Unidades
+- `GET /organizations/:organizationSlug/units` - Listar unidades
+- `POST /organizations/:organizationSlug/units` - Criar unidade
 
 ### Membros
 - `GET /organizations/:slug/members` - Listar membros da organização
-- `GET /organizations/:organizationSlug/units/:unitSlug/members` - Listar membros da setor
+- `GET /organizations/:organizationSlug/units/:unitSlug/members` - Listar membros da unidade
 
 ### Usuários
 - `GET /organizations/:organizationSlug/users` - Listar usuários da organização
@@ -198,4 +198,4 @@ type Role = 'ADMIN' | 'MANAGER' | 'CLERK' | 'ANALYST' | 'BILLING'
 2. **Cookies**: O sistema usa cookies para armazenar: `token`, `org`, `unit`, `applicant`, `demand`, `inviteId`
 3. **Sem token no sign-up**: Usuário deve fazer login após se registrar
 4. **Membership obrigatório**: Usuário precisa pertencer a uma organização para acessar a maioria das rotas
-5. **Unit opcional**: Algumas rotas funcionam apenas com organização, outras precisam de setor específica
+5. **Unit opcional**: Algumas rotas funcionam apenas com organização, outras precisam de unidade específica

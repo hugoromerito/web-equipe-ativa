@@ -31,7 +31,7 @@ export async function UnitSwitcher() {
               <span className="truncate text-left">{currentUnit.name}</span>
             </>
           ) : (
-            <span className="text-muted-foreground">Selecionar setor</span>
+            <span className="text-muted-foreground">Selecionar unidade</span>
           )}
           <ChevronsUpDown className="text-muted-foreground ml-auto size-4" />
         </DropdownMenuTrigger>
@@ -42,7 +42,7 @@ export async function UnitSwitcher() {
           className="w-[173px]"
         >
           <DropdownMenuGroup>
-            <DropdownMenuLabel>Setores</DropdownMenuLabel>
+            <DropdownMenuLabel>Unidades</DropdownMenuLabel>
             {units?.map((units: any) => {
               return (
                 <DropdownMenuItem
@@ -64,7 +64,7 @@ export async function UnitSwitcher() {
               <DropdownMenuItem asChild className="cursor-pointer">
                 <Link href={`/org/${currentOrg}/create-unit`}>
                   <PlusCircle className="mr-2 size-4" />
-                  Criar setor
+                  Criar unidade
                 </Link>
               </DropdownMenuItem>
             </>

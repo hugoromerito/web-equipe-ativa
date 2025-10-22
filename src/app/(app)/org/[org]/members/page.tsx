@@ -24,7 +24,7 @@ export default function MembersPage() {
   const params = useParams<{ org: string }>()
   const organizationSlug = params.org
 
-  const [orgPage, setOrgPage] = useState(1)
+  const [orgPage, unidadegPage] = useState(1)
   const [activeTab, setActiveTab] = useState('organization')
 
   const { data: orgMembersData, isLoading: isLoadingOrg } =
@@ -173,7 +173,7 @@ export default function MembersPage() {
                       <Button
                         variant="outline"
                         size="sm"
-                        onClick={() => setOrgPage((p) => Math.max(1, p - 1))}
+                        onClick={() => unidadegPage((p) => Math.max(1, p - 1))}
                         disabled={orgPage === 1}
                       >
                         Anterior
@@ -181,7 +181,7 @@ export default function MembersPage() {
                       <Button
                         variant="outline"
                         size="sm"
-                        onClick={() => setOrgPage((p) => p + 1)}
+                        onClick={() => unidadegPage((p) => p + 1)}
                         disabled={
                           orgPage >= Math.ceil(orgMembersData.totalCount / 20)
                         }

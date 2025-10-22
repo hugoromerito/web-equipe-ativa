@@ -11,7 +11,7 @@ Todas as funcionalidades do backend (https://github.com/hugoromerito/server-equi
 ### 🔧 21 Novas Funções HTTP
 
 1. ✨ `get-members-organization.ts` - Listar membros da organização
-2. ✨ `get-members-unit.ts` - Listar membros da setor
+2. ✨ `get-members-unit.ts` - Listar membros da unidade
 3. ✨ `create-user.ts` - Criar usuário
 4. ✨ `get-users.ts` - Listar usuários (paginação + filtros)
 5. ✨ `create-invite.ts` - Criar convite

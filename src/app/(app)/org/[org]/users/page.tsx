@@ -171,12 +171,12 @@ export default function UsersPage() {
                 </div>
 
                 <div className="grid gap-2">
-                  <Label htmlFor="unitSlug">Setor (opcional)</Label>
+                  <Label htmlFor="unitSlug">Unidade (opcional)</Label>
                   <Input
                     id="unitSlug"
                     value={unitSlug}
                     onChange={(e) => setUnitSlug(e.target.value)}
-                    placeholder="slug-do-setor"
+                    placeholder="slug-do-unidade"
                   />
                 </div>
               </div>
@@ -240,7 +240,7 @@ export default function UsersPage() {
                   <TableHead>Nome</TableHead>
                   <TableHead>Email</TableHead>
                   <TableHead>Função na Organização</TableHead>
-                  <TableHead>Função no Setor</TableHead>
+                  <TableHead>Função na unidade</TableHead>
                   <TableHead>Data de Cadastro</TableHead>
                 </TableRow>
               </TableHeader>

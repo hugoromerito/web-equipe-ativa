@@ -168,7 +168,7 @@ export async function DemandDetails() {
           </div>
         )}
 
-        {/* Setor */}
+        {/* Unidade */}
         <div className="p-5 hover:bg-slate-50 transition-colors">
           <div className="flex items-center gap-3">
             <div className="h-12 w-12 rounded-lg bg-slate-100 flex items-center justify-center flex-shrink-0">
@@ -177,7 +177,7 @@ export async function DemandDetails() {
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2 mb-1">
                 <Landmark className="h-4 w-4 text-slate-400 flex-shrink-0" />
-                <span className="text-xs font-medium text-slate-500 uppercase">Setor</span>
+                <span className="text-xs font-medium text-slate-500 uppercase">Unidade</span>
               </div>
               <h3 className="font-semibold text-slate-900 truncate">{demand.unit.name}</h3>
             </div>

@@ -86,15 +86,15 @@ Transformar a apresentação das informações de demandas de um layout com múl
 )}
 ```
 
-#### Setor
+#### Unidade
 ```tsx
 <div className="p-5 hover:bg-slate-50 transition-colors">
   <div className="bg-slate-100">
     <Building2 />
   </div>
   <div>
-    <Landmark icon /> SETOR
-    <h3>Nome do Setor</h3>
+    <Landmark icon /> UNIDADE
+    <h3>Nome da unidade</h3>
   </div>
 </div>
 ```
@@ -191,7 +191,7 @@ import {
 [Card Paciente com gradiente verde e sombra]
 [Card Profissional com gradiente azul e sombra]
 [Grid 2 colunas]
-  [Card Setor amarelo]
+  [Card Unidade amarelo]
   [Card Organização ciano]
 [Card Registrado roxo]
 [Card Histórico cinza com gradiente]
@@ -204,7 +204,7 @@ import {
   ├─ Paciente + WhatsApp
   ├─ Profissional (se houver)
   ├─ Agendamento (se houver)
-  ├─ Setor
+  ├─ Unidade
   ├─ Organização
   ├─ Registrado por (se houver)
   └─ Histórico (fundo cinza leve)

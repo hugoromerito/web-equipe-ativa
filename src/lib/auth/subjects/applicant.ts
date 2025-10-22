@@ -7,7 +7,7 @@ export const applicantSubject = z.tuple([
     z.literal('get'), // Visualiza applicant
     z.literal('update'), // Atualiza applicant
     z.literal('delete'), // Deleta applicant
-    z.literal('manage'), // Gerencia um setor (geralmente é usado para permissões de administrador)
+    z.literal('manage'), // Gerencia uma unidade (geralmente é usado para permissões de administrador)
   ]),
   z.union([z.literal('Applicant'), applicantSchema]),
 ])

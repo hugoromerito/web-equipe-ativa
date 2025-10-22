@@ -23,7 +23,7 @@ export async function Tabs() {
           href={`/org/${currentOrg}`}
           className="medical-nav-item data-[current=true]:medical-nav-item-active"
         >
-          Setores
+          Unidades
         </NavLink>
       )}
 

@@ -176,9 +176,9 @@ export function CreateUserDialog({
               name="unitSlug"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Setor (Opcional)</FormLabel>
+                  <FormLabel>Unidade (Opcional)</FormLabel>
                   <FormControl>
-                    <Input placeholder="Slug do setor" {...field} />
+                    <Input placeholder="Slug da unidade" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
