@@ -22,6 +22,10 @@ export async function uploadOrganizationAvatar({
   const result = await api
     .post(`organizations/${organizationSlug}/avatar`, {
       body: formData,
+      headers: {
+        // Remove o Content-Type para que o browser defina automaticamente com o boundary correto
+        'Content-Type': undefined,
+      },
     })
     .json<UploadOrganizationAvatarResponse>()
 

@@ -1,4 +1,4 @@
-import { Building2, ChevronDown, Eye, FileText, LogOut, Users, UserCheck, UserPlus2 } from 'lucide-react'
+import { Building2, ChevronDown, Eye, FileText, LogOut, Users, UserCheck, UserPlus2, User } from 'lucide-react'
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar'
 import {
   DropdownMenu,
@@ -75,6 +75,16 @@ export async function ProfileDesktop() {
 
         {/* Separador se houver convites ou organização */}
         {(pendingInvites.length > 0 || currentOrg) && <DropdownMenuSeparator />}
+        
+        {/* Editar perfil - sempre disponível */}
+        <DropdownMenuItem asChild>
+          <Link href="/profile/edit" className="flex items-center gap-2">
+            <User className="size-4" />
+            Editar Perfil
+          </Link>
+        </DropdownMenuItem>
+
+        <DropdownMenuSeparator />
         
         {/* Opções disponíveis quando há organização selecionada */}
         {currentOrg && (

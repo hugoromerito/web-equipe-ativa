@@ -3,6 +3,7 @@ export * from './sign-in-with-password'
 export * from './sign-in-with-google'
 export * from './sign-up'
 export * from './get-profile'
+export * from './update-profile'
 export * from './request-password-recover'
 export * from './reset-password'
 

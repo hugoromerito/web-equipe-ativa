@@ -14,6 +14,7 @@ export async function Tabs() {
   const canGetPatients = permissions?.can('get', 'Applicant') // Usar a mesma permissão de applicants
   const canGetUnits = permissions?.can('get', 'Unit')
   const canGetJobTitles = permissions?.can('get', 'Applicant')
+  const canUpdateOrganization = permissions?.can('update', 'Organization')
 
   return (
     <nav className="medical-nav">
@@ -77,6 +78,15 @@ export async function Tabs() {
           className="medical-nav-item data-[current=true]:medical-nav-item-active"
         >
           Visualizar membros
+        </NavLink>
+      )}
+
+      {canUpdateOrganization && (
+        <NavLink 
+          href={`/org/${currentOrg}/settings`}
+          className="medical-nav-item data-[current=true]:medical-nav-item-active"
+        >
+          Configurações
         </NavLink>
       )}
     </nav>
