@@ -29,6 +29,7 @@ import { useJobTitles } from '@/hooks/use-job-titles'
 import { assignJobTitleToMember } from '@/http/assign-job-title'
 import { toast } from 'sonner'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
+import type { JobTitle } from '@/http/get-job-titles'
 
 const WEEK_DAYS = [
   { value: 'monday', label: 'Segunda-feira' },
@@ -167,7 +168,7 @@ export function AssignJobTitleDialog({
                 <SelectValue placeholder="Selecione um cargo" />
               </SelectTrigger>
               <SelectContent>
-                {jobTitles.map((jobTitle) => (
+                {jobTitles.map((jobTitle: JobTitle) => (
                   <SelectItem key={jobTitle.id} value={jobTitle.id}>
                     {jobTitle.name}
                   </SelectItem>

@@ -19,6 +19,7 @@ import { assignJobTitleToMember } from '@/http/assign-job-title'
 import { toast } from 'sonner'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import type { JobTitle } from '@/http/get-job-titles'
 
 interface AssignJobTitleFormProps {
   organizationSlug: string
@@ -90,7 +91,7 @@ export function AssignJobTitleForm({
     assignMutation.mutate()
   }
 
-  const selectedJobTitleData = jobTitles.find((job) => job.id === selectedJobTitle)
+  const selectedJobTitleData = jobTitles.find((job: JobTitle) => job.id === selectedJobTitle)
 
   return (
     <div className="space-y-6">
@@ -172,7 +173,7 @@ export function AssignJobTitleForm({
                     <SelectValue placeholder="Selecione um cargo" />
                   </SelectTrigger>
                   <SelectContent>
-                    {jobTitles.map((jobTitle) => (
+                    {jobTitles.map((jobTitle: JobTitle) => (
                       <SelectItem key={jobTitle.id} value={jobTitle.id}>
                         <div className="flex flex-col">
                           <span className="font-medium">{jobTitle.name}</span>

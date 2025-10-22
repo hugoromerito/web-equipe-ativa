@@ -35,7 +35,7 @@ export function useUploadUserAvatar() {
   const queryClient = useQueryClient()
 
   return useMutation({
-    mutationFn: (data: { file: File }) => uploadUserAvatar(data),
+    mutationFn: (data: { userId: string; file: File }) => uploadUserAvatar(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['profile'] })
     },

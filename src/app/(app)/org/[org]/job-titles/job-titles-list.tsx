@@ -123,7 +123,7 @@ export function JobTitlesList({ organizationSlug }: JobTitlesListProps) {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {jobTitles.map((jobTitle) => (
+                    {jobTitles.map((jobTitle: JobTitle) => (
                       <TableRow 
                         key={jobTitle.id}
                         className="hover:bg-blue-50 transition-colors"

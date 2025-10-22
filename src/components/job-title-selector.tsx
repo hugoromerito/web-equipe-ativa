@@ -98,7 +98,7 @@ export function JobTitleSelector({
       </CardHeader>
       <CardContent>
         <div className="space-y-3">
-          {jobTitles.map((jobTitle) => (
+          {jobTitles.map((jobTitle: JobTitle) => (
             <div
               key={jobTitle.id}
               className="flex items-start space-x-3 p-3 rounded-lg border border-border hover:bg-accent/50 transition-colors"
