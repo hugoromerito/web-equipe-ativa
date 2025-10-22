@@ -1,5 +1,5 @@
 'use client'
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState, useEffect, useCallback, useRef } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { 
   Search, Filter, Calendar, User, ChevronRight, 
@@ -65,32 +65,51 @@ export function DemandList({
   const router = useRouter()
   const searchParams = useSearchParams()
   
+  // Use ref para armazenar os parâmetros iniciais e evitar re-renderizações
+  const initialParamsRef = useRef(initialSearchParams)
+  
   // Estados do filtro - inicializados com os parâmetros da URL
-  const [searchTerm, setSearchTerm] = useState(initialSearchParams.search || '')
-  const [filterCategory, setFilterCategory] = useState(initialSearchParams.category || '')
-  const [filterStatus, setFilterStatus] = useState(initialSearchParams.status || '')
-  const [filterPriority, setFilterPriority] = useState(initialSearchParams.priority || '')
+  const [searchTerm, setSearchTerm] = useState(initialParamsRef.current.search || '')
+  const [filterCategory, setFilterCategory] = useState(initialParamsRef.current.category || '')
+  const [filterStatus, setFilterStatus] = useState(initialParamsRef.current.status || '')
+  const [filterPriority, setFilterPriority] = useState(initialParamsRef.current.priority || '')
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('list')
   const [showFilters, setShowFilters] = useState(false)
   // ✅ Não definir valores padrão - deixar a API usar sua ordenação padrão
   const [sortBy, setSortBy] = useState<'created_at' | 'updated_at' | 'priority' | 'status' | undefined>(
-    initialSearchParams.sort_by as any
+    initialParamsRef.current.sort_by as any
   )
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc' | undefined>(
-    initialSearchParams.sort_order as any
+    initialParamsRef.current.sort_order as any
   )
   const [isLoading, setIsLoading] = useState(false)
+  
+  // Flag para prevenir navegações múltiplas durante transições
+  const isNavigatingRef = useRef(false)
+
+  // Sincronizar o ref quando os parâmetros mudarem (após navegação)
+  useEffect(() => {
+    initialParamsRef.current = initialSearchParams
+  }, [initialSearchParams])
 
   // Função para atualizar a URL com os novos parâmetros
   const updateURL = useCallback((newParams: Record<string, string | undefined>) => {
-    const current = new URLSearchParams(searchParams.toString())
+    // Prevenir múltiplas navegações simultâneas
+    if (isNavigatingRef.current) {
+      return
+    }
+    
+    isNavigatingRef.current = true
+    
+    const current = new URLSearchParams(window.location.search)
     
     // Atualizar ou remover parâmetros
     Object.entries(newParams).forEach(([key, value]) => {
-      if (value && value.trim()) {
-        current.set(key, value)
-      } else {
+      // Remove parâmetro se value for undefined, null, ou string vazia
+      if (!value || value.trim() === '') {
         current.delete(key)
+      } else {
+        current.set(key, value)
       }
     })
 
@@ -100,19 +119,34 @@ export function DemandList({
     }
 
     const newURL = `${window.location.pathname}?${current.toString()}`
-    router.push(newURL)
-  }, [router, searchParams])
+    
+    // ✅ Usar scroll: false para não rolar ao topo durante navegação
+    router.push(newURL, { scroll: false })
+    
+    // Reset flag após um breve delay
+    setTimeout(() => {
+      isNavigatingRef.current = false
+    }, 100)
+  }, [router])
 
   // Debounce para busca
   useEffect(() => {
+    const initialSearch = initialParamsRef.current.search || ''
+    const currentSearchTrimmed = searchTerm.trim()
+    
+    // Só atualizar se o termo de busca mudou
+    if (currentSearchTrimmed === initialSearch) {
+      return
+    }
+
     const timer = setTimeout(() => {
-      if (searchTerm !== initialSearchParams.search) {
-        updateURL({ search: searchTerm })
-      }
+      // ✅ Se o campo estiver vazio, passar undefined para remover o parâmetro
+      updateURL({ search: currentSearchTrimmed || undefined })
     }, 500)
 
     return () => clearTimeout(timer)
-  }, [searchTerm, updateURL, initialSearchParams.search])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchTerm])
 
   // Handlers para mudanças de filtro
   const handleCategoryChange = (category: string) => {

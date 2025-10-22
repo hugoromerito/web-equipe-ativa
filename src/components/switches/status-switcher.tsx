@@ -74,7 +74,7 @@ export function ComboBoxStatus({ id, name }: { id: string; name: string }) {
               </svg>
             </Button>
           </PopoverTrigger>
-          <PopoverContent className="w-[--radix-popover-trigger-width] p-0" align="center">
+          <PopoverContent className="w-[--radix-popover-trigger-width] p-0 pointer-events-auto" align="center" sideOffset={8}>
             <StatusList
               setOpen={setOpen}
               setSelectedStatus={setSelectedStatus}

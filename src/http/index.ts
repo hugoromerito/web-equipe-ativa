@@ -53,6 +53,7 @@ export * from './get-demand'
 export * from './get-demands'
 export * from './update-demand'
 export * from './update-demand-status' // Deprecated
+export * from './get-recent-calls'
 
 // Attachments
 export * from './upload-user-avatar'

@@ -1144,3 +1144,21 @@
     display: none !important;
   }
 }
+/* Garante que Popovers dentro de Dialogs sejam interativos */
+[data-radix-popper-content-wrapper] {
+  z-index: 100 !important;
+  pointer-events: auto !important;
+}
+
+[data-slot="popover-content"] {
+  pointer-events: auto !important;
+}
+
+[data-slot="command"] {
+  pointer-events: auto !important;
+}
+
+[data-slot="command-item"] {
+  cursor: pointer !important;
+  pointer-events: auto !important;
+}
