@@ -32,12 +32,14 @@ export async function GET(request: NextRequest) {
 
     console.log('✅ Token recebido, salvando cookie...')
 
+    const isProduction = process.env.NODE_ENV === 'production'
+
     ;(await cookies()).set('token', token, {
       path: '/',
       maxAge: 60 * 60 * 24 * 7, // 7 days
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
+      httpOnly: false, // Permitir acesso via JavaScript no client-side
+      secure: isProduction, // Apenas HTTPS em produção
+      sameSite: 'lax', // Permite envio em navegações cross-site
     })
 
     console.log('✅ Redirecionando para home...')

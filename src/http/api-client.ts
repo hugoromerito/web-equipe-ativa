@@ -30,9 +30,10 @@ export const api = ky.create({
           console.log('🔐 [SERVER] Token from cookies:', token ? `${token.substring(0, 20)}...` : 'NOT FOUND')
         } else {
           // Código do cliente (browser)
+          // Método 1: usando cookies-next
           token = getCookie('token') as string | undefined
           
-          // Fallback: tentar pegar do document.cookie diretamente
+          // Método 2: Fallback - tentar pegar do document.cookie diretamente
           if (!token) {
             const cookieValue = document.cookie
               .split('; ')
@@ -42,9 +43,24 @@ export const api = ky.create({
             token = cookieValue;
           }
 
+          // Método 3: Fallback adicional - verificar localStorage (caso tenha sido salvo lá)
+          if (!token && typeof localStorage !== 'undefined') {
+            token = localStorage.getItem('token') || undefined;
+          }
+
           console.log('🔐 [CLIENT] Token from cookies:', token ? `${token.substring(0, 20)}...` : 'NOT FOUND')
           console.log('🍪 [CLIENT] All cookies:', document.cookie)
           console.log('🌍 [CLIENT] Request URL:', request.url)
+          
+          if (!token) {
+            // Log detalhado para debug em produção
+            console.error('⚠️ [CLIENT DEBUG] Cookie details:', {
+              allCookies: document.cookie,
+              cookiesList: document.cookie.split('; '),
+              domain: window.location.hostname,
+              secure: window.location.protocol === 'https:',
+            })
+          }
         }
 
         if (token) {
