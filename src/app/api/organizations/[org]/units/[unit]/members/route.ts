@@ -3,10 +3,10 @@ import { NextRequest, NextResponse } from 'next/server'
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { org: string; unit: string } }
+  { params }: { params: Promise<{ org: string; unit: string }> }
 ) {
   try {
-    const { org, unit } = params
+    const { org, unit } = await params
     const cookieStore = await cookies()
     const token = cookieStore.get('token')?.value
 
