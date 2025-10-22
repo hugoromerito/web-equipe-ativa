@@ -22,7 +22,7 @@ export async function UnitList() {
 
   const units = await getCurrentUnits()
 
-  const currentUnit = units?.find((unit) => unit.slug === currentUnitSlug)
+  const currentUnit = units?.find((unit: any) => unit.slug === currentUnitSlug)
 
   function getInitials(name: string): string {
     const initials = name
@@ -123,7 +123,7 @@ export async function UnitList() {
 
           {/* Units Grid Médico */}
           <div className="grid gap-4">
-            {units.map((unit, index) => (
+            {units.map((unit: any, index: number) => (
               <Link 
                 key={unit.id} 
                 href={`/org/${currentOrg}/unit/${unit.slug}`}

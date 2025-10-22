@@ -19,7 +19,7 @@ export async function UnitSwitcher() {
 
   const units = await getCurrentUnits()
 
-  const currentUnit = units?.find((uni) => uni.slug === currentUni)
+  const currentUnit = units?.find((uni: any) => uni.slug === currentUni)
 
   const permissions = await ability()
   return (
@@ -43,7 +43,7 @@ export async function UnitSwitcher() {
         >
           <DropdownMenuGroup>
             <DropdownMenuLabel>Setores</DropdownMenuLabel>
-            {units?.map((units) => {
+            {units?.map((units: any) => {
               return (
                 <DropdownMenuItem
                   className="cursor-pointer"
