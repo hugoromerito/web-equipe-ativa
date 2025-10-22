@@ -18,6 +18,7 @@ import { Loader2, Users, ExternalLink } from 'lucide-react'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { AssignJobTitleDialog } from '@/components/assign-job-title-dialog'
 import Link from 'next/link'
+import type { Member } from '@/http/get-members-organization'
 
 export default function MembersPage() {
   const params = useParams<{ org: string }>()
@@ -75,7 +76,7 @@ export default function MembersPage() {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {orgMembersData?.members.map((member) => (
+                    {orgMembersData?.members.map((member: Member) => (
                       <TableRow key={member.id}>
                         <TableCell>
                           <div className="flex items-center gap-3">
@@ -89,7 +90,7 @@ export default function MembersPage() {
                                 <AvatarFallback>
                                   {member.user.name
                                     ?.split(' ')
-                                    .map((n) => n[0])
+                                    .map((n: string) => n[0])
                                     .join('')
                                     .toUpperCase() || 'U'}
                                 </AvatarFallback>
