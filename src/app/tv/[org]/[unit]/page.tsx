@@ -1,9 +1,10 @@
 import { TVDisplayClient } from './tv-display-client'
 
-export default function TVDisplayPage({ 
+export default async function TVDisplayPage({ 
   params 
 }: { 
-  params: { org: string; unit: string } 
+  params: Promise<{ org: string; unit: string }> 
 }) {
-  return <TVDisplayClient organizationSlug={params.org} unitSlug={params.unit} />
+  const { org, unit } = await params
+  return <TVDisplayClient organizationSlug={org} unitSlug={unit} />
 }
