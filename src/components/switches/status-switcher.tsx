@@ -19,20 +19,45 @@ import {
 } from '@/components/ui/popover'
 import { useMediaQuery } from '@/hooks/use-media-query'
 import { DialogTitle } from '../ui/dialog'
+import { 
+  type DemandStatusType, 
+  getNextPossibleStatuses, 
+  STATUS_OPTIONS 
+} from '@/constants/demand-translations'
 
 type Status = {
   value: string
   label: string
 }
 
-const statusOptions: Status[] = [
-  // { value: 'PENDING', label: 'Aguardando atendimento' },
-  { value: 'IN_PROGRESS', label: '🔵 Em andamento' },
-  { value: 'RESOLVED', label: '✅ Resolvida' },
-  { value: 'REJECTED', label: '❌ Rejeitada' },
-]
+interface ComboBoxStatusProps {
+  id: string
+  name: string
+  currentStatus?: DemandStatusType
+}
 
-export function ComboBoxStatus({ id, name }: { id: string; name: string }) {
+export function ComboBoxStatus({ id, name, currentStatus }: ComboBoxStatusProps) {
+  // Filtra as opções de status baseado nas transições válidas
+  const statusOptions: Status[] = React.useMemo(() => {
+    if (!currentStatus) {
+      // Se não há status atual, mostra todas as opções (fallback)
+      return STATUS_OPTIONS.map(opt => ({
+        value: opt.value,
+        label: `${opt.icon} ${opt.label}`
+      }))
+    }
+
+    // Obtém os próximos status possíveis baseado no status atual
+    const nextStatuses = getNextPossibleStatuses(currentStatus)
+    
+    // Filtra e formata as opções
+    return STATUS_OPTIONS
+      .filter(opt => nextStatuses.includes(opt.value))
+      .map(opt => ({
+        value: opt.value,
+        label: `${opt.icon} ${opt.label}`
+      }))
+  }, [currentStatus])
   const [open, setOpen] = React.useState(false)
   const isDesktop = useMediaQuery('(min-width: 768px)')
   const [selectedStatus, setSelectedStatus] = React.useState<Status | null>(
@@ -76,6 +101,7 @@ export function ComboBoxStatus({ id, name }: { id: string; name: string }) {
           </PopoverTrigger>
           <PopoverContent className="w-[--radix-popover-trigger-width] p-0 pointer-events-auto" align="center" sideOffset={8}>
             <StatusList
+              statusOptions={statusOptions}
               setOpen={setOpen}
               setSelectedStatus={setSelectedStatus}
             />
@@ -111,6 +137,7 @@ export function ComboBoxStatus({ id, name }: { id: string; name: string }) {
           <DrawerContent>
             <div className="mt-4 border-t">
               <StatusList
+                statusOptions={statusOptions}
                 setOpen={setOpen}
                 setSelectedStatus={setSelectedStatus}
               />
@@ -123,9 +150,11 @@ export function ComboBoxStatus({ id, name }: { id: string; name: string }) {
 }
 
 function StatusList({
+  statusOptions,
   setOpen,
   setSelectedStatus,
 }: {
+  statusOptions: Status[]
   setOpen: (open: boolean) => void
   setSelectedStatus: (status: Status | null) => void
 }) {

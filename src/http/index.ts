@@ -51,6 +51,7 @@ export * from './get-patients'
 export * from './create-demand'
 export * from './get-demand'
 export * from './get-demands'
+export * from './get-my-demands'
 export * from './update-demand'
 export * from './update-demand-status' // Deprecated
 export * from './get-recent-calls'

@@ -45,6 +45,15 @@ export async function Tabs() {
         </NavLink>
       )}
 
+      {canGetDemands && currentUnit && (
+        <NavLink 
+          href={`/org/${currentOrg}/unit/${currentUnit}/my-agenda`}
+          className="medical-nav-item data-[current=true]:medical-nav-item-active"
+        >
+          Minha Agenda
+        </NavLink>
+      )}
+
       {canGetPatients && (
         <NavLink 
           href={`/org/${currentOrg}/patients`}

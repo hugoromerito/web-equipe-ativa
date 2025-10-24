@@ -1,115 +1,150 @@
 // src/constants/demand-translations.ts
 
+// Types baseados nos enums do backend
+export type DemandStatusType = 'PENDING' | 'CHECK_IN' | 'IN_PROGRESS' | 'RESOLVED' | 'REJECTED' | 'BILLED'
+export type DemandCategoryType = 'SOCIAL_WORKER' | 'PSYCHOMOTOR_PHYSIOTHERAPIST' | 'SPEECH_THERAPIST' | 'MUSIC_THERAPIST' | 'NEUROPSYCHOPEDAGOGUE' | 'NEUROPSYCHOLOGIST' | 'NUTRITIONIST' | 'PSYCHOLOGIST' | 'PSYCHOMOTRICIAN' | 'PSYCHOPEDAGOGUE' | 'THERAPIST' | 'OCCUPATIONAL_THERAPIST'
+export type DemandPriorityType = 'LOW' | 'MEDIUM' | 'HIGH' | 'URGENT'
+
+// Validação de transição de status
+export const VALID_STATUS_TRANSITIONS: Record<DemandStatusType, DemandStatusType[]> = {
+  PENDING: ['CHECK_IN', 'REJECTED'],
+  CHECK_IN: ['IN_PROGRESS', 'PENDING', 'REJECTED'],
+  IN_PROGRESS: ['RESOLVED', 'REJECTED', 'CHECK_IN'],
+  RESOLVED: ['BILLED', 'IN_PROGRESS'],
+  REJECTED: ['PENDING', 'CHECK_IN'],
+  BILLED: [], // Status final, não pode ser alterado
+}
+
+// Função para validar transição de status
+export const canTransitionStatus = (currentStatus: DemandStatusType, newStatus: DemandStatusType): boolean => {
+  return VALID_STATUS_TRANSITIONS[currentStatus].includes(newStatus)
+}
+
+// Função para obter próximos status possíveis
+export const getNextPossibleStatuses = (currentStatus: DemandStatusType): DemandStatusType[] => {
+  return VALID_STATUS_TRANSITIONS[currentStatus]
+}
+
 export const CATEGORY_OPTIONS = [
   { 
-    value: 'INFRASTRUCTURE', 
-    label: 'Infraestrutura e Serviços Públicos',
-    icon: '🏗️',
-    color: 'from-blue-500 to-blue-600',
-    bgColor: 'bg-blue-500',
-    lightBg: 'bg-blue-50',
-    textColor: 'text-blue-700',
-    description: 'Obras, pavimentação, saneamento'
-  },
-  { 
-    value: 'HEALTH', 
-    label: 'Saúde Pública',
-    icon: '🏥',
-    color: 'from-red-500 to-red-600',
-    bgColor: 'bg-red-500',
-    lightBg: 'bg-red-50',
-    textColor: 'text-red-700',
-    description: 'Hospitais, postos de saúde, medicamentos'
-  },
-  { 
-    value: 'EDUCATION', 
-    label: 'Educação e Creches',
-    icon: '🎓',
-    color: 'from-yellow-500 to-yellow-600',
-    bgColor: 'bg-yellow-500',
-    lightBg: 'bg-yellow-50',
-    textColor: 'text-yellow-700',
-    description: 'Escolas, creches, material escolar'
-  },
-  { 
-    value: 'SOCIAL_ASSISTANCE', 
-    label: 'Assistência Social',
+    value: 'SOCIAL_WORKER', 
+    label: 'Assistente Social',
     icon: '🤝',
     color: 'from-purple-500 to-purple-600',
     bgColor: 'bg-purple-500',
     lightBg: 'bg-purple-50',
     textColor: 'text-purple-700',
-    description: 'Programas sociais, assistência'
+    description: 'Suporte social e orientação familiar'
   },
   { 
-    value: 'PUBLIC_SAFETY', 
-    label: 'Segurança Pública',
-    icon: '🛡️',
-    color: 'from-orange-500 to-orange-600',
-    bgColor: 'bg-orange-500',
-    lightBg: 'bg-orange-50',
-    textColor: 'text-orange-700',
-    description: 'Policiamento, iluminação, câmeras'
+    value: 'PSYCHOMOTOR_PHYSIOTHERAPIST', 
+    label: 'Fisioterapeuta Psicomotor',
+    icon: '�',
+    color: 'from-teal-500 to-teal-600',
+    bgColor: 'bg-teal-500',
+    lightBg: 'bg-teal-50',
+    textColor: 'text-teal-700',
+    description: 'Desenvolvimento motor e coordenação'
   },
   { 
-    value: 'TRANSPORTATION', 
-    label: 'Transporte e Mobilidade',
-    icon: '🚌',
-    color: 'from-green-500 to-green-600',
-    bgColor: 'bg-green-500',
-    lightBg: 'bg-green-50',
-    textColor: 'text-green-700',
-    description: 'Ônibus, ciclovias, acessibilidade'
+    value: 'SPEECH_THERAPIST', 
+    label: 'Fonoaudiólogo',
+    icon: '🗣️',
+    color: 'from-blue-500 to-blue-600',
+    bgColor: 'bg-blue-500',
+    lightBg: 'bg-blue-50',
+    textColor: 'text-blue-700',
+    description: 'Comunicação e linguagem'
   },
   { 
-    value: 'EMPLOYMENT', 
-    label: 'Emprego e Desenvolvimento Econômico',
-    icon: '💼',
-    color: 'from-indigo-500 to-indigo-600',
-    bgColor: 'bg-indigo-500',
-    lightBg: 'bg-indigo-50',
-    textColor: 'text-indigo-700',
-    description: 'Capacitação, empreendedorismo'
-  },
-  { 
-    value: 'CULTURE', 
-    label: 'Cultura, Esporte e Lazer',
-    icon: '🎭',
+    value: 'MUSIC_THERAPIST', 
+    label: 'Musicoterapeuta',
+    icon: '🎵',
     color: 'from-pink-500 to-pink-600',
     bgColor: 'bg-pink-500',
     lightBg: 'bg-pink-50',
     textColor: 'text-pink-700',
-    description: 'Eventos, esportes, centros culturais'
+    description: 'Terapia através da música'
   },
   { 
-    value: 'ENVIRONMENT', 
-    label: 'Meio Ambiente e Sustentabilidade',
-    icon: '🌱',
-    color: 'from-emerald-500 to-emerald-600',
-    bgColor: 'bg-emerald-500',
-    lightBg: 'bg-emerald-50',
-    textColor: 'text-emerald-700',
-    description: 'Limpeza, reciclagem, arborização'
+    value: 'NEUROPSYCHOPEDAGOGUE', 
+    label: 'Neuropsicopedagogo',
+    icon: '🧠',
+    color: 'from-indigo-500 to-indigo-600',
+    bgColor: 'bg-indigo-500',
+    lightBg: 'bg-indigo-50',
+    textColor: 'text-indigo-700',
+    description: 'Aprendizagem e cognição'
   },
   { 
-    value: 'HUMAN_RIGHTS', 
-    label: 'Direitos Humanos e Cidadania',
-    icon: '⚖️',
+    value: 'NEUROPSYCHOLOGIST', 
+    label: 'Neuropsicólogo',
+    icon: '🧪',
     color: 'from-violet-500 to-violet-600',
     bgColor: 'bg-violet-500',
     lightBg: 'bg-violet-50',
     textColor: 'text-violet-700',
-    description: 'Igualdade, inclusão, cidadania'
+    description: 'Avaliação neuropsicológica'
   },
   { 
-    value: 'TECHNOLOGY', 
-    label: 'Tecnologia e Inovação',
-    icon: '💻',
+    value: 'NUTRITIONIST', 
+    label: 'Nutricionista',
+    icon: '🥗',
+    color: 'from-green-500 to-green-600',
+    bgColor: 'bg-green-500',
+    lightBg: 'bg-green-50',
+    textColor: 'text-green-700',
+    description: 'Alimentação e nutrição'
+  },
+  { 
+    value: 'PSYCHOLOGIST', 
+    label: 'Psicólogo',
+    icon: '�',
     color: 'from-cyan-500 to-cyan-600',
     bgColor: 'bg-cyan-500',
     lightBg: 'bg-cyan-50',
     textColor: 'text-cyan-700',
-    description: 'Internet, digitalização, inovação'
+    description: 'Saúde mental e emocional'
+  },
+  { 
+    value: 'PSYCHOMOTRICIAN', 
+    label: 'Psicomotricista',
+    icon: '🤸',
+    color: 'from-orange-500 to-orange-600',
+    bgColor: 'bg-orange-500',
+    lightBg: 'bg-orange-50',
+    textColor: 'text-orange-700',
+    description: 'Desenvolvimento psicomotor'
+  },
+  { 
+    value: 'PSYCHOPEDAGOGUE', 
+    label: 'Psicopedagogo',
+    icon: '📚',
+    color: 'from-yellow-500 to-yellow-600',
+    bgColor: 'bg-yellow-500',
+    lightBg: 'bg-yellow-50',
+    textColor: 'text-yellow-700',
+    description: 'Dificuldades de aprendizagem'
+  },
+  { 
+    value: 'THERAPIST', 
+    label: 'Terapeuta',
+    icon: '🌟',
+    color: 'from-fuchsia-500 to-fuchsia-600',
+    bgColor: 'bg-fuchsia-500',
+    lightBg: 'bg-fuchsia-50',
+    textColor: 'text-fuchsia-700',
+    description: 'Terapia geral'
+  },
+  { 
+    value: 'OCCUPATIONAL_THERAPIST', 
+    label: 'Terapeuta Ocupacional',
+    icon: '✋',
+    color: 'from-emerald-500 to-emerald-600',
+    bgColor: 'bg-emerald-500',
+    lightBg: 'bg-emerald-50',
+    textColor: 'text-emerald-700',
+    description: 'Autonomia e atividades diárias'
   },
 ]
 
@@ -158,40 +193,64 @@ export const PRIORITY_OPTIONS = [
 
 export const STATUS_OPTIONS = [
   { 
-    value: 'PENDING', 
-    label: 'Aguardando atendimento',
+    value: 'PENDING' as DemandStatusType, 
+    label: 'Agendado',
     icon: '⏳',
     color: 'from-amber-500 to-amber-600',
     bgColor: 'bg-amber-500',
     lightBg: 'bg-amber-50',
-    textColor: 'text-amber-700'
+    textColor: 'text-amber-700',
+    description: 'Aguardando atendimento'
   },
   { 
-    value: 'IN_PROGRESS', 
-    label: 'Em andamento',
+    value: 'CHECK_IN' as DemandStatusType, 
+    label: 'Check-in',
+    icon: '📋',
+    color: 'from-cyan-500 to-cyan-600',
+    bgColor: 'bg-cyan-500',
+    lightBg: 'bg-cyan-50',
+    textColor: 'text-cyan-700',
+    description: 'Paciente realizou check-in'
+  },
+  { 
+    value: 'IN_PROGRESS' as DemandStatusType, 
+    label: 'Em Andamento',
     icon: '⚡',
     color: 'from-blue-500 to-blue-600',
     bgColor: 'bg-blue-500',
     lightBg: 'bg-blue-50',
-    textColor: 'text-blue-700'
+    textColor: 'text-blue-700',
+    description: 'Atendimento em progresso'
   },
   { 
-    value: 'RESOLVED', 
+    value: 'RESOLVED' as DemandStatusType, 
     label: 'Resolvida',
     icon: '✅',
-    color: 'from-green-500 to-green-600',
-    bgColor: 'bg-green-500',
-    lightBg: 'bg-green-50',
-    textColor: 'text-green-700'
+    color: 'from-emerald-500 to-emerald-600',
+    bgColor: 'bg-emerald-500',
+    lightBg: 'bg-emerald-50',
+    textColor: 'text-emerald-700',
+    description: 'Atendimento concluído'
   },
   { 
-    value: 'REJECTED', 
-    label: 'Rejeitada',
+    value: 'REJECTED' as DemandStatusType, 
+    label: 'Faltou',
     icon: '❌',
     color: 'from-red-500 to-red-600',
     bgColor: 'bg-red-500',
     lightBg: 'bg-red-50',
-    textColor: 'text-red-700'
+    textColor: 'text-red-700',
+    description: 'Faltou à consulta'
+  },
+  { 
+    value: 'BILLED' as DemandStatusType, 
+    label: 'Faturada',
+    icon: '💰',
+    color: 'from-green-600 to-green-700',
+    bgColor: 'bg-green-600',
+    lightBg: 'bg-green-50',
+    textColor: 'text-green-800',
+    description: 'Consulta faturada'
   },
 ]
 

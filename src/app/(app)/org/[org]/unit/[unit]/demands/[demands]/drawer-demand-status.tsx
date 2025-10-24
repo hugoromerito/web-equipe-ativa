@@ -36,6 +36,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import type { DemandStatus } from '@/lib/auth/demand-status'
+import type { DemandStatusType } from '@/constants/demand-translations'
 
 type StatusOption = {
   value: DemandStatus
@@ -59,7 +60,11 @@ interface DemandFormProps {
   initialData?: UpdateDemandSchema
 }
 
-export function DrawerDemandStatus() {
+interface DrawerDemandStatusProps {
+  currentStatus?: DemandStatusType
+}
+
+export function DrawerDemandStatus({ currentStatus }: DrawerDemandStatusProps = {}) {
   const [open, setOpen] = React.useState(false)
   const isDesktop = useMediaQuery('(min-width: 768px)')
 
@@ -93,7 +98,7 @@ export function DrawerDemandStatus() {
                 Dê andamento à consulta alterando seu status atual. Esta ação será registrada no histórico da consulta.
               </DialogDescription>
             </DialogHeader>
-            <ProfileForm setOpen={setOpen} />
+            <ProfileForm currentStatus={currentStatus} setOpen={setOpen} />
           </div>
         </DialogContent>
       </Dialog>
@@ -131,7 +136,7 @@ export function DrawerDemandStatus() {
               Dê andamento à consulta alterando seu status atual. Esta ação será registrada no histórico da consulta.
             </DrawerDescription>
           </DrawerHeader>
-          <ProfileForm className="px-6" setOpen={setOpen} />
+          <ProfileForm currentStatus={currentStatus} className="px-6" setOpen={setOpen} />
           <DrawerFooter className="pt-6 px-6">
             <DrawerClose asChild>
               <Button 
@@ -151,7 +156,11 @@ export function DrawerDemandStatus() {
 function ProfileForm({
   className,
   setOpen,
-}: React.ComponentProps<'form'> & { setOpen?: (open: boolean) => void }) {
+  currentStatus,
+}: React.ComponentProps<'form'> & { 
+  setOpen?: (open: boolean) => void
+  currentStatus?: DemandStatusType
+}) {
   const formAction = updateConsultaction
 
   const [{ errors, message, success }, handleSubmit, isPending] = useFormState(
@@ -196,7 +205,7 @@ function ProfileForm({
           Novo Status da Consulta
         </Label>
         <div className="relative">
-          <ComboBoxStatus id="status" name="status" />
+          <ComboBoxStatus id="status" name="status" currentStatus={currentStatus} />
           {errors?.status && (
             <p className="text-sm font-medium text-red-600 mt-2 flex items-center gap-2">
               <AlertTriangle className="h-4 w-4" />

@@ -30,6 +30,7 @@ interface Demand {
   urgency: number
   scheduledDate: string | null
   scheduledTime: string | null
+  patientPhoto?: string | null
   responsible: {
     id: string
     name: string
@@ -215,76 +216,76 @@ export function DemandList({
 
   return (
     <div className="medical-layout min-h-screen">
-      <div className="container mx-auto px-6 py-8 max-w-7xl">
+      <div className="container mx-auto px-3 sm:px-6 py-4 sm:py-8 max-w-7xl">
         {/* Header Médico Clean */}
         <div className="medical-section">
-          <h1 className="medical-section-title">
+          <h1 className="medical-section-title text-2xl sm:text-3xl">
             Central de Demandas
           </h1>
           
-          <p className="medical-section-subtitle">
+          <p className="medical-section-subtitle text-sm sm:text-base">
             Gerencie e acompanhe todas as demandas médicas da unidade
           </p>
 
-          {/* Stats Cards - Design Hospitalar Clean */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 my-6">
-            <div className="group relative overflow-hidden rounded-2xl bg-white shadow-sm border border-slate-100 hover:shadow-xl transition-all duration-300">
+          {/* Stats Cards - Design Hospitalar Clean - Mobile Optimized */}
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-4 my-4 sm:my-6">
+            <div className="group relative overflow-hidden rounded-xl sm:rounded-2xl bg-white shadow-sm border border-slate-100 hover:shadow-xl transition-all duration-300">
               <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-blue-600/10 group-hover:from-blue-500/10 group-hover:to-blue-600/20 transition-all"></div>
-              <div className="relative p-5">
-                <div className="flex items-center justify-between mb-3">
-                  <div className="w-11 h-11 rounded-xl bg-blue-100 flex items-center justify-center">
-                    <TrendingUp className="w-5 h-5 text-blue-600" />
+              <div className="relative p-3 sm:p-5">
+                <div className="flex items-center justify-between mb-2 sm:mb-3">
+                  <div className="w-8 h-8 sm:w-11 sm:h-11 rounded-lg sm:rounded-xl bg-blue-100 flex items-center justify-center">
+                    <TrendingUp className="w-4 h-4 sm:w-5 sm:h-5 text-blue-600" />
                   </div>
-                  <div className="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></div>
+                  <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-blue-500 animate-pulse"></div>
                 </div>
-                <div className="text-[11px] text-slate-500 font-semibold uppercase tracking-wider mb-1">Total de Demandas</div>
-                <div className="text-3xl font-bold text-slate-800 group-hover:text-blue-600 transition-colors">{pagination.total}</div>
+                <div className="text-[10px] sm:text-[11px] text-slate-500 font-semibold uppercase tracking-wider mb-1">Total</div>
+                <div className="text-xl sm:text-3xl font-bold text-slate-800 group-hover:text-blue-600 transition-colors">{pagination.total}</div>
               </div>
             </div>
 
-            <div className="group relative overflow-hidden rounded-2xl bg-white shadow-sm border border-slate-100 hover:shadow-xl transition-all duration-300">
+            <div className="group relative overflow-hidden rounded-xl sm:rounded-2xl bg-white shadow-sm border border-slate-100 hover:shadow-xl transition-all duration-300">
               <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 to-emerald-600/10 group-hover:from-emerald-500/10 group-hover:to-emerald-600/20 transition-all"></div>
-              <div className="relative p-5">
-                <div className="flex items-center justify-between mb-3">
-                  <div className="w-11 h-11 rounded-xl bg-emerald-100 flex items-center justify-center">
-                    <Sparkles className="w-5 h-5 text-emerald-600" />
+              <div className="relative p-3 sm:p-5">
+                <div className="flex items-center justify-between mb-2 sm:mb-3">
+                  <div className="w-8 h-8 sm:w-11 sm:h-11 rounded-lg sm:rounded-xl bg-emerald-100 flex items-center justify-center">
+                    <Sparkles className="w-4 h-4 sm:w-5 sm:h-5 text-emerald-600" />
                   </div>
-                  <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
+                  <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-emerald-500 animate-pulse"></div>
                 </div>
-                <div className="text-[11px] text-slate-500 font-semibold uppercase tracking-wider mb-1">Resolvidas</div>
-                <div className="text-3xl font-bold text-slate-800 group-hover:text-emerald-600 transition-colors">
+                <div className="text-[10px] sm:text-[11px] text-slate-500 font-semibold uppercase tracking-wider mb-1">Resolvidas</div>
+                <div className="text-xl sm:text-3xl font-bold text-slate-800 group-hover:text-emerald-600 transition-colors">
                   {demands.filter(d => d.status === 'RESOLVED').length}
                 </div>
               </div>
             </div>
 
-            <div className="group relative overflow-hidden rounded-2xl bg-white shadow-sm border border-slate-100 hover:shadow-xl transition-all duration-300">
+            <div className="group relative overflow-hidden rounded-xl sm:rounded-2xl bg-white shadow-sm border border-slate-100 hover:shadow-xl transition-all duration-300">
               <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-blue-600/10 group-hover:from-blue-500/10 group-hover:to-blue-600/20 transition-all"></div>
-              <div className="relative p-5">
-                <div className="flex items-center justify-between mb-3">
-                  <div className="w-11 h-11 rounded-xl bg-blue-100 flex items-center justify-center">
-                    <List className="w-5 h-5 text-blue-600" />
+              <div className="relative p-3 sm:p-5">
+                <div className="flex items-center justify-between mb-2 sm:mb-3">
+                  <div className="w-8 h-8 sm:w-11 sm:h-11 rounded-lg sm:rounded-xl bg-blue-100 flex items-center justify-center">
+                    <List className="w-4 h-4 sm:w-5 sm:h-5 text-blue-600" />
                   </div>
-                  <div className="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></div>
+                  <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-blue-500 animate-pulse"></div>
                 </div>
-                <div className="text-[11px] text-slate-500 font-semibold uppercase tracking-wider mb-1">Em Andamento</div>
-                <div className="text-3xl font-bold text-slate-800 group-hover:text-blue-600 transition-colors">
+                <div className="text-[10px] sm:text-[11px] text-slate-500 font-semibold uppercase tracking-wider mb-1">Andamento</div>
+                <div className="text-xl sm:text-3xl font-bold text-slate-800 group-hover:text-blue-600 transition-colors">
                   {demands.filter(d => d.status === 'IN_PROGRESS').length}
                 </div>
               </div>
             </div>
 
-            <div className="group relative overflow-hidden rounded-2xl bg-white shadow-sm border border-slate-100 hover:shadow-xl transition-all duration-300">
+            <div className="group relative overflow-hidden rounded-xl sm:rounded-2xl bg-white shadow-sm border border-slate-100 hover:shadow-xl transition-all duration-300">
               <div className="absolute inset-0 bg-gradient-to-br from-amber-500/5 to-amber-600/10 group-hover:from-amber-500/10 group-hover:to-amber-600/20 transition-all"></div>
-              <div className="relative p-5">
-                <div className="flex items-center justify-between mb-3">
-                  <div className="w-11 h-11 rounded-xl bg-amber-100 flex items-center justify-center">
-                    <Filter className="w-5 h-5 text-amber-600" />
+              <div className="relative p-3 sm:p-5">
+                <div className="flex items-center justify-between mb-2 sm:mb-3">
+                  <div className="w-8 h-8 sm:w-11 sm:h-11 rounded-lg sm:rounded-xl bg-amber-100 flex items-center justify-center">
+                    <Filter className="w-4 h-4 sm:w-5 sm:h-5 text-amber-600" />
                   </div>
-                  <div className="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></div>
+                  <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-amber-500 animate-pulse"></div>
                 </div>
-                <div className="text-[11px] text-slate-500 font-semibold uppercase tracking-wider mb-1">Pendentes</div>
-                <div className="text-3xl font-bold text-slate-800 group-hover:text-amber-600 transition-colors">
+                <div className="text-[10px] sm:text-[11px] text-slate-500 font-semibold uppercase tracking-wider mb-1">Pendentes</div>
+                <div className="text-xl sm:text-3xl font-bold text-slate-800 group-hover:text-amber-600 transition-colors">
                   {demands.filter(d => d.status === 'PENDING').length}
                 </div>
               </div>
@@ -292,91 +293,92 @@ export function DemandList({
           </div>
         </div>
 
-        {/* Search and Filters - Design Hospitalar Clean */}
-        <div className="rounded-2xl bg-white shadow-sm border border-slate-100 p-6 mb-8">
-          <div className="flex flex-col lg:flex-row gap-6">
-            {/* Search Box - Design Clean */}
+        {/* Search and Filters - Design Hospitalar Clean - Mobile Optimized */}
+        <div className="rounded-xl sm:rounded-2xl bg-white shadow-sm border border-slate-100 p-3 sm:p-6 mb-4 sm:mb-8">
+          <div className="flex flex-col lg:flex-row gap-3 sm:gap-6">
+            {/* Search Box - Design Clean - Mobile Optimized */}
             <div className="flex-1 relative group">
-              <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                <Search className="w-5 h-5 text-slate-400 group-focus-within:text-primary transition-colors" />
+              <div className="absolute inset-y-0 left-0 pl-3 sm:pl-4 flex items-center pointer-events-none">
+                <Search className="w-4 h-4 sm:w-5 sm:h-5 text-slate-400 group-focus-within:text-primary transition-colors" />
               </div>
               <input
                 type="text"
-                placeholder="Buscar por título, descrição ou paciente..."
+                placeholder="Buscar demanda..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-12 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-700 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary focus:bg-white transition-all duration-200"
+                className="w-full pl-10 sm:pl-12 pr-3 sm:pr-4 py-2.5 sm:py-3 bg-slate-50 border border-slate-200 rounded-lg sm:rounded-xl text-sm text-slate-700 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary focus:bg-white transition-all duration-200"
               />
             </div>
 
-            {/* Controls - Design Clean */}
-            <div className="flex flex-wrap gap-3">
-              {/* Sort Dropdown */}
-              <div className="relative group">
+            {/* Controls - Design Clean - Mobile Optimized */}
+            <div className="flex flex-wrap gap-2 sm:gap-3">
+              {/* Sort Dropdown - Mobile Optimized */}
+              <div className="relative group flex-1 sm:flex-initial">
                 <select
                   value={`${sortBy}-${sortOrder}`}
                   onChange={(e) => {
                     const [sort_by, sort_order] = e.target.value.split('-')
                     handleSortChange(sort_by, sort_order)
                   }}
-                  className="appearance-none pl-4 pr-10 py-3 min-w-[180px] bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-700 cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary focus:bg-white transition-all duration-200"
+                  className="appearance-none w-full pl-3 sm:pl-4 pr-9 sm:pr-10 py-2.5 sm:py-3 sm:min-w-[180px] bg-slate-50 border border-slate-200 rounded-lg sm:rounded-xl text-xs sm:text-sm text-slate-700 cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary focus:bg-white transition-all duration-200"
                 >
-                  <option value="created_at-desc">🕐 Mais Recentes</option>
-                  <option value="created_at-asc">⏰ Mais Antigas</option>
-                  <option value="priority-desc">⚡ Prioridade Alta</option>
-                  <option value="priority-asc">📊 Prioridade Baixa</option>
+                  <option value="created_at-desc">🕐 Recentes</option>
+                  <option value="created_at-asc">⏰ Antigas</option>
+                  <option value="priority-desc">⚡ Alta Prioridade</option>
+                  <option value="priority-asc">📊 Baixa Prioridade</option>
                   <option value="status-asc">✓ Status A-Z</option>
-                  <option value="updated_at-desc">🔄 Recém Atualizadas</option>
+                  <option value="updated_at-desc">🔄 Atualizadas</option>
                 </select>
-                <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 pointer-events-none group-focus-within:text-primary transition-colors" />
+                <ChevronDown className="absolute right-2 sm:right-3 top-1/2 -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5 text-slate-400 pointer-events-none group-focus-within:text-primary transition-colors" />
               </div>
 
-              {/* View Mode Toggle */}
-              <div className="flex rounded-xl border border-slate-200 overflow-hidden bg-slate-50 shadow-sm">
+              {/* View Mode Toggle - Mobile Optimized */}
+              <div className="flex rounded-lg sm:rounded-xl border border-slate-200 overflow-hidden bg-slate-50 shadow-sm">
                 <button
                   onClick={() => setViewMode('list')}
-                  className={`p-3 transition-all duration-200 ${
+                  className={`p-2 sm:p-3 transition-all duration-200 ${
                     viewMode === 'list' 
                       ? 'bg-gradient-to-br from-primary to-primary/90 text-white shadow-md shadow-primary/20' 
                       : 'text-slate-500 hover:bg-white hover:text-slate-700'
                   }`}
                   title="Visualização em Lista"
                 >
-                  <List size={20} />
+                  <List size={18} className="sm:w-5 sm:h-5" />
                 </button>
                 <div className="w-px bg-slate-200"></div>
                 <button
                   onClick={() => setViewMode('grid')}
-                  className={`p-3 transition-all duration-200 ${
+                  className={`p-2 sm:p-3 transition-all duration-200 ${
                     viewMode === 'grid' 
                       ? 'bg-gradient-to-br from-blue-500 to-blue-600 text-white shadow-md shadow-blue-500/20' 
                       : 'text-slate-500 hover:bg-white hover:text-slate-700'
                   }`}
                   title="Visualização em Grade"
                 >
-                  <Grid size={20} />
+                  <Grid size={18} className="sm:w-5 sm:h-5" />
                 </button>
               </div>
 
-              {/* Filter Toggle Button */}
+              {/* Filter Toggle Button - Mobile Optimized */}
               <button
                 onClick={() => setShowFilters(!showFilters)}
-                className={`flex items-center gap-2 px-5 py-3 rounded-xl border transition-all duration-200 font-medium text-sm ${
+                className={`flex items-center gap-1.5 sm:gap-2 px-3 sm:px-5 py-2.5 sm:py-3 rounded-lg sm:rounded-xl border transition-all duration-200 font-medium text-xs sm:text-sm ${
                   showFilters 
                     ? 'bg-gradient-to-br from-primary to-primary/90 text-white border-primary shadow-md shadow-primary/20' 
                     : 'border-slate-200 bg-slate-50 text-slate-600 hover:bg-white hover:shadow-sm hover:border-slate-300'
                 }`}
               >
-                <Filter size={18} />
-                <span>{showFilters ? 'Ocultar Filtros' : 'Mostrar Filtros'}</span>
+                <Filter size={16} className="sm:w-[18px] sm:h-[18px]" />
+                <span className="hidden sm:inline">{showFilters ? 'Ocultar Filtros' : 'Mostrar Filtros'}</span>
+                <span className="sm:hidden">{showFilters ? 'Ocultar' : 'Filtros'}</span>
               </button>
             </div>
           </div>
 
-          {/* Extended Filters - Design Hospitalar */}
+          {/* Extended Filters - Design Hospitalar - Mobile Optimized */}
           {showFilters && (
-            <div className="mt-6 pt-6 border-t border-slate-100 animate-in fade-in slide-in-from-top-2 duration-300">
-              <div className="flex flex-wrap gap-4">
+            <div className="mt-4 sm:mt-6 pt-4 sm:pt-6 border-t border-slate-100 animate-in fade-in slide-in-from-top-2 duration-300">
+              <div className="flex flex-col sm:flex-row sm:flex-wrap gap-3 sm:gap-4">
                 {/* Category Filter */}
                 <div className="flex-1 min-w-[200px] relative group">
                   <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">
@@ -507,20 +509,24 @@ export function DemandList({
                 // Cores baseadas no status para design hospitalar
                 const statusBorderColor = {
                   PENDING: 'border-l-amber-400',
+                  CHECK_IN: 'border-l-cyan-400',
                   IN_PROGRESS: 'border-l-blue-500',
                   RESOLVED: 'border-l-emerald-500',
-                  REJECTED: 'border-l-red-500'
+                  REJECTED: 'border-l-red-500',
+                  BILLED: 'border-l-green-600'
                 }[demand.status] || 'border-l-slate-300'
 
                 const statusBgColor = {
                   PENDING: 'bg-amber-50/50',
+                  CHECK_IN: 'bg-cyan-50/50',
                   IN_PROGRESS: 'bg-blue-50/50',
                   RESOLVED: 'bg-emerald-50/50',
-                  REJECTED: 'bg-red-50/50'
+                  REJECTED: 'bg-red-50/50',
+                  BILLED: 'bg-green-50/50'
                 }[demand.status] || 'bg-slate-50/50'
 
                 if (viewMode === 'list') {
-                  // MODO LISTA - Layout Horizontal Elegante e Profissional
+                  // MODO LISTA - Layout Horizontal Elegante e Profissional - Mobile Optimized
                   return (
                     <Link 
                       key={demand.id}
@@ -528,73 +534,79 @@ export function DemandList({
                       className="block"
                     >
                       <div
-                        className={`group rounded-2xl border-l-4 ${statusBorderColor} bg-white shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden medical-fade-in`}
+                        className={`group rounded-xl sm:rounded-2xl border-l-4 ${statusBorderColor} bg-white shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden medical-fade-in`}
                         style={{ animationDelay: `${index * 30}ms` }}
                       >
-                        <div className="p-6">
-                          <div className="flex items-start gap-6">
-                            {/* Ícone da Categoria - Maior e Mais Destaque */}
-                            <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${category.color} flex items-center justify-center text-white text-2xl shadow-lg flex-shrink-0`}>
-                              {category.icon}
+                        <div className="p-3 sm:p-6">
+                          <div className="flex items-start gap-3 sm:gap-6">
+                            {/* Foto do Paciente ou Iniciais - Responsivo */}
+                            <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-xl sm:rounded-2xl bg-gradient-to-br from-primary to-primary/80 flex items-center justify-center text-white shadow-lg flex-shrink-0 overflow-hidden">
+                              {demand.patientPhoto ? (
+                                <img 
+                                  src={demand.patientPhoto} 
+                                  alt={demand.location}
+                                  className="w-full h-full object-cover"
+                                />
+                              ) : (
+                                <span className="text-lg sm:text-2xl font-bold">
+                                  {demand.location.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase()}
+                                </span>
+                              )}
                             </div>
 
                             {/* Conteúdo Principal */}
-                            <div className="flex-1 min-w-0 space-y-3">
-                              {/* Título e Categoria */}
+                            <div className="flex-1 min-w-0 space-y-2 sm:space-y-3">
+                              {/* Paciente em Destaque e Categoria - Mobile Optimized */}
                               <div>
-                                <div className="flex items-start justify-between gap-4 mb-2">
-                                  <h3 className="text-xl font-bold text-slate-900 group-hover:text-primary transition-colors leading-tight">
-                                    {demand.title}
-                                  </h3>
-                                  <ChevronRight className="text-slate-300 group-hover:text-primary group-hover:translate-x-2 transition-all flex-shrink-0 mt-1" size={24} />
+                                <div className="flex items-start justify-between gap-2 sm:gap-4 mb-1 sm:mb-2">
+                                  <div className="flex-1 min-w-0">
+                                    <h3 className="text-base sm:text-xl font-bold text-slate-900 group-hover:text-primary transition-colors leading-tight truncate mb-1">
+                                      {demand.location}
+                                    </h3>
+                                    <p className="text-[10px] sm:text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                                      {category.label}
+                                    </p>
+                                  </div>
+                                  <ChevronRight className="text-slate-300 group-hover:text-primary group-hover:translate-x-2 transition-all flex-shrink-0 mt-0.5 sm:mt-1" size={20} />
                                 </div>
-                                <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
-                                  {category.label}
-                                </p>
                               </div>
 
-                              {/* Descrição */}
-                              <p className="text-sm text-slate-600 leading-relaxed line-clamp-2">
-                                {demand.description}
-                              </p>
-
-                              {/* Informações em Grid */}
-                              <div className="grid grid-cols-1 lg:grid-cols-3 gap-3 pt-2">
-                                {/* Paciente */}
-                                <div className="flex items-center gap-3 px-4 py-3 bg-gradient-to-r from-slate-50 to-slate-50/50 rounded-xl border border-slate-100">
-                                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-emerald-100 to-emerald-200 flex items-center justify-center flex-shrink-0">
-                                    <User size={18} className="text-emerald-700" />
-                                  </div>
-                                  <div className="flex-1 min-w-0">
-                                    <p className="text-[10px] text-slate-500 font-semibold uppercase tracking-wider">Paciente</p>
-                                    <p className="text-sm font-bold text-slate-900 truncate">{demand.location}</p>
-                                  </div>
+                              {/* Observações - Mobile Optimized */}
+                              {demand.description && (
+                                <div className="flex gap-2">
+                                  <span className="text-[10px] sm:text-xs font-semibold text-slate-400 uppercase tracking-wider flex-shrink-0">Obs:</span>
+                                  <p className="text-xs sm:text-sm text-slate-600 leading-relaxed line-clamp-2 flex-1">
+                                    {demand.description}
+                                  </p>
                                 </div>
+                              )}
 
-                                {/* Responsável */}
+                              {/* Informações em Grid - Mobile: Coluna, Desktop: 2 Colunas */}
+                              <div className="flex flex-col sm:grid sm:grid-cols-2 gap-2 sm:gap-3 pt-1 sm:pt-2">
+                                {/* Responsável - Mobile Optimized */}
                                 {demand.responsible && (
-                                  <div className="flex items-center gap-3 px-4 py-3 bg-gradient-to-r from-blue-50 to-blue-50/50 rounded-xl border border-blue-100">
-                                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center flex-shrink-0 shadow-md">
-                                      <span className="text-sm font-bold text-white">
+                                  <div className="flex items-center gap-2 sm:gap-3 px-3 sm:px-4 py-2 sm:py-3 bg-gradient-to-r from-blue-50 to-blue-50/50 rounded-lg sm:rounded-xl border border-blue-100">
+                                    <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center flex-shrink-0 shadow-md">
+                                      <span className="text-xs sm:text-sm font-bold text-white">
                                         {demand.responsible.name.charAt(0).toUpperCase()}
                                       </span>
                                     </div>
                                     <div className="flex-1 min-w-0">
-                                      <p className="text-[10px] text-blue-600 font-semibold uppercase tracking-wider">Responsável</p>
-                                      <p className="text-sm font-bold text-blue-900 truncate">{demand.responsible.name}</p>
-                                      <p className="text-[10px] text-blue-600/70 truncate">{demand.responsible.jobTitle}</p>
+                                      <p className="text-[9px] sm:text-[10px] text-blue-600 font-semibold uppercase tracking-wider">Responsável</p>
+                                      <p className="text-xs sm:text-sm font-bold text-blue-900 truncate">{demand.responsible.name}</p>
+                                      <p className="text-[9px] sm:text-[10px] text-blue-600/70 truncate">{demand.responsible.jobTitle}</p>
                                     </div>
                                   </div>
                                 )}
                                 
-                                {/* Agendamento */}
+                                {/* Agendamento - Mobile Optimized */}
                                 {demand.scheduledDate && (
-                                  <div className="flex items-center gap-3 px-4 py-3 bg-gradient-to-r from-purple-50 to-purple-50/50 rounded-xl border border-purple-100">
-                                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 to-purple-600 flex items-center justify-center flex-shrink-0 shadow-md">
-                                      <Calendar size={18} className="text-white" />
+                                  <div className="flex items-center gap-2 sm:gap-3 px-3 sm:px-4 py-2 sm:py-3 bg-gradient-to-r from-purple-50 to-purple-50/50 rounded-lg sm:rounded-xl border border-purple-100">
+                                    <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gradient-to-br from-purple-500 to-purple-600 flex items-center justify-center flex-shrink-0 shadow-md">
+                                      <Calendar size={14} className="text-white sm:w-[18px] sm:h-[18px]" />
                                     </div>
                                     <div className="flex-1 min-w-0">
-                                      <p className="text-[10px] text-purple-600 font-semibold uppercase tracking-wider">Agendamento</p>
+                                      <p className="text-[9px] sm:text-[10px] text-purple-600 font-semibold uppercase tracking-wider">Agendamento</p>
                                       <div className="flex items-center gap-2">
                                         <span className="text-sm font-bold text-purple-900">
                                           {formatLocalDate(demand.scheduledDate, {
@@ -615,41 +627,24 @@ export function DemandList({
                               </div>
                             </div>
 
-                            {/* Badges Lateral - Status, Prioridade e Urgência */}
-                            <div className="flex flex-col items-end gap-2 flex-shrink-0">
-                              {/* Status Badge */}
-                              <span className={`inline-flex items-center px-4 py-2 rounded-xl text-xs font-bold shadow-sm ${
-                                demand.status === 'PENDING' ? 'bg-amber-100 text-amber-800 border-2 border-amber-200' :
-                                demand.status === 'IN_PROGRESS' ? 'bg-blue-100 text-blue-800 border-2 border-blue-200' :
-                                demand.status === 'RESOLVED' ? 'bg-emerald-100 text-emerald-800 border-2 border-emerald-200' :
-                                'bg-slate-100 text-slate-800 border-2 border-slate-200'
+                            {/* Badges Lateral - Status - Mobile Optimized */}
+                            <div className="flex sm:flex-col items-start sm:items-end gap-1.5 sm:gap-2 flex-shrink-0 flex-wrap sm:flex-nowrap">
+                              {/* Status Badge - Mobile Optimized */}
+                              <span className={`inline-flex items-center px-2 sm:px-4 py-1 sm:py-2 rounded-lg sm:rounded-xl text-[10px] sm:text-xs font-bold shadow-sm ${
+                                demand.status === 'PENDING' ? 'bg-amber-100 text-amber-800 border sm:border-2 border-amber-200' :
+                                demand.status === 'CHECK_IN' ? 'bg-cyan-100 text-cyan-800 border sm:border-2 border-cyan-200' :
+                                demand.status === 'IN_PROGRESS' ? 'bg-blue-100 text-blue-800 border sm:border-2 border-blue-200' :
+                                demand.status === 'RESOLVED' ? 'bg-emerald-100 text-emerald-800 border sm:border-2 border-emerald-200' :
+                                demand.status === 'BILLED' ? 'bg-green-100 text-green-900 border sm:border-2 border-green-200' :
+                                demand.status === 'REJECTED' ? 'bg-red-100 text-red-800 border sm:border-2 border-red-200' :
+                                'bg-slate-100 text-slate-800 border sm:border-2 border-slate-200'
                               }`}>
-                                {status.label}
-                              </span>
-                              
-                              {/* Priority Badge */}
-                              <span className={`inline-flex items-center px-4 py-2 rounded-xl text-xs font-bold shadow-sm ${
-                                demand.priority === 'URGENT' ? 'bg-red-100 text-red-800 border-2 border-red-200' :
-                                demand.priority === 'HIGH' ? 'bg-orange-100 text-orange-800 border-2 border-orange-200' :
-                                demand.priority === 'MEDIUM' ? 'bg-yellow-100 text-yellow-800 border-2 border-yellow-200' :
-                                'bg-green-100 text-green-800 border-2 border-green-200'
-                              }`}>
-                                {priority.label}
+                                <span className="hidden sm:inline">{status.label}</span>
+                                <span className="sm:hidden">{status.label.split(' ')[0]}</span>
                               </span>
 
-                              {/* Urgency Indicator */}
-                              <div className="flex items-center gap-2 px-3 py-2 bg-slate-50 rounded-lg border border-slate-200">
-                                <div className="flex items-center gap-1">
-                                  <div className={`w-2 h-2 rounded-full ${getUrgencyColor(demand.urgency).replace('text-', 'bg-')} animate-pulse`} />
-                                  <div className={`w-1.5 h-1.5 rounded-full ${getUrgencyColor(demand.urgency).replace('text-', 'bg-')} opacity-60`} />
-                                </div>
-                                <span className={`text-xs font-bold ${getUrgencyColor(demand.urgency)}`}>
-                                  {demand.urgency}%
-                                </span>
-                              </div>
-
-                              {/* Data de Criação */}
-                              <div className="text-[11px] text-slate-400 text-right mt-4">
+                              {/* Data de Criação - Mobile Optimized */}
+                              <div className="hidden sm:block text-[11px] text-slate-400 text-right mt-4">
                                 <div className="flex items-center gap-1.5">
                                   <User size={11} />
                                   <span className="font-medium">{demand.author}</span>
@@ -667,7 +662,7 @@ export function DemandList({
                   )
                 }
 
-                // MODO GRID - Layout Original Melhorado
+                // MODO GRID - Layout Original Melhorado - Mobile Optimized
                 return (
                   <Link 
                     key={demand.id}
@@ -675,105 +670,101 @@ export function DemandList({
                     className="block"
                   >
                     <div
-                      className={`group rounded-xl border-l-[6px] ${statusBorderColor} bg-white shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden medical-fade-in h-full`}
+                      className={`group rounded-lg sm:rounded-xl border-l-4 sm:border-l-[6px] ${statusBorderColor} bg-white shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden medical-fade-in h-full`}
                       style={{ animationDelay: `${index * 50}ms` }}
                     >
-                      {/* Header com gradiente sutil */}
-                      <div className={`px-5 py-3 ${statusBgColor} border-b border-slate-100`}>
+                      {/* Header com gradiente sutil - Mobile Optimized */}
+                      <div className={`px-3 sm:px-5 py-2 sm:py-3 ${statusBgColor} border-b border-slate-100`}>
                         <div className="flex items-center justify-between">
-                          <div className="flex items-center gap-3">
-                            <div className={`w-11 h-11 rounded-xl bg-gradient-to-br ${category.color} flex items-center justify-center text-white text-lg shadow-md`}>
-                              {category.icon}
+                          <div className="flex items-center gap-2 sm:gap-3">
+                            {/* Foto do Paciente ou Iniciais */}
+                            <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-lg sm:rounded-xl bg-gradient-to-br from-primary to-primary/80 flex items-center justify-center text-white shadow-md flex-shrink-0 overflow-hidden">
+                              {demand.patientPhoto ? (
+                                <img 
+                                  src={demand.patientPhoto} 
+                                  alt={demand.location}
+                                  className="w-full h-full object-cover"
+                                />
+                              ) : (
+                                <span className="text-base sm:text-lg font-bold">
+                                  {demand.location.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase()}
+                                </span>
+                              )}
                             </div>
-                            <div className="flex-1">
-                              <h3 className="text-base font-bold text-slate-800 group-hover:text-primary transition-colors leading-tight line-clamp-1">
-                                {demand.title}
+                            <div className="flex-1 min-w-0">
+                              <h3 className="text-sm sm:text-base font-bold text-slate-800 group-hover:text-primary transition-colors leading-tight truncate mb-0.5">
+                                {demand.location}
                               </h3>
-                              <p className="text-[11px] text-slate-500 font-semibold uppercase tracking-wider mt-0.5">
+                              <p className="text-[10px] sm:text-[11px] text-slate-500 font-semibold uppercase tracking-wider mt-0.5">
                                 {category.label}
                               </p>
                             </div>
                           </div>
                           
-                          {/* Urgency Indicator - Design Clean */}
-                          <div className="flex items-center gap-2">
-                            <div className="flex items-center gap-1">
-                              <div className={`w-2.5 h-2.5 rounded-full ${getUrgencyColor(demand.urgency).replace('text-', 'bg-')} animate-pulse`} />
-                              <div className={`w-1.5 h-1.5 rounded-full ${getUrgencyColor(demand.urgency).replace('text-', 'bg-')} opacity-60`} />
-                            </div>
-                            <ChevronRight className="text-slate-300 group-hover:text-primary group-hover:translate-x-1 transition-all" size={22} />
+                          {/* ChevronRight Indicator */}
+                          <div className="flex items-center gap-1.5 sm:gap-2 flex-shrink-0">
+                            <ChevronRight className="text-slate-300 group-hover:text-primary group-hover:translate-x-1 transition-all" size={18} />
                           </div>
                         </div>
                       </div>
 
-                      {/* Body - Content */}
-                      <div className="p-5 space-y-4">
-                        {/* Description */}
-                        <p className="text-sm text-slate-600 leading-relaxed line-clamp-2 min-h-[2.5rem]">
-                          {demand.description}
-                        </p>
+                      {/* Body - Content - Mobile Optimized */}
+                      <div className="p-3 sm:p-5 space-y-3 sm:space-y-4">
+                        {/* Observações - Mobile Optimized */}
+                        {demand.description && (
+                          <div className="flex gap-2">
+                            <span className="text-[10px] sm:text-xs font-semibold text-slate-400 uppercase tracking-wider flex-shrink-0">Obs:</span>
+                            <p className="text-xs sm:text-sm text-slate-600 leading-relaxed line-clamp-2 flex-1 min-h-[2rem] sm:min-h-[2.5rem]">
+                              {demand.description}
+                            </p>
+                          </div>
+                        )}
 
-                        {/* Status & Priority Badges - Redesign Clean */}
-                        <div className="flex flex-wrap gap-2">
-                          <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold ${
+                        {/* Status Badge - Redesign Clean - Mobile Optimized */}
+                        <div className="flex flex-wrap gap-1.5 sm:gap-2">
+                          <span className={`inline-flex items-center px-2 sm:px-3 py-0.5 sm:py-1 rounded-md sm:rounded-full text-[10px] sm:text-xs font-semibold ${
                             demand.status === 'PENDING' ? 'bg-amber-100 text-amber-700 border border-amber-200' :
+                            demand.status === 'CHECK_IN' ? 'bg-cyan-100 text-cyan-700 border border-cyan-200' :
                             demand.status === 'IN_PROGRESS' ? 'bg-blue-100 text-blue-700 border border-blue-200' :
                             demand.status === 'RESOLVED' ? 'bg-emerald-100 text-emerald-700 border border-emerald-200' :
+                            demand.status === 'BILLED' ? 'bg-green-100 text-green-800 border border-green-200' :
+                            demand.status === 'REJECTED' ? 'bg-red-100 text-red-700 border border-red-200' :
                             'bg-slate-100 text-slate-700 border border-slate-200'
                           }`}>
-                            {status.label}
-                          </span>
-                          
-                          <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold ${
-                            demand.priority === 'URGENT' ? 'bg-red-100 text-red-700 border border-red-200' :
-                            demand.priority === 'HIGH' ? 'bg-orange-100 text-orange-700 border border-orange-200' :
-                            demand.priority === 'MEDIUM' ? 'bg-yellow-100 text-yellow-700 border border-yellow-200' :
-                            'bg-green-100 text-green-700 border border-green-200'
-                          }`}>
-                            {priority.label}
+                            <span className="hidden sm:inline">{status.label}</span>
+                            <span className="sm:hidden">{status.label.split(' ')[0]}</span>
                           </span>
                         </div>
 
-                        {/* Paciente - Design Hospitalar */}
-                        <div className="flex items-center gap-3 px-3 py-2.5 bg-gradient-to-r from-slate-50 to-transparent rounded-lg border border-slate-100">
-                          <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                            <User size={15} className="text-primary" />
-                          </div>
-                          <div className="flex-1 min-w-0">
-                            <p className="text-[10px] text-slate-500 font-medium uppercase tracking-wide">Paciente</p>
-                            <p className="text-sm font-semibold text-slate-700 truncate">{demand.location}</p>
-                          </div>
-                        </div>
-
-                        {/* Scheduling Info - Responsável e Agendamento */}
+                        {/* Scheduling Info - Responsável e Agendamento - Mobile: Coluna */}
                         {(demand.responsible || demand.scheduledDate) && (
-                          <div className="space-y-2 pt-3 border-t border-slate-100">
-                            {/* Responsável - Design Hospitalar */}
+                          <div className="flex flex-col gap-2 pt-2 sm:pt-3 border-t border-slate-100">
+                            {/* Responsável - Design Hospitalar - Mobile Optimized */}
                             {demand.responsible && (
-                              <div className="flex items-center gap-3 px-3 py-2 bg-blue-50/50 rounded-lg border border-blue-100">
-                                <div className="w-7 h-7 rounded-full bg-blue-600 flex items-center justify-center flex-shrink-0">
-                                  <span className="text-[10px] font-bold text-white">
+                              <div className="flex items-center gap-2 sm:gap-3 px-2 sm:px-3 py-1.5 sm:py-2 bg-blue-50/50 rounded-lg border border-blue-100">
+                                <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-blue-600 flex items-center justify-center flex-shrink-0">
+                                  <span className="text-[9px] sm:text-[10px] font-bold text-white">
                                     {demand.responsible.name.charAt(0).toUpperCase()}
                                   </span>
                                 </div>
                                 <div className="flex-1 min-w-0">
-                                  <p className="text-[10px] text-blue-600 font-medium uppercase tracking-wide">Responsável</p>
-                                  <p className="text-xs font-semibold text-blue-700 truncate">{demand.responsible.name}</p>
-                                  <p className="text-[10px] text-blue-600/70 truncate">{demand.responsible.jobTitle}</p>
+                                  <p className="text-[9px] sm:text-[10px] text-blue-600 font-medium uppercase tracking-wide">Responsável</p>
+                                  <p className="text-[11px] sm:text-xs font-semibold text-blue-700 truncate">{demand.responsible.name}</p>
+                                  <p className="text-[9px] sm:text-[10px] text-blue-600/70 truncate">{demand.responsible.jobTitle}</p>
                                 </div>
                               </div>
                             )}
                             
-                            {/* Data e Hora Agendadas - Design Hospitalar */}
+                            {/* Data e Hora Agendadas - Design Hospitalar - Mobile Optimized */}
                             {demand.scheduledDate && (
-                              <div className="flex items-center gap-3 px-3 py-2 bg-emerald-50/50 rounded-lg border border-emerald-100">
-                                <div className="w-7 h-7 rounded-full bg-emerald-600 flex items-center justify-center flex-shrink-0">
-                                  <Calendar size={14} className="text-white" />
+                              <div className="flex items-center gap-2 sm:gap-3 px-2 sm:px-3 py-1.5 sm:py-2 bg-emerald-50/50 rounded-lg border border-emerald-100">
+                                <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-emerald-600 flex items-center justify-center flex-shrink-0">
+                                  <Calendar size={12} className="text-white sm:w-[14px] sm:h-[14px]" />
                                 </div>
-                                <div className="flex-1">
-                                  <p className="text-[10px] text-emerald-600 font-medium uppercase tracking-wide">Agendamento</p>
-                                  <div className="flex items-center gap-2 text-emerald-700">
-                                    <span className="text-xs font-bold">
+                                <div className="flex-1 min-w-0">
+                                  <p className="text-[9px] sm:text-[10px] text-emerald-600 font-medium uppercase tracking-wide">Agendamento</p>
+                                  <div className="flex items-center gap-1.5 sm:gap-2 text-emerald-700">
+                                    <span className="text-[11px] sm:text-xs font-bold">
                                       {formatLocalDate(demand.scheduledDate, {
                                         day: '2-digit',
                                         month: 'short'
@@ -782,7 +773,7 @@ export function DemandList({
                                     {demand.scheduledTime && (
                                       <>
                                         <span className="text-emerald-400">•</span>
-                                        <span className="text-xs font-bold">{formatTime(demand.scheduledTime)}</span>
+                                        <span className="text-[11px] sm:text-xs font-bold">{formatTime(demand.scheduledTime)}</span>
                                       </>
                                     )}
                                   </div>
@@ -792,16 +783,16 @@ export function DemandList({
                           </div>
                         )}
 
-                        {/* Footer - Info Criação */}
-                        <div className="pt-3 border-t border-slate-100">
-                          <div className="flex items-center justify-between text-[11px] text-slate-400">
-                            <span className="flex items-center gap-1.5">
-                              <User size={12} />
-                              <span className="font-medium">{demand.author}</span>
+                        {/* Footer - Info Criação - Mobile Optimized */}
+                        <div className="pt-2 sm:pt-3 border-t border-slate-100">
+                          <div className="flex items-center justify-between text-[10px] sm:text-[11px] text-slate-400">
+                            <span className="flex items-center gap-1 sm:gap-1.5 truncate flex-1">
+                              <User size={11} className="flex-shrink-0" />
+                              <span className="font-medium truncate">{demand.author}</span>
                             </span>
-                            <span className="flex items-center gap-1.5">
-                              <Calendar size={12} />
-                              <span>{formatLocalDate(demand.createdAt, { day: '2-digit', month: 'short', year: 'numeric' })}</span>
+                            <span className="flex items-center gap-1 sm:gap-1.5 flex-shrink-0 ml-2">
+                              <Calendar size={11} className="hidden sm:block" />
+                              <span className="text-[9px] sm:text-[11px]">{formatLocalDate(demand.createdAt, { day: '2-digit', month: 'short', year: 'numeric' })}</span>
                             </span>
                           </div>
                         </div>
@@ -813,25 +804,26 @@ export function DemandList({
             </div>
 
             {/* Pagination - Design Clean Hospitalar */}
-            {pagination.total_pages > 1 && (
-              <div className="mt-12">
-                <div className="flex items-center justify-center gap-2">
-                  {/* Previous Button */}
+          {pagination.total_pages > 1 && (
+              <div className="medical-section mt-8 sm:mt-12">
+                <div className="flex items-center justify-center gap-2 sm:gap-3">
+                  {/* Previous Button - Mobile Optimized */}
                   <button
                     onClick={() => handlePageChange(pagination.page - 1)}
                     disabled={!pagination.has_prev}
-                    className={`flex items-center gap-2 px-5 py-2.5 rounded-xl font-semibold text-sm transition-all duration-200 ${
+                    className={`flex items-center gap-1.5 sm:gap-2 px-3 sm:px-5 py-2 sm:py-2.5 rounded-lg sm:rounded-xl font-semibold text-xs sm:text-sm transition-all duration-200 ${
                       pagination.has_prev
-                        ? 'bg-white border-2 border-slate-200 text-slate-700 hover:border-primary hover:text-primary hover:shadow-md'
-                        : 'bg-slate-50 border-2 border-slate-100 text-slate-300 cursor-not-allowed'
+                        ? 'bg-white border sm:border-2 border-slate-200 text-slate-700 hover:border-primary hover:text-primary hover:shadow-md'
+                        : 'bg-slate-50 border sm:border-2 border-slate-100 text-slate-300 cursor-not-allowed'
                     }`}
                   >
-                    <ChevronLeft size={18} />
-                    <span>Anterior</span>
+                    <ChevronLeft size={16} className="sm:w-[18px] sm:h-[18px]" />
+                    <span className="hidden sm:inline">Anterior</span>
+                    <span className="sm:hidden">Ant</span>
                   </button>
 
-                  {/* Page Numbers */}
-                  <div className="flex items-center gap-1.5 mx-3">
+                  {/* Page Numbers - Mobile Optimized */}
+                  <div className="flex items-center gap-1 sm:gap-1.5 mx-2 sm:mx-3">
                     {Array.from({ length: Math.min(pagination.total_pages, 5) }, (_, i) => {
                       let pageNum: number
                       
@@ -851,10 +843,10 @@ export function DemandList({
                         <button
                           key={pageNum}
                           onClick={() => handlePageChange(pageNum)}
-                          className={`w-11 h-11 rounded-xl font-bold text-sm transition-all duration-200 ${
+                          className={`w-9 h-9 sm:w-11 sm:h-11 rounded-lg sm:rounded-xl font-bold text-xs sm:text-sm transition-all duration-200 ${
                             isCurrentPage
                               ? 'bg-gradient-to-br from-primary to-primary/90 text-white shadow-lg shadow-primary/30 scale-110'
-                              : 'bg-white border-2 border-slate-200 text-slate-600 hover:border-primary hover:text-primary hover:shadow-md'
+                              : 'bg-white border sm:border-2 border-slate-200 text-slate-600 hover:border-primary hover:text-primary hover:shadow-md'
                           }`}
                         >
                           {pageNum}
@@ -863,37 +855,38 @@ export function DemandList({
                     })}
                   </div>
 
-                  {/* Next Button */}
+                  {/* Next Button - Mobile Optimized */}
                   <button
                     onClick={() => handlePageChange(pagination.page + 1)}
                     disabled={!pagination.has_next}
-                    className={`flex items-center gap-2 px-5 py-2.5 rounded-xl font-semibold text-sm transition-all duration-200 ${
+                    className={`flex items-center gap-1.5 sm:gap-2 px-3 sm:px-5 py-2 sm:py-2.5 rounded-lg sm:rounded-xl font-semibold text-xs sm:text-sm transition-all duration-200 ${
                       pagination.has_next
-                        ? 'bg-white border-2 border-slate-200 text-slate-700 hover:border-primary hover:text-primary hover:shadow-md'
-                        : 'bg-slate-50 border-2 border-slate-100 text-slate-300 cursor-not-allowed'
+                        ? 'bg-white border sm:border-2 border-slate-200 text-slate-700 hover:border-primary hover:text-primary hover:shadow-md'
+                        : 'bg-slate-50 border sm:border-2 border-slate-100 text-slate-300 cursor-not-allowed'
                     }`}
                   >
-                    <span>Próxima</span>
-                    <ChevronRight size={18} />
+                    <span className="hidden sm:inline">Próxima</span>
+                    <span className="sm:hidden">Próx</span>
+                    <ChevronRight size={16} className="sm:w-[18px] sm:h-[18px]" />
                   </button>
                 </div>
 
-                {/* Page Info */}
-                <div className="text-center mt-6">
-                  <div className="inline-flex items-center gap-2 px-4 py-2 bg-slate-50 rounded-lg border border-slate-100">
-                    <span className="text-sm text-slate-600">
-                      Mostrando
+                {/* Page Info - Mobile Optimized */}
+                <div className="text-center mt-4 sm:mt-6">
+                  <div className="inline-flex flex-wrap items-center justify-center gap-1 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 bg-slate-50 rounded-lg border border-slate-100">
+                    <span className="text-xs sm:text-sm text-slate-600">
+                      <span className="hidden sm:inline">Mostrando </span>
                     </span>
-                    <span className="font-bold text-primary">
+                    <span className="font-bold text-primary text-xs sm:text-sm">
                       {((pagination.page - 1) * pagination.limit) + 1}-{Math.min(pagination.page * pagination.limit, pagination.total)}
                     </span>
-                    <span className="text-sm text-slate-600">
+                    <span className="text-xs sm:text-sm text-slate-600">
                       de
                     </span>
-                    <span className="font-bold text-slate-800">
+                    <span className="font-bold text-slate-800 text-xs sm:text-sm">
                       {pagination.total}
                     </span>
-                    <span className="text-sm text-slate-600">
+                    <span className="hidden sm:inline text-xs sm:text-sm text-slate-600">
                       demandas
                     </span>
                   </div>
@@ -903,12 +896,12 @@ export function DemandList({
           </>
         )}
 
-        {/* Create New Demand Button - Design Clean */}
-        <div className="text-center mt-16 pb-8">
+        {/* Create New Demand Button - Design Clean - Mobile Optimized */}
+        <div className="text-center mt-8 sm:mt-16 pb-6 sm:pb-8">
           <Link href={`/org/${currentOrg}/unit/${currentUnit}/applicant`}>
-            <button className="group relative inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-br from-primary via-primary to-primary/90 text-white rounded-2xl font-bold text-base shadow-lg shadow-primary/30 hover:shadow-2xl hover:shadow-primary/40 hover:scale-105 transition-all duration-300 overflow-hidden">
+            <button className="group relative inline-flex items-center gap-2 sm:gap-3 px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-br from-primary via-primary to-primary/90 text-white rounded-xl sm:rounded-2xl font-bold text-sm sm:text-base shadow-lg shadow-primary/30 hover:shadow-2xl hover:shadow-primary/40 hover:scale-105 transition-all duration-300 overflow-hidden">
               <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-              <Sparkles className="w-6 h-6 relative z-10 group-hover:rotate-12 transition-transform" />
+              <Sparkles className="w-5 h-5 sm:w-6 sm:h-6 relative z-10 group-hover:rotate-12 transition-transform" />
               <span className="relative z-10">Criar Nova Demanda</span>
             </button>
           </Link>

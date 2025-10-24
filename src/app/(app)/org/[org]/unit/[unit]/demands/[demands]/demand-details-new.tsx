@@ -264,10 +264,10 @@ export async function DemandDetails() {
         </div>
       </div>
 
-      {/* Action Button */}
-      {!['resolved', 'rejected'].includes(demand.status.toLowerCase()) && (
+      {/* Action Button - Sempre visível, exceto para BILLED */}
+      {demand.status !== 'BILLED' && (
         <div className="sticky bottom-4 md:bottom-6 z-10">
-          <DrawerDemandStatus />
+          <DrawerDemandStatus currentStatus={demand.status as any} />
         </div>
       )}
     </div>
