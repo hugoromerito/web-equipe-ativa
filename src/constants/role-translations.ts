@@ -1,8 +1,9 @@
 export const ROLE_OPTIONS = [
-  { value: 'ADMIN', label: 'Admin' },
-  { value: 'MANAGER', label: 'Gestor' },
-  { value: 'CLERK', label: 'Assistente' },
-  { value: 'ANALYST', label: 'Analista' },
+  { value: 'ADMIN', label: 'Administrador' },
+  { value: 'MANAGER', label: 'Recursos Humanos' },
+  { value: 'CLERK', label: 'Atendente' },
+  { value: 'ANALYST', label: 'Profissional de Saúde' },
+  { value: 'BILLING', label: 'Faturista' },
 ]
 
 export const translateRole = (value: string | undefined | null) => {

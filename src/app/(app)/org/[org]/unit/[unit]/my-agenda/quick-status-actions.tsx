@@ -9,7 +9,6 @@ import {
   AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
-  AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
@@ -187,8 +186,8 @@ export function QuickStatusActions({
               <AlertCircle className="w-6 h-6 text-amber-500" />
               Confirmar Ação
             </AlertDialogTitle>
-            <AlertDialogDescription className="text-base pt-2">
-              {pendingAction?.description}
+            <div className="text-base pt-2 text-muted-foreground">
+              <p>{pendingAction?.description}</p>
               <div className="mt-4 p-3 bg-slate-50 rounded-lg border border-slate-200">
                 <p className="text-sm text-slate-600">
                   <span className="font-semibold">Paciente:</span> {applicantName}
@@ -197,7 +196,7 @@ export function QuickStatusActions({
                   <span className="font-semibold">Nova ação:</span> {pendingAction?.label}
                 </p>
               </div>
-            </AlertDialogDescription>
+            </div>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel 

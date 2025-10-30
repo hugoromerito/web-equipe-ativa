@@ -55,6 +55,7 @@ export * from './get-my-demands'
 export * from './update-demand'
 export * from './update-demand-status' // Deprecated
 export * from './get-recent-calls'
+export * from './get-demand-history' // Auditoria de mudanças de status
 
 // Attachments
 export * from './upload-user-avatar'

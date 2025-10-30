@@ -176,10 +176,11 @@ export async function MemberList() {
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="all">Todos os cargos</SelectItem>
-              <SelectItem value="ADMIN">Admin</SelectItem>
-              <SelectItem value="MANAGER">Gestor</SelectItem>
-              <SelectItem value="CLERK">Assistente</SelectItem>
-              <SelectItem value="ANALYST">Analista</SelectItem>
+              <SelectItem value="ADMIN">Administrador</SelectItem>
+              <SelectItem value="MANAGER">Recursos Humanos</SelectItem>
+              <SelectItem value="CLERK">Atendente</SelectItem>
+              <SelectItem value="ANALYST">Profissional de Saúde</SelectItem>
+              <SelectItem value="BILLING">Faturista</SelectItem>
             </SelectContent>
           </Select>
         </div>

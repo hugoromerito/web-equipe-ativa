@@ -80,8 +80,20 @@ const applicantSchema = z.object({
   mother: nullableNameSchema,
   father: nullableNameSchema,
   ticket: nullableTicketSchema,
-  observation: z.string().nullable(),
-  sus_card: z.string().nullable().optional(),
+  observation: z.preprocess(
+    (val) => {
+      if (typeof val === 'string' && val.trim() === '') return null
+      return val
+    },
+    z.string().nullable()
+  ),
+  sus_card: z.preprocess(
+    (val) => {
+      if (typeof val === 'string' && val.trim() === '') return null
+      return val
+    },
+    z.string().nullable().optional()
+  ),
   zip_code: z
     .string()
     .min(1, { message: 'CEP é obrigatório.' })
@@ -89,12 +101,48 @@ const applicantSchema = z.object({
     .refine((val) => val.length === 8, {
       message: 'CEP deve ter exatamente 8 dígitos.',
     }),
-  state: z.string().nullable().optional(),
-  city: z.string().nullable().optional(),
-  street: z.string().nullable().optional(),
-  neighborhood: z.string().nullable().optional(),
-  complement: z.string().nullable().optional(),
-  number: z.string().nullable().optional(),
+  state: z.preprocess(
+    (val) => {
+      if (typeof val === 'string' && val.trim() === '') return null
+      return val
+    },
+    z.string().nullable().optional()
+  ),
+  city: z.preprocess(
+    (val) => {
+      if (typeof val === 'string' && val.trim() === '') return null
+      return val
+    },
+    z.string().nullable().optional()
+  ),
+  street: z.preprocess(
+    (val) => {
+      if (typeof val === 'string' && val.trim() === '') return null
+      return val
+    },
+    z.string().nullable().optional()
+  ),
+  neighborhood: z.preprocess(
+    (val) => {
+      if (typeof val === 'string' && val.trim() === '') return null
+      return val
+    },
+    z.string().nullable().optional()
+  ),
+  complement: z.preprocess(
+    (val) => {
+      if (typeof val === 'string' && val.trim() === '') return null
+      return val
+    },
+    z.string().nullable().optional()
+  ),
+  number: z.preprocess(
+    (val) => {
+      if (typeof val === 'string' && val.trim() === '') return null
+      return val
+    },
+    z.string().nullable().optional()
+  ),
   numberNull: z.string().optional(), // Campo hidden para indicar se não tem número
 }).superRefine((data, ctx) => {
   // Se zip_code foi preenchido, validar número/complemento

@@ -8,6 +8,7 @@ export interface UpdateDemandRequest {
   description?: string
   priority?: string
   status?: string
+  reason?: string // Motivo da mudança de status (para auditoria)
 }
 
 interface UpdateDemandResponse {
@@ -29,6 +30,7 @@ export async function updateDemand({
   description,
   priority,
   status,
+  reason,
 }: UpdateDemandRequest) {
   // Construir o payload apenas com campos definidos
   const payload: Record<string, any> = {}
@@ -37,6 +39,7 @@ export async function updateDemand({
   if (description !== undefined) payload.description = description
   if (priority !== undefined) payload.priority = priority
   if (status !== undefined) payload.status = status
+  if (reason !== undefined) payload.reason = reason
 
   console.log('🔄 Atualizando demanda:', {
     url: `organizations/${organizationSlug}/units/${unitSlug}/demands/${demandId}`,
