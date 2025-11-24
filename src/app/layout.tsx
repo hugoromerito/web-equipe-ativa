@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import './globals.css'
 import WhatsappButton from '@/components/whatsapp-button'
 import { Footer } from '@/components/footer'
+import { Toaster } from '@/components/ui/toaster'
 // import { ThemeProvider } from 'next-themes'
 import { Providers } from './provider'
 
@@ -47,6 +48,7 @@ export default function RootLayout({
             <Footer />
           </div>
           <WhatsappButton />
+          <Toaster />
         </Providers>
       </body>
     </html>

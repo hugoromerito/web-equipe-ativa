@@ -77,3 +77,6 @@ export * from './assign-job-title'
 export * from './remove-job-title'
 export * from './update-member-job-title'
 export * from './update-member-working-days'
+
+// Billing
+export * from './billing'
