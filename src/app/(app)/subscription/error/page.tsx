@@ -1,12 +1,13 @@
 'use client'
 
+import { Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { XCircle, AlertCircle } from 'lucide-react'
 
-export default function SubscriptionErrorPage() {
+function ErrorContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const error = searchParams.get('error')
@@ -47,5 +48,17 @@ export default function SubscriptionErrorPage() {
         </CardContent>
       </Card>
     </div>
+  )
+}
+
+export default function SubscriptionErrorPage() {
+  return (
+    <Suspense fallback={
+      <div className="flex min-h-screen items-center justify-center">
+        <div className="text-muted-foreground">Carregando...</div>
+      </div>
+    }>
+      <ErrorContent />
+    </Suspense>
   )
 }
