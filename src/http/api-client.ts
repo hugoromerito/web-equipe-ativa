@@ -27,91 +27,39 @@ export const api = ky.create({
           const { cookies } = await import('next/headers')
           const serverCookies = cookies()
           token = (await serverCookies).get('token')?.value
-          console.log('🔐 [SERVER] Token from cookies:', token ? `${token.substring(0, 20)}...` : 'NOT FOUND')
         } else {
           // Código do cliente (browser)
-          // Método 1: usando cookies-next
           token = getCookie('token') as string | undefined
           
-          // Método 2: Fallback - tentar pegar do document.cookie diretamente
+          // Fallback - tentar pegar do document.cookie diretamente
           if (!token) {
             const cookieValue = document.cookie
               .split('; ')
               .find(row => row.startsWith('token='))
-              ?.split('=')[1];
+              ?.split('=')[1]
             
-            token = cookieValue;
+            token = cookieValue
           }
 
-          // Método 3: Fallback adicional - verificar localStorage (caso tenha sido salvo lá)
+          // Fallback adicional - verificar localStorage
           if (!token && typeof localStorage !== 'undefined') {
-            token = localStorage.getItem('token') || undefined;
-          }
-
-          console.log('🔐 [CLIENT] Token from cookies:', token ? `${token.substring(0, 20)}...` : 'NOT FOUND')
-          console.log('🍪 [CLIENT] All cookies:', document.cookie)
-          console.log('🌍 [CLIENT] Request URL:', request.url)
-          
-          if (!token) {
-            // Log detalhado para debug em produção
-            console.error('⚠️ [CLIENT DEBUG] Cookie details:', {
-              allCookies: document.cookie,
-              cookiesList: document.cookie.split('; '),
-              domain: window.location.hostname,
-              secure: window.location.protocol === 'https:',
-            })
+            token = localStorage.getItem('token') || undefined
           }
         }
 
         if (token) {
           request.headers.set('Authorization', `Bearer ${token}`)
-          console.log('✅ Authorization header set for:', request.url)
-        } else {
-          console.warn('⚠️ No auth token found!', {
-            environment: typeof window === 'undefined' ? 'server' : 'client',
-            url: request.url,
-            fullUrl: request.url,
-            cookies: typeof window !== 'undefined' ? document.cookie : 'server-side',
-            headers: Object.fromEntries(request.headers.entries())
-          })
         }
       },
     ],
     beforeError: [
       (error) => {
-        console.error('❌ API Error:', {
-          status: error.response?.status,
-          statusText: error.response?.statusText,
-          url: error.request?.url,
-          message: error.message,
-          cause: error.cause
-        })
-
-        // Log específico para erros de auth
-        if (error.response?.status === 401) {
-          console.error('🔒 Authentication failed! Token may be missing or expired.')
+        // Log apenas em desenvolvimento
+        if (process.env.NODE_ENV === 'development') {
+          console.error('API Error:', error.response?.status, error.message)
         }
-
-        // Log específico para erros de conexão
-        if (error.message?.includes('fetch failed') || error.cause) {
-          console.error('🔌 Connection error - API may be down or unreachable')
-        }
-
         return error
       }
     ],
-    afterResponse: [
-      async (request, options, response) => {
-        // Log de sucesso para debug
-        if (response.ok) {
-          console.log('✅ API Success:', {
-            url: request.url,
-            status: response.status,
-            method: request.method
-          })
-        }
-        return response
-      }
-    ]
   },
 })

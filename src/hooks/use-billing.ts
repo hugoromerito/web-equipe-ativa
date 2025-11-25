@@ -21,14 +21,22 @@ import {
 } from '@/http/billing'
 import { useToast } from '@/hooks/use-toast'
 
+// Re-export Stripe Checkout hooks
+export { useStripeCheckout, useCreateCheckoutAndRedirect } from './use-stripe-checkout'
+
 // Plans
 export function usePlans() {
   return useQuery({
     queryKey: ['plans'],
     queryFn: async () => {
-      const { plans } = await getPlans()
-      return plans
+      const result = await getPlans()
+      return result.plans
     },
+    staleTime: 1000 * 60 * 5, // 5 minutos
+    gcTime: 1000 * 60 * 30, // 30 minutos
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
+    refetchOnReconnect: false,
   })
 }
 
@@ -40,18 +48,30 @@ export function usePlan(planId: string) {
       return plan
     },
     enabled: !!planId,
+    staleTime: 1000 * 60 * 5,
+    gcTime: 1000 * 60 * 30,
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
+    refetchOnReconnect: false,
   })
 }
 
 // Subscriptions
-export function useOrganizationSubscription(organizationId: string) {
+export function useOrganizationSubscription(organizationId: string | undefined) {
   return useQuery({
     queryKey: ['subscriptions', organizationId],
     queryFn: async () => {
+      if (!organizationId) throw new Error('Organization ID is required')
       const { subscription } = await getOrganizationSubscription(organizationId)
       return subscription
     },
-    enabled: !!organizationId,
+    enabled: !!organizationId && organizationId.length > 0,
+    staleTime: 1000 * 60 * 5,
+    gcTime: 1000 * 60 * 30,
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
+    refetchOnReconnect: false,
+    retry: false,
   })
 }
 
@@ -111,26 +131,40 @@ export function useCancelSubscription() {
   })
 }
 
-export function useSubscriptionUsage(subscriptionId: string) {
+export function useSubscriptionUsage(subscriptionId: string | undefined) {
   return useQuery({
     queryKey: ['subscriptions', subscriptionId, 'usage'],
     queryFn: async () => {
+      if (!subscriptionId) throw new Error('Subscription ID is required')
       const { usage } = await getSubscriptionUsage(subscriptionId)
       return usage
     },
-    enabled: !!subscriptionId,
+    enabled: !!subscriptionId && subscriptionId.length > 0,
+    staleTime: 1000 * 60 * 5,
+    gcTime: 1000 * 60 * 30,
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
+    refetchOnReconnect: false,
+    retry: false,
   })
 }
 
 // Payment Methods
-export function usePaymentMethods(organizationId: string) {
+export function usePaymentMethods(organizationId: string | undefined) {
   return useQuery({
     queryKey: ['payment-methods', organizationId],
     queryFn: async () => {
+      if (!organizationId) throw new Error('Organization ID is required')
       const { payment_methods } = await getPaymentMethods(organizationId)
       return payment_methods
     },
-    enabled: !!organizationId,
+    enabled: !!organizationId && organizationId.length > 0,
+    staleTime: 1000 * 60 * 5,
+    gcTime: 1000 * 60 * 30,
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
+    refetchOnReconnect: false,
+    retry: false,
   })
 }
 
@@ -218,14 +252,21 @@ export function useDeletePaymentMethod() {
 }
 
 // Payments
-export function useSubscriptionPayments(subscriptionId: string) {
+export function useSubscriptionPayments(subscriptionId: string | undefined) {
   return useQuery({
     queryKey: ['subscriptions', subscriptionId, 'payments'],
     queryFn: async () => {
+      if (!subscriptionId) throw new Error('Subscription ID is required')
       const { payments } = await getSubscriptionPayments(subscriptionId)
       return payments
     },
-    enabled: !!subscriptionId,
+    enabled: !!subscriptionId && subscriptionId.length > 0,
+    staleTime: 1000 * 60 * 5,
+    gcTime: 1000 * 60 * 30,
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
+    refetchOnReconnect: false,
+    retry: false,
   })
 }
 
@@ -238,5 +279,10 @@ export function useCanCreateResource(
     queryKey: ['can-create', organizationId, resourceType],
     queryFn: () => canCreateResource(organizationId, resourceType),
     enabled: !!organizationId && !!resourceType,
+    staleTime: 1000 * 60 * 5,
+    gcTime: 1000 * 60 * 30,
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
+    refetchOnReconnect: false,
   })
 }

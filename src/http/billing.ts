@@ -1,5 +1,9 @@
 import { api } from './api-client'
 
+// Re-export Stripe Checkout functions
+export { createStripeCheckout, getCheckoutSession } from './create-stripe-checkout'
+export type { CreateStripeCheckoutRequest, CreateStripeCheckoutResponse } from './create-stripe-checkout'
+
 // Types
 export interface Plan {
   id: string
@@ -20,6 +24,34 @@ export interface Plan {
   stripe_price_yearly_id: string | null
   created_at: string
   updated_at: string
+}
+
+// Stripe Product Types (resposta real da API)
+export interface StripePrice {
+  id: string
+  unit_amount: number
+  currency: string
+  recurring?: {
+    interval: 'month' | 'year'
+    interval_count: number
+  }
+}
+
+export interface StripeProduct {
+  id: string
+  name: string
+  description: string | null
+  active: boolean
+  default_price: StripePrice | string
+  metadata: {
+    max_members?: string
+    max_units?: string
+    max_demands?: string
+    max_storage_gb?: string
+    features?: string
+    is_popular?: string
+    trial_days?: string
+  }
 }
 
 export interface Subscription {
@@ -81,8 +113,64 @@ export interface CanCreateResourceResponse {
 
 // Plans
 export async function getPlans() {
-  const result = await api.get('plans').json<{ plans: Plan[] }>()
-  return result
+  try {
+    const response = await api.get('plans').json<{ plans?: Plan[], products?: StripeProduct[] }>()
+    
+    // O backend pode retornar 'plans' ou 'products' (Stripe)
+    if (response.plans && Array.isArray(response.plans)) {
+      return { plans: response.plans }
+    }
+    
+    if (response.products && Array.isArray(response.products)) {
+      // Converter produtos Stripe para o formato Plan
+      const plans: Plan[] = response.products.map(product => {
+        const defaultPrice = typeof product.default_price === 'object' 
+          ? product.default_price 
+          : { unit_amount: 0, currency: 'brl' }
+        
+        // Parse features string
+        let features: string[] = []
+        if (product.metadata?.features) {
+          try {
+            features = product.metadata.features
+              .replace(/'/g, '')
+              .split(',')
+              .map((f: string) => f.trim())
+              .filter((f: string) => f.length > 0)
+          } catch (e) {
+            // Silently ignore parsing errors
+          }
+        }
+        
+        return {
+          id: product.id,
+          name: product.name,
+          description: product.description,
+          price_monthly: defaultPrice.unit_amount / 100, // Converter de centavos para reais
+          price_yearly: (defaultPrice.unit_amount * 10) / 100, // 10 meses (2 grátis no anual)
+          currency: defaultPrice.currency,
+          max_members: product.metadata?.max_members ? parseInt(product.metadata.max_members) : null,
+          max_units: product.metadata?.max_units ? parseInt(product.metadata.max_units) : null,
+          max_demands: product.metadata?.max_demands ? parseInt(product.metadata.max_demands) : null,
+          max_storage_gb: product.metadata?.max_storage_gb ? parseInt(product.metadata.max_storage_gb) : null,
+          features,
+          is_popular: product.metadata?.is_popular === 'true',
+          trial_days: product.metadata?.trial_days ? parseInt(product.metadata.trial_days) : 0,
+          stripe_product_id: product.id,
+          stripe_price_monthly_id: typeof product.default_price === 'string' ? product.default_price : product.default_price.id,
+          stripe_price_yearly_id: null,
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
+        }
+      })
+      
+      return { plans }
+    }
+    
+    throw new Error('Formato de resposta inválido da API')
+  } catch (error) {
+    throw error
+  }
 }
 
 export async function getPlan(planId: string) {
@@ -103,20 +191,53 @@ export interface CreateSubscriptionResponse {
   subscription: Subscription
   client_secret?: string
   requires_payment: boolean
+  url?: string // URL do Stripe Checkout (se o backend retornar)
 }
 
 export async function createSubscription(data: CreateSubscriptionRequest) {
-  const result = await api
-    .post('subscriptions', { json: data })
-    .json<CreateSubscriptionResponse>()
-  return result
+  try {
+    const result = await api
+      .post('subscriptions', { json: data })
+      .json<CreateSubscriptionResponse>()
+    
+    return result
+  } catch (error: any) {
+    // Tentar obter detalhes do erro do backend
+    if (error.response) {
+      try {
+        const errorText = await error.response.text()
+        
+        try {
+          const errorData = JSON.parse(errorText)
+          throw new Error(errorData.message || errorData.error || 'Erro ao criar assinatura')
+        } catch (parseError) {
+          throw new Error(`Backend error: ${errorText}`)
+        }
+      } catch (textError) {
+        // Ignore text read errors
+      }
+    }
+    
+    throw error
+  }
 }
 
 export async function getOrganizationSubscription(organizationId: string) {
-  const result = await api
-    .get(`organizations/${organizationId}/subscription`)
-    .json<{ subscription: Subscription | null }>()
-  return result
+  try {
+    const result = await api
+      .get(`organizations/${organizationId}/subscription`)
+      .json<{ subscription: Subscription | null }>()
+    return result
+  } catch (error: any) {
+    if (process.env.NODE_ENV === 'development') {
+      console.error('Error fetching subscription:', {
+        organizationId,
+        status: error.response?.status,
+        message: error.message,
+      })
+    }
+    throw error
+  }
 }
 
 export interface CancelSubscriptionRequest {
@@ -142,10 +263,21 @@ export async function getSubscriptionUsage(subscriptionId: string) {
 
 // Payment Methods
 export async function getPaymentMethods(organizationId: string) {
-  const result = await api
-    .get(`organizations/${organizationId}/payment-methods`)
-    .json<{ payment_methods: PaymentMethod[] }>()
-  return result
+  try {
+    const result = await api
+      .get(`organizations/${organizationId}/payment-methods`)
+      .json<{ payment_methods: PaymentMethod[] }>()
+    return result
+  } catch (error: any) {
+    if (process.env.NODE_ENV === 'development') {
+      console.error('Error fetching payment methods:', {
+        organizationId,
+        status: error.response?.status,
+        message: error.message,
+      })
+    }
+    throw error
+  }
 }
 
 export interface CreatePaymentMethodRequest {
