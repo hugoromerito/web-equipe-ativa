@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -31,7 +31,6 @@ import {
   useDeletePaymentMethod,
   useSubscriptionPayments,
 } from '@/hooks/use-billing'
-import { useParams } from 'next/navigation'
 import { 
   CreditCard, 
   Calendar, 
@@ -48,9 +47,68 @@ import { format } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
 
 export default function SubscriptionPage() {
-  const params = useParams<{ slug: string }>()
   const router = useRouter()
-  const organizationId = params?.slug
+  
+  // Buscar organizações do usuário para obter a atual
+  const [organizationId, setOrganizationId] = useState<string | null>(null)
+  const [isLoadingOrg, setIsLoadingOrg] = useState(true)
+
+  useEffect(() => {
+    // Tentar obter da URL, localStorage ou buscar organizações
+    const getOrganizationId = async () => {
+      try {
+        // 1. Tentar localStorage
+        const storedOrg = localStorage.getItem('currentOrganization')
+        if (storedOrg) {
+          console.log('✅ Organization ID from localStorage:', storedOrg)
+          setOrganizationId(storedOrg)
+          setIsLoadingOrg(false)
+          return
+        }
+
+        // 2. Buscar organizações do usuário
+        const token = document.cookie
+          .split('; ')
+          .find(row => row.startsWith('token='))
+          ?.split('=')[1]
+
+        if (!token) {
+          console.error('❌ No auth token found')
+          router.push('/auth/sign-in')
+          return
+        }
+
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/organizations`, {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+          },
+        })
+
+        if (!response.ok) {
+          throw new Error('Failed to fetch organizations')
+        }
+
+        const data = await response.json()
+        
+        if (data.organizations && data.organizations.length > 0) {
+          const firstOrg = data.organizations[0].id
+          console.log('✅ Using first organization:', firstOrg)
+          setOrganizationId(firstOrg)
+          localStorage.setItem('currentOrganization', firstOrg)
+        } else {
+          console.error('❌ No organizations found')
+          // Redirecionar para criar organização
+          router.push('/create-organization')
+        }
+      } catch (error) {
+        console.error('❌ Error getting organization:', error)
+      } finally {
+        setIsLoadingOrg(false)
+      }
+    }
+
+    getOrganizationId()
+  }, [router])
 
   const [selectedPlanId, setSelectedPlanId] = useState<string | null>(null)
   const [selectedBillingCycle, setSelectedBillingCycle] = useState<'monthly' | 'yearly'>('monthly')
@@ -77,6 +135,29 @@ export default function SubscriptionPage() {
     setSelectedPlanId(planId)
     setSelectedBillingCycle(billingCycle)
 
+    // Buscar o plano selecionado
+    const selectedPlan = plans?.find(p => p.id === planId)
+    
+    if (!selectedPlan) {
+      console.error('Plano não encontrado')
+      return
+    }
+
+    // Verificar se organizationId existe
+    if (!organizationId) {
+      console.error('Organization ID não encontrado')
+      alert('Erro: Organization ID não encontrado. Recarregue a página.')
+      return
+    }
+
+    console.log('🔄 Criando assinatura:', {
+      organizationId,
+      planId,
+      billingCycle,
+      plan: selectedPlan
+    })
+
+    // Usar a API de subscription que já existe
     try {
       const result = await createSubscriptionMutation.mutateAsync({
         organization_id: organizationId,
@@ -84,14 +165,30 @@ export default function SubscriptionPage() {
         billing_cycle: billingCycle,
       })
 
-      if (result.requires_payment && result.client_secret) {
+      console.log('✅ Resultado da criação:', result)
+
+      // Se retornar uma URL, redirecionar para o Stripe Checkout
+      if (result.url) {
+        console.log('🔗 Redirecionando para:', result.url)
+        window.location.href = result.url
+      } 
+      // Se retornar client_secret, usar o modal com Stripe Elements
+      else if (result.requires_payment && result.client_secret) {
+        console.log('💳 Abrindo modal de pagamento')
         setClientSecret(result.client_secret)
         setShowCheckoutDialog(true)
-      } else {
+      } 
+      // Se não precisar de pagamento, apenas recarregar
+      else {
+        console.log('✅ Assinatura criada sem necessidade de pagamento')
         router.refresh()
       }
-    } catch (error) {
-      console.error('Erro ao criar assinatura:', error)
+    } catch (error: any) {
+      console.error('❌ Erro ao criar assinatura:', error)
+      
+      // Exibir mensagem de erro mais amigável
+      const errorMessage = error.response?.message || error.message || 'Erro desconhecido ao criar assinatura'
+      alert(`Erro: ${errorMessage}\n\nVerifique o console para mais detalhes.`)
     }
   }
 
@@ -157,10 +254,23 @@ export default function SubscriptionPage() {
     )
   }
 
-  if (plansLoading || subscriptionLoading) {
+  if (plansLoading || subscriptionLoading || isLoadingOrg) {
     return (
       <div className="flex h-[50vh] items-center justify-center">
         <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+      </div>
+    )
+  }
+
+  if (!organizationId) {
+    return (
+      <div className="flex h-[50vh] items-center justify-center">
+        <Alert variant="destructive">
+          <AlertCircle className="h-4 w-4" />
+          <AlertDescription>
+            Organização não encontrada. Por favor, crie uma organização primeiro.
+          </AlertDescription>
+        </Alert>
       </div>
     )
   }
@@ -178,7 +288,13 @@ export default function SubscriptionPage() {
         <Alert variant="destructive">
           <AlertCircle className="h-4 w-4" />
           <AlertDescription>
-            Não foi possível carregar os planos. Verifique sua conexão e tente novamente.
+            <strong>Não foi possível carregar os planos.</strong>
+            <br />
+            {plansError instanceof Error ? plansError.message : 'Verifique sua conexão e tente novamente.'}
+            <br />
+            <span className="text-xs opacity-75">
+              {plansError instanceof Error && plansError.stack ? plansError.stack.split('\n')[0] : ''}
+            </span>
           </AlertDescription>
         </Alert>
       )}
